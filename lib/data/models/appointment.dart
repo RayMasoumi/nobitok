@@ -1,4 +1,4 @@
-import '../../constants/appointment_status.dart';
+import '../../constants/enums/appointment_status.dart';
 
 class Appointment {
   int appointmentId;

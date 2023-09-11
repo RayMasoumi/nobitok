@@ -7,3 +7,9 @@ BoxDecoration kLoginScreenBackgroundColor = const BoxDecoration(
     colors: [Colors.white, Color(0xFFC3C5FF)],
   ),
 );
+
+const Color kTextFieldBorderColor = Color(0xff888888);
+const Color kTextFieldHintColor = Color(0xFFCFCFCF);
+const Color kTextFieldLabelColor = Color(0xff363636);
+const Color kDividerColor = Color(0xFF9C9C9C);
+const Color kGreenColor = Color(0xFF68D88F);

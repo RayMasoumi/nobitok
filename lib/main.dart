@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -26,6 +27,11 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           home: const LoginScreen(),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          locale: const Locale('fa', 'IR'), // Set the locale to Persian (Farsi)
         );
       },
     );

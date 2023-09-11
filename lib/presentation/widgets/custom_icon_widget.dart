@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomIcon extends StatelessWidget {
   const CustomIcon({
     super.key,
     required this.iconPath,
-    required this.iconColor,
+    this.iconColor,
     required this.iconSize,
   });
 
   final String iconPath;
-  final Color iconColor;
+  final Color? iconColor;
   final double iconSize;
 
   @override
@@ -17,7 +18,7 @@ class CustomIcon extends StatelessWidget {
     return ImageIcon(
       AssetImage(iconPath),
       color: iconColor,
-      size: iconSize,
+      size: iconSize.w,
     );
   }
 }

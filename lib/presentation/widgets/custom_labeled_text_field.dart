@@ -68,6 +68,7 @@ class CustomLabeledTextField extends StatelessWidget {
             contentPadding: EdgeInsets.only(
                 bottom: 12.0.h, right: 13.w), // Adjust the bottom padding
           ),
+          textAlignVertical: TextAlignVertical.center,
         ),
       ),
     );

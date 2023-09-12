@@ -108,7 +108,9 @@ class LoginScreen extends StatelessWidget {
                         child: Text(
                           'تغییر رمز عبور',
                           textAlign: TextAlign.center,
-                          style: kMedium12TextStyle,
+                          style: kMedium12TextStyle.copyWith(
+                            color: const Color(0xFF3A4DFF),
+                          ),
                         ),
                       ),
                       const Spacer(),

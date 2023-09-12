@@ -31,13 +31,24 @@ final TextStyle kGrey12BoldTextStyle = TextStyle(
   fontWeight: FontWeight.w500,
 );
 final TextStyle kMedium12TextStyle = TextStyle(
-  color: const Color(0xFF3A4DFF),
+  color: const Color(0xFF4F4F4F),
   fontSize: 12.w,
   fontFamily: kIranyekanFont,
   fontWeight: FontWeight.w400,
+);
+final TextStyle kBold12TextStyle = TextStyle(
+  color: const Color(0xFF474747),
+  fontSize: 12.w,
+  fontFamily: kIranyekanFont,
+  fontWeight: FontWeight.w700,
 );
 final TextStyle kBold20TextStyle = TextStyle(
     color: Colors.white,
     fontFamily: kIranyekanFont,
     fontSize: 20.w,
+    fontWeight: FontWeight.w500);
+final TextStyle kBold14TextStyle = TextStyle(
+    color: Colors.black,
+    fontFamily: kIranyekanFont,
+    fontSize: 14.w,
     fontWeight: FontWeight.w500);

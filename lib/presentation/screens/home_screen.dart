@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/widgets/appointment_list_tile.dart';
-import 'package:nobitok/presentation/widgets/appointment_list_view.dart';
+import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
+import 'package:nobitok/presentation/widgets/thick_list_tile.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
@@ -55,8 +55,8 @@ class HomeScreen extends StatelessWidget {
               ), // * after divider:
 // * list view:
               Expanded(
-                child: AppointmentListView(
-                  listTile: AppointmentListTile(
+                child: CustomListView(
+                  listTile: ThickListTile(
                     leading: SizedBox(
                       width: 150.w,
                       child: Column(
@@ -86,7 +86,10 @@ class HomeScreen extends StatelessWidget {
                               SizedBox(
                                 width: 9.w,
                               ),
-                              const Text('سنیدبیبمیسمبی'),
+                              Text(
+                                'سنیدبیبمیسمبی',
+                                style: kMedium12TextStyle,
+                              ),
                               const Spacer(),
                             ],
                           ),

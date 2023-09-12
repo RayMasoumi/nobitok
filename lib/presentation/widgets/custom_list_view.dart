@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AppointmentListView extends StatelessWidget {
-  const AppointmentListView({
+class CustomListView extends StatelessWidget {
+  const CustomListView({
     super.key,
     required this.listTile,
   });
@@ -33,10 +33,7 @@ class AppointmentListView extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            // horizontal: 16.w,
-            vertical: 12.h,
-          ),
+          padding: EdgeInsets.symmetric(vertical: 12.h),
           child: listTile,
         ),
       );

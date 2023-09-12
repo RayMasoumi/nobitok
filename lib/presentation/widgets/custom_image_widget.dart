@@ -6,8 +6,8 @@ class CustomImage extends StatelessWidget {
     super.key,
     required this.path,
     this.color,
-    required this.width,
-    required this.height,
+    this.width = 24,
+    this.height = 25,
   });
 
   final String path;

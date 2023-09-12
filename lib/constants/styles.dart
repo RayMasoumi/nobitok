@@ -52,3 +52,8 @@ final TextStyle kBold14TextStyle = TextStyle(
     fontFamily: kIranyekanFont,
     fontSize: 14.w,
     fontWeight: FontWeight.w500);
+final TextStyle kTitle15TextStyle = TextStyle(
+    color: kTextFieldLabelColor,
+    fontFamily: kIranyekanFont,
+    fontSize: 15.w,
+    fontWeight: FontWeight.w500);

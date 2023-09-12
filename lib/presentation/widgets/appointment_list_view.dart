@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/widgets/appointment_list_tile.dart';
 
 class AppointmentListView extends StatelessWidget {
   const AppointmentListView({
     super.key,
+    required this.listTile,
   });
 
+  final Widget listTile;
   @override
   Widget build(BuildContext context) {
     return ListView.builder(itemBuilder: (context, index) {
@@ -36,7 +37,7 @@ class AppointmentListView extends StatelessWidget {
             // horizontal: 16.w,
             vertical: 12.h,
           ),
-          child: const AppointmentListTile(),
+          child: listTile,
         ),
       );
     });

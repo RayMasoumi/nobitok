@@ -12,7 +12,7 @@ class CustomListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(itemBuilder: (context, index) {
       return Container(
-        height: 80.h,
+        height: 88.h,
         width: 335.w,
         margin: EdgeInsets.only(
           left: 6.w,
@@ -33,7 +33,7 @@ class CustomListView extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.only(top: 11.h, bottom: 8.h),
           child: listTile,
         ),
       );

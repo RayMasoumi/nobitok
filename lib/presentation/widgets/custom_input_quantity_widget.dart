@@ -20,7 +20,7 @@ class CustomInputQuantityWidget extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
-        height: 30.h,
+        height: 40.h,
         width: 124.w,
         decoration: BoxDecoration(
           borderRadius: kBorderRadius12,

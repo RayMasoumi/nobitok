@@ -4,7 +4,6 @@ import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
-import 'package:nobitok/presentation/widgets/custom_list_tile.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
@@ -39,70 +38,77 @@ class ServiceBottomSheet extends StatelessWidget {
 // * listView:
             Expanded(
               child: CustomListView(
-                listTile: CustomListTile(
-// * leading:
-                  leading: SizedBox(
-                    width: 120.w,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                tileLeftPadding: 4,
+                tileRightPadding: 10,
+                tileTopPadding: 8,
+                tileBottomPadding: 8,
+                listTile: Card(
+                  elevation: 0,
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+// * right side:
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
 // * service name:
-                        Row(
-                          children: [
-                            Text(
-                              'ترمیم پوست',
-                              style: kBold13TextStyle,
-                              textAlign: TextAlign.start,
-                            ),
-                            const Spacer(),
-                          ],
-                        ),
-// * service price:
-                        const Row(
-                          children: [
-                            Text('100.000'),
-                            Text(' $kCurrency'),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-// *  trailing:
-                  trailing: SizedBox(
-                    width: 125.w,
-                    height: 69.h,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Spacer(),
-// * checkbox:
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              height: 18.h,
-                              width: 18.w,
-                              child: Checkbox(
-                                value: false,
-                                onChanged: (value) {},
-                                side: const BorderSide(
-                                  color: Color(0xff49454F),
+                            Row(
+                              children: [
+                                Text(
+                                  'ترمیم پوست',
+                                  style: kBold13TextStyle,
+                                  textAlign: TextAlign.start,
                                 ),
-                              ),
+                                const Spacer(),
+                              ],
                             ),
-                            SizedBox(
-                              width: 12.w,
+// * service price:
+                            const Row(
+                              children: [
+                                Text('100.000'),
+                                Text(' $kCurrency'),
+                              ],
                             ),
                           ],
                         ),
-                        const Spacer(),
+                      ),
+// * left side:
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+// * checkbox:
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  height: 18.h,
+                                  width: 18.w,
+                                  child: Checkbox(
+                                    value: false,
+                                    onChanged: (value) {},
+                                    side: const BorderSide(
+                                      color: Color(0xff49454F),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 12.w,
+                                ),
+                              ],
+                            ),
 
 // * quantity:
-                        const CustomInputQuantityWidget(
-                          index: 5,
+                            const CustomInputQuantityWidget(
+                              index: 5,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/screens/home_screen.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
 
 import 'constants/sizes.dart';
 
@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
           ),
           home: const Directionality(
             textDirection: TextDirection.rtl,
-            // child: ChangePriceBottomSheet(),
-            child: HomeScreen(),
+            child: ChangePriceBottomSheet(),
+            // child: HomeScreen(),
           ),
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,

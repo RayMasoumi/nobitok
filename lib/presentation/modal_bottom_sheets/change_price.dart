@@ -8,6 +8,8 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../constants/styles.dart';
 import '../widgets/custom_bottom_sheet.dart';
+import '../widgets/custom_image_widget.dart';
+import '../widgets/custom_list_view.dart';
 
 class ChangePriceBottomSheet extends StatelessWidget {
   const ChangePriceBottomSheet({super.key});
@@ -42,6 +44,45 @@ class ChangePriceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 16, bottomPadding: 16),
 // * listView:
+            Expanded(
+              child: CustomListView(
+                height: 58,
+                tileLeftPadding: 12,
+                tileRightPadding: 12,
+                tileTopPadding: 12,
+                tileBottomPadding: 12,
+                listTile: Card(
+                  elevation: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // * leading:
+                      Text(
+                        'ترمیم پوست',
+                        style: kBold13TextStyle,
+                        // textAlign: TextAlign.start,
+                      ),
+// *  trailing:
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '100000 تومان',
+                            style: kBold13TextStyle.copyWith(
+                              color: const Color(0xff7A7A7A),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                          const CustomImage(path: 'assets/icons/edit.png'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
 
 // * bottom divider:
             const PaddedDivider(topPadding: 4, bottomPadding: 32),

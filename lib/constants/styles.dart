@@ -60,5 +60,5 @@ final TextStyle kTitle15TextStyle = TextStyle(
 final TextStyle kBold13TextStyle = TextStyle(
     color: const Color(0xff1D1B20),
     fontFamily: kIranyekanFont,
-    fontSize: 15.w,
+    fontSize: 13.w,
     fontWeight: FontWeight.w500);

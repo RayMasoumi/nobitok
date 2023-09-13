@@ -4,11 +4,11 @@ import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
+import 'package:nobitok/presentation/widgets/custom_list_tile.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
-import 'package:nobitok/presentation/widgets/thick_list_tile.dart';
 
 import '../../constants/styles.dart';
 import '../widgets/custom_bottom_sheet.dart';
@@ -39,7 +39,7 @@ class ServiceBottomSheet extends StatelessWidget {
 // * listView:
             Expanded(
               child: CustomListView(
-                listTile: ThickListTile(
+                listTile: CustomListTile(
 // * leading:
                   leading: SizedBox(
                     width: 120.w,
@@ -130,7 +130,7 @@ class ServiceBottomSheet extends StatelessWidget {
                   fontSize: 13,
                   borderRadius: kBorderRadius12,
                   color: kYellowColor,
-                  text: 'تایید',
+                  text: 'افزودن خدمات',
                   onPressed: () {},
                 ),
               ],

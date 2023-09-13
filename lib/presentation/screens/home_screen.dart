@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/presentation/widgets/custom_list_tile.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
-import 'package:nobitok/presentation/widgets/thick_list_tile.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
 // * list view:
               Expanded(
                 child: CustomListView(
-                  listTile: ThickListTile(
+                  listTile: CustomListTile(
                     leading: SizedBox(
                       width: 150.w,
                       child: Column(

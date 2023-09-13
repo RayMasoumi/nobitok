@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ThickListTile extends StatelessWidget {
-  const ThickListTile({
+class CustomListTile extends StatelessWidget {
+  const CustomListTile({
     super.key,
     required this.leading,
     required this.trailing,

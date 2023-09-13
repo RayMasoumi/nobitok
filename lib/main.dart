@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
           ),
           home: const Directionality(
             textDirection: TextDirection.rtl,
+            // child: ChangePriceBottomSheet(),
             child: ServiceBottomSheet(),
-            // child: HomeScreen(),
           ),
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,

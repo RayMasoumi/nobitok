@@ -37,8 +37,13 @@ class CustomTopBar extends StatelessWidget {
         ),
         const Spacer(),
 // * close icon:
-        const CustomImage(
-            path: 'assets/icons/cancel.png', width: 24, height: 24),
+        InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const CustomImage(
+              path: 'assets/icons/cancel.png', width: 24, height: 24),
+        ),
       ],
     );
   }

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants/styles.dart';
 
-class CustomTabbar extends StatelessWidget {
-  const CustomTabbar({
+class CustomTabBar extends StatelessWidget {
+  const CustomTabBar({
     super.key,
   });
 

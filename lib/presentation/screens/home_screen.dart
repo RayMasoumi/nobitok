@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/widgets/custom_list_tile.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
+import 'package:nobitok/presentation/widgets/customer_list_tile.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
-import '../../constants/sizes.dart';
-import '../../constants/styles.dart';
-import '../widgets/custom_button.dart';
 import '../widgets/custom_image_widget.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/searchbar_widget.dart';
@@ -47,73 +44,20 @@ class HomeScreen extends StatelessWidget {
                 bottomPadding: 16,
               ), // * end of first divider
 // * tab bar:
-              const CustomTabbar(),
+              const CustomTabBar(),
 // * second divider:
               const PaddedDivider(
                 topPadding: 16,
                 bottomPadding: 0,
               ), // * after divider:
 // * list view:
-              Expanded(
+              const Expanded(
                 child: CustomListView(
-                  listTile: CustomListTile(
-                    leading: SizedBox(
-                      width: 150.w,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.person_outlined,
-                                size: 24.w,
-                              ),
-                              SizedBox(
-                                width: 7.w,
-                              ),
-                              Text(
-                                'علی کیانی',
-                                style: kBold14TextStyle,
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.access_time,
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 9.w,
-                              ),
-                              Text(
-                                'سنیدبیبمیسمبی',
-                                style: kMedium12TextStyle,
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    trailing: Column(
-                      children: [
-                        Text(
-                          '1402/8/13',
-                          style: kBold12TextStyle,
-                        ),
-                        const Spacer(),
-                        CustomButton(
-                            height: 32,
-                            width: 83,
-                            fontSize: 12,
-                            borderRadius: kBorderRadius13,
-                            color: const Color(0xff6171FF),
-                            text: 'جزئیات',
-                            onPressed: () {}),
-                      ],
-                    ),
-                  ),
+                  tileLeftPadding: 0,
+                  tileRightPadding: 0,
+                  tileTopPadding: 16,
+                  tileBottomPadding: 8,
+                  listTile: CustomerListTile(),
                 ),
               ),
             ],

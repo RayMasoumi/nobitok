@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
 
 import 'constants/sizes.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const Directionality(
             textDirection: TextDirection.rtl,
-            child: ChangePriceBottomSheet(),
+            child: SetPreAppointmentBottomSheet(),
             // child: HomeScreen(),
           ),
           localizationsDelegates: const [

@@ -15,6 +15,12 @@ final TextStyle kHintTextStyle = TextStyle(
   color: kTextFieldHintColor,
   fontWeight: FontWeight.w500,
 );
+final TextStyle kBold16TextStyle = TextStyle(
+  fontFamily: kIranyekanFont,
+  fontSize: 16.w,
+  color: const Color(0xff1D1B20),
+  fontWeight: FontWeight.w500,
+);
 final TextStyle kAppTitleTextStyle = TextStyle(
   fontFamily: kKalamehFont,
   fontSize: 24.w,
@@ -62,3 +68,8 @@ final TextStyle kBold13TextStyle = TextStyle(
     fontFamily: kIranyekanFont,
     fontSize: 13.w,
     fontWeight: FontWeight.w500);
+final TextStyle kLight14TextStyle = TextStyle(
+    color: const Color(0xff9A9A9A),
+    fontFamily: kIranyekanFont,
+    fontSize: 14.w,
+    fontWeight: FontWeight.w400);

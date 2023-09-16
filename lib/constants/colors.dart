@@ -14,3 +14,4 @@ const Color kTextFieldLabelColor = Color(0xff363636);
 const Color kDividerColor = Color(0xFF9C9C9C);
 const Color kGreenColor = Color(0xFF68D88F);
 const Color kYellowColor = Color(0xFFFFCD81);
+const Color kBlue300 = Color(0xff7B88FF);

@@ -14,8 +14,8 @@ import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
-class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
-  const AppointmentsCustomerInfoBottomSheet({super.key});
+class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
+  const PreAppointmentsCustomerInfoBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -168,16 +168,8 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
 
 // * buttons:
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CustomButton(
-                    height: 32,
-                    width: 116,
-                    fontSize: 12,
-                    borderRadius: kBorderRadius8,
-                    color: kBlue300,
-                    text: 'افزودن خدمت',
-                    onPressed: () {}),
                 CustomButton(
                     height: 32,
                     width: 88,
@@ -202,17 +194,17 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
                   color: kGreenColor,
-                  text: 'تکمیل نوبت',
+                  text: 'ثبت به عنوان نوبت',
                   onPressed: () {},
                 ),
-// * add pre appointment button:
+// * edit button:
                 CustomButton(
                   height: 40,
                   width: 160,
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
-                  color: kBlue300,
-                  text: 'ثبت پبش نوبت',
+                  color: kYellowColor,
+                  text: 'ویرایش',
                   onPressed: () {},
                 ),
               ],

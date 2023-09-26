@@ -8,7 +8,10 @@ import '../../constants/styles.dart';
 class SetDateWidget extends StatelessWidget {
   const SetDateWidget({
     super.key,
+    required this.disabled,
   });
+
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,7 @@ class SetDateWidget extends StatelessWidget {
                   Icon(
                     Icons.edit_calendar_outlined,
                     size: 24.w,
-                    color: kBlue300,
+                    color: disabled ? const Color(0xff838383) : kBlue300,
                   ),
                   Text(
                     '1402/05/11',

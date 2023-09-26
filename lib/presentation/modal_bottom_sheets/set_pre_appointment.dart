@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/info_card_widget.dart';
-import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
+import 'package:nobitok/presentation/widgets/info_card_widget.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
+import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
+import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 
 import '../../constants/styles.dart';
 import '../widgets/custom_bottom_sheet.dart';
+import '../widgets/custom_button.dart';
 
 class SetPreAppointmentBottomSheet extends StatelessWidget {
   const SetPreAppointmentBottomSheet({super.key});
@@ -30,7 +32,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
             SizedBox(
               height: 8.h,
             ),
-// * enter new price text:
+// * enter date and time text:
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -59,23 +61,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                 SizedBox(
                   height: 16.h,
                 ),
-// * id and birth info:
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'کد ملی: 1748596587',
-                      style: kLight14TextStyle,
-                    ),
-                    Text(
-                      'تاریخ تولد: 1350/08/10',
-                      style: kLight14TextStyle,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
+
 // * file code & number:
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,76 +113,116 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'تاریخ نوبت:',
+                  'جهت ثبت نوبت تاریخ را وارد کنید : ',
                   style: kBold14TextStyle,
                 ),
                 SizedBox(
                   height: 8.h,
                 ),
 // * date and time buttons:
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 159,
-                      height: 40,
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1),
-                          borderRadius: kBorderRadius12,
-                        ),
-                      ),
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(
-                                Icons.edit_calendar_outlined,
-                                size: 24.w,
-                                color: const Color(0xff838383),
-                              ),
-                              Text(
-                                '1402/05/11',
-                                style: kBold13TextStyle.copyWith(
-                                    color: const Color(0xff838383)),
-                              ),
-                            ],
-                          )),
-                    )
+                    SetDateWidget(),
+                    SetTimeWidget(),
                   ],
-                )
+                ),
+                const PaddedDivider(topPadding: 16, bottomPadding: 16),
               ],
             ),
-// * bottom buttons:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // * invoice list:
+            Column(
               children: [
-// * submit button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kGreenColor,
-                  text: 'تایید',
-                  onPressed: () {},
+// * title:
+                Row(
+                  children: [
+                    Text(
+                      'خدمات دریافتی',
+                      style: kBold14TextStyle,
+                    ),
+                    const Spacer(),
+                    Text(
+                      'مبلغ',
+                      style: kBold14TextStyle,
+                    ),
+                    SizedBox(
+                      width: 44.w,
+                    ),
+                  ],
                 ),
-// * change price button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kYellowColor,
-                  text: 'تغییر قیمت',
-                  onPressed: () {},
+                SizedBox(
+                  height: 8.h,
                 ),
+// * listView
+                const SeperatedListViewWidget(),
               ],
+            ),
+// * invoice button:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CustomButton(
+                    height: 32,
+                    width: 88,
+                    fontSize: 12,
+                    borderRadius: kBorderRadius8,
+                    color: kTextFieldBorderColor,
+                    text: 'فاکتور',
+                    onPressed: () {}),
+              ],
+            ),
+            const Spacer(),
+// * submit button:
+            CustomButton(
+              height: 40,
+              width: 335,
+              fontSize: 15,
+              borderRadius: kBorderRadius12,
+              color: kGreenColor,
+              text: 'ثبت پیش نوبت',
+              onPressed: () {},
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class SetTimeWidget extends StatelessWidget {
+  const SetTimeWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 159,
+          height: 40,
+          decoration: ShapeDecoration(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 1),
+              borderRadius: kBorderRadius12,
+            ),
+          ),
+          child: TextButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const CustomImage(path: 'assets/icons/clock-edit.png'),
+                  Text(
+                    '12:00 AM',
+                    style: kBold13TextStyle.copyWith(
+                        color: const Color(0xff838383)),
+                  ),
+                ],
+              )),
+        )
+      ],
     );
   }
 }

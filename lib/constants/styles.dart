@@ -73,3 +73,8 @@ final TextStyle kLight14TextStyle = TextStyle(
     fontFamily: kIranyekanFont,
     fontSize: 14.w,
     fontWeight: FontWeight.w400);
+final TextStyle kLight13TextStyle = TextStyle(
+    color: const Color(0xff666666),
+    fontFamily: kIranyekanFont,
+    fontSize: 13.w,
+    fontWeight: FontWeight.w400);

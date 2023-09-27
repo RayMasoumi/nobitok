@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
@@ -11,8 +13,17 @@ import '../../constants/styles.dart';
 import '../widgets/custom_image_widget.dart';
 import '../widgets/horizontal_padding.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final usernameController = TextEditingController();
+
+  final passwordController = TextEditingController();
 
   @override
   build(BuildContext context) {
@@ -78,7 +89,7 @@ class LoginScreen extends StatelessWidget {
 // * name textField:
                       CustomLabeledTextField(
                         keyboardType: TextInputType.text,
-                        controller: TextEditingController(), //TODO
+                        controller: usernameController,
                         hintText: 'نام و نام خانوادگی',
                         label: 'نام کاربری را وارد کنید',
                       ),
@@ -87,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       CustomLabeledTextField(
                           keyboardType: TextInputType.visiblePassword,
-                          controller: TextEditingController(),
+                          controller: passwordController,
                           hintText: '********',
                           label: 'رمز خود را وارد کنید'),
                       SizedBox(
@@ -116,15 +127,20 @@ class LoginScreen extends StatelessWidget {
                       const Spacer(),
 // * login button:
                       CustomButton(
-                          height: 44,
-                          width: 191,
-                          fontSize: 20,
-                          onPressed: () {
-                            //TODO
-                          },
-                          borderRadius: kBorderRadius8,
-                          color: kGreenColor,
-                          text: 'ورود'),
+                        height: 44,
+                        width: 191,
+                        fontSize: 20,
+                        onPressed: () {
+                          final username = usernameController.text;
+                          print(username);
+                          final password = passwordController.text;
+                          print(password);
+                          context.read<AuthCubit>().auth(username, password);
+                        },
+                        borderRadius: kBorderRadius8,
+                        color: kGreenColor,
+                        text: 'ورود',
+                      ),
                     ],
                   ),
                 ),

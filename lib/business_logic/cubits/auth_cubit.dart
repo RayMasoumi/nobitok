@@ -18,10 +18,6 @@ class AuthCubit extends Cubit<AuthState> {
       final loginResponse = await authService.login(username, password);
 
       emit(AuthSuccess(loginResponse!));
-
-      // After a successful login and user info fetch, you can navigate to the main screen.
-      // For example, use Navigator or any navigation package.
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainScreen()));
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }

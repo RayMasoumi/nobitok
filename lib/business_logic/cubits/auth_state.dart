@@ -3,18 +3,30 @@ part of 'auth_cubit.dart';
 @immutable
 abstract class AuthState {}
 
-class AuthInitial extends AuthState {}
+class AuthInitial extends AuthState {
+  AuthInitial() {
+    print('authInitial');
+  }
+}
 
-class AuthLoading extends AuthState {}
+class AuthLoading extends AuthState {
+  AuthLoading() {
+    print('authLoading');
+  }
+}
 
 class AuthSuccess extends AuthState {
   final User user;
 
-  AuthSuccess(this.user);
+  AuthSuccess(this.user) {
+    print('authSuccess: $user');
+  }
 }
 
 class AuthFailure extends AuthState {
   final String error;
 
-  AuthFailure(this.error);
+  AuthFailure(this.error) {
+    print('authFailure: $error');
+  }
 }

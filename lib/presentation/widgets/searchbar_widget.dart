@@ -27,7 +27,7 @@ class SearchbarWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundColor: Color(0xffC2C8FF),
+              backgroundColor: const Color(0xffC2C8FF),
               radius: 30,
               child: Text(
                 'A',

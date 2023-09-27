@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
-import 'package:nobitok/presentation/widgets/customer_list_tile.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../widgets/custom_image_widget.dart';
+import '../widgets/custom_list_view.dart';
+import '../widgets/customer_list_tile.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/searchbar_widget.dart';
 
@@ -50,14 +50,48 @@ class HomeScreen extends StatelessWidget {
                 topPadding: 16,
                 bottomPadding: 0,
               ), // * after divider:
-// * list view:
-              const Expanded(
-                child: CustomListView(
-                  tileLeftPadding: 0,
-                  tileRightPadding: 0,
-                  tileTopPadding: 16,
-                  tileBottomPadding: 8,
-                  listTile: CustomerListTile(),
+// * Tab content
+              const Flexible(
+                child: TabBarView(
+                  children: [
+                    // * appointments list view:
+                    CustomListView(
+                      tileLeftPadding: 0,
+                      tileRightPadding: 0,
+                      tileTopPadding: 16,
+                      tileBottomPadding: 8,
+                      listTile: CustomerListTile(
+                        isAppointment: true,
+                        isDocument: false,
+                      ),
+                    ),
+
+// *Tab 2 content
+                    // * pre-appointments list view:
+                    CustomListView(
+                      tileLeftPadding: 0,
+                      tileRightPadding: 0,
+                      tileTopPadding: 16,
+                      tileBottomPadding: 8,
+                      listTile: CustomerListTile(
+                        isAppointment: false,
+                        isDocument: false,
+                      ),
+                    ),
+
+// *Tab 3 content
+                    // * documents list view:
+                    CustomListView(
+                      tileLeftPadding: 0,
+                      tileRightPadding: 0,
+                      tileTopPadding: 16,
+                      tileBottomPadding: 8,
+                      listTile: CustomerListTile(
+                        isAppointment: false,
+                        isDocument: true,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

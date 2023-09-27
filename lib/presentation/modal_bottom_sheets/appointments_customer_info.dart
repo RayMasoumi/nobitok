@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/constants/colors.dart';
-import 'package:nobitok/constants/sizes.dart';
-import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
-import 'package:nobitok/presentation/widgets/custom_topbar.dart';
-import 'package:nobitok/presentation/widgets/info_card_widget.dart';
-import 'package:nobitok/presentation/widgets/padded_divider.dart';
-import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
-import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 
+import '../../constants/colors.dart';
+import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/custom_image_widget.dart';
+import '../widgets/custom_topbar.dart';
+import '../widgets/info_card_widget.dart';
+import '../widgets/padded_divider.dart';
+import '../widgets/seperated_list_view_widget.dart';
+import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
-class SetPreAppointmentBottomSheet extends StatelessWidget {
-  const SetPreAppointmentBottomSheet({super.key});
+class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
+  const AppointmentsCustomerInfoBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +27,12 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
           children: [
 // * top bar:
             const CustomTopBar(
-              iconPath: 'assets/icons/clipboard.png',
-              title: 'ثبت پیش نوبت',
+              iconPath: 'assets/icons/account_circle.png',
+              title: 'اطلاعات مشتری',
             ),
-            SizedBox(
-              height: 8.h,
-            ),
-// * enter date and time text:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'برای ثبت پیش نوبت تاریخ و ساعت را مشخص کنید : ',
-                  style: kBold13TextStyle,
-                  textAlign: TextAlign.start,
-                ),
-              ],
-            ),
+
 // * divider:
-            const PaddedDivider(topPadding: 16, bottomPadding: 8),
+            const PaddedDivider(topPadding: 0, bottomPadding: 8),
 // * customer info :
             Column(
               children: [
@@ -62,7 +49,23 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                 SizedBox(
                   height: 16.h,
                 ),
-
+// * id and birth info:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'کد ملی: 1748596587',
+                      style: kLight14TextStyle,
+                    ),
+                    Text(
+                      'تاریخ تولد: 1350/08/10',
+                      style: kLight14TextStyle,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 24.h,
+                ),
 // * file code & number:
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +117,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'جهت ثبت نوبت تاریخ را وارد کنید : ',
+                  'تکمیل شده در تاریخ : ',
                   style: kBold14TextStyle,
                 ),
                 SizedBox(
@@ -125,10 +128,10 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SetDateWidget(
-                      disabled: false,
+                      disabled: true,
                     ),
                     SetTimeWidget(
-                      disabled: false,
+                      disabled: true,
                     ),
                   ],
                 ),
@@ -162,10 +165,19 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                 const SeperatedListViewWidget(),
               ],
             ),
-// * invoice button:
+
+// * buttons:
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                CustomButton(
+                    height: 32,
+                    width: 116,
+                    fontSize: 12,
+                    borderRadius: kBorderRadius8,
+                    color: kBlue300,
+                    text: 'افزودن خدمت',
+                    onPressed: () {}),
                 CustomButton(
                     height: 32,
                     width: 88,
@@ -177,17 +189,33 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
               ],
             ),
             const Spacer(),
-// * bottom divider
-            const PaddedDivider(topPadding: 0, bottomPadding: 32),
-// * submit button:
-            CustomButton(
-              height: 40,
-              width: 335,
-              fontSize: 15,
-              borderRadius: kBorderRadius12,
-              color: kGreenColor,
-              text: 'ثبت پیش نوبت',
-              onPressed: () {},
+// * bottom divider:
+            const PaddedDivider(topPadding: 0, bottomPadding: 16),
+// * bottom buttons:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+// * submit appointment button:
+                CustomButton(
+                  height: 40,
+                  width: 160,
+                  fontSize: 14,
+                  borderRadius: kBorderRadius8,
+                  color: kGreenColor,
+                  text: 'تکمیل نوبت',
+                  onPressed: () {},
+                ),
+// * add pre appointment button:
+                CustomButton(
+                  height: 40,
+                  width: 160,
+                  fontSize: 14,
+                  borderRadius: kBorderRadius8,
+                  color: kBlue300,
+                  text: 'ثبت پبش نوبت',
+                  onPressed: () {},
+                ),
+              ],
             ),
           ],
         ),

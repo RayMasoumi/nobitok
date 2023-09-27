@@ -7,9 +7,9 @@ class Customer {
   String customerName;
   String? customerEmail;
   String customerPhoneNumber;
-  String? customerIdCode;
+  String? customerIdCode; //code melli
   String customerPassword;
-  String? customerDocumentCode;
+  String? customerDocumentCode; //shomare parvande
   DateTime customerDateOfBirth;
   List<Appointment> customerAppointments;
   List<Invoice> customerInvoices;

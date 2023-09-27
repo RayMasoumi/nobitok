@@ -26,8 +26,6 @@ dependencies:
   equatable: ^2.0.5
   connectivity_plus: ^4.0.2
   persian_datetime_picker: ^2.6.0
-  http: ^1.1.0
-  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

@@ -8,7 +8,12 @@ import 'custom_button.dart';
 class CustomerListTile extends StatelessWidget {
   const CustomerListTile({
     super.key,
+    required this.isAppointment,
+    required this.isDocument,
   });
+
+  final bool isAppointment;
+  final bool isDocument;
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +39,53 @@ class CustomerListTile extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Row(
-              children: [
-                const Icon(
-                  Icons.access_time,
-                  size: 18,
-                ),
-                SizedBox(
-                  width: 9.w,
-                ),
-                Text(
-                  'سنیدبیبمیسمبی',
-                  style: kMedium12TextStyle,
-                ),
-                const Spacer(),
-              ],
-            ),
+            // * is Appointment:
+            isAppointment
+                ? Row(
+                    children: [
+                      const Icon(
+                        Icons.access_time,
+                        size: 18,
+                      ),
+                      SizedBox(
+                        width: 9.w,
+                      ),
+                      Text(
+                        'سنیدبیبمیسمبی',
+                        style: kMedium12TextStyle,
+                      ),
+                      const Spacer(),
+                    ],
+                  )
+                // * is preAppointment:
+                : Row(
+                    children: [
+                      const Icon(
+                        Icons.contacts_outlined,
+                        size: 18,
+                      ),
+                      SizedBox(
+                        width: 9.w,
+                      ),
+                      Text(
+                        '0916455145656',
+                        style: kMedium12TextStyle,
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
           ],
         ),
       ),
 // * list tile trailing:
       trailing: Column(
         children: [
-          Text(
-            '1402/8/13',
-            style: kBold12TextStyle,
+          Visibility(
+            visible: !isDocument,
+            child: Text(
+              '1402/8/13',
+              style: kBold12TextStyle,
+            ),
           ),
           const Spacer(),
           CustomButton(

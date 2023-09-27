@@ -21,7 +21,9 @@ class AuthService {
         userId: 0,
         username: 'username',
         userEmail: 'userEmail',
-        userPhoneNumber: 'userPhoneNumber');
+        userPhoneNumber: 'userPhoneNumber',
+        appointments: [],
+        preAppointments: []);
   }
 
   Future<int> _auth(String username, String password) async {

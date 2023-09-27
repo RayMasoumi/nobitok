@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
+import 'package:nobitok/presentation/screens/home_screen.dart';
 
 import 'constants/sizes.dart';
 
@@ -27,11 +27,7 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const Directionality(
-            textDirection: TextDirection.rtl,
-            child: SetPreAppointmentBottomSheet(),
-            // child: HomeScreen(),
-          ),
+          home: const HomeScreen(),
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,

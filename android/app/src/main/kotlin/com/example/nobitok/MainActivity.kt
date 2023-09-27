@@ -1,4 +1,4 @@
-package com.example.nobitok
+package com.etok.nobitok
 
 import io.flutter.embedding.android.FlutterActivity
 

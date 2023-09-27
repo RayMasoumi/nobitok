@@ -28,7 +28,7 @@ class CustomLabeledTextField extends StatelessWidget {
       width: 302.w,
       child: Directionality(
         textDirection: TextDirection.rtl,
-        child: TextField(
+        child: TextFormField(
           obscureText: isPassword,
           enableSuggestions: false,
           autocorrect: false,
@@ -47,7 +47,7 @@ class CustomLabeledTextField extends StatelessWidget {
           decoration: InputDecoration(
             floatingLabelStyle: kTextFieldLabelTextStyle,
             labelText: label,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
+            floatingLabelBehavior: FloatingLabelBehavior.auto,
             labelStyle: kTextFieldLabelTextStyle,
             filled: true,
             fillColor: Colors.white,

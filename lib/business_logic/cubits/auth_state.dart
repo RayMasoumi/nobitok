@@ -10,8 +10,18 @@ class AuthInitial extends AuthState {
 }
 
 class AuthLoading extends AuthState {
-  AuthLoading() {
-    print('authLoading');
+  final BuildContext context;
+  AuthLoading(this.context) {
+    debugPrint('authLoading');
+    context.loaderOverlay.show();
+  }
+}
+
+class AuthLoadingComplete extends AuthState {
+  final BuildContext context;
+
+  AuthLoadingComplete(this.context) {
+    context.loaderOverlay.hide();
   }
 }
 

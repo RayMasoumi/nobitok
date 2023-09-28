@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,39 +21,46 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // * Initialize flutter_screenUtil
-    return ScreenUtilInit(
-      designSize: const Size(kWidth, kHeight),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthCubit>(
-              create: (context) => AuthCubit(authService),
-            ),
-          ],
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: Directionality(
-              textDirection: TextDirection.rtl,
-              // child: SetPreAppointmentBottomSheet(),
-              child: LoginScreen(),
-            ),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
+    // * color of status bar
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+      // * Initialize flutter_screenUtil
+      child: ScreenUtilInit(
+        designSize: const Size(kWidth, kHeight),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<AuthCubit>(
+                create: (context) => AuthCubit(authService),
+              ),
             ],
-            locale:
-                const Locale('fa', 'IR'), // * Set the locale to Persian (Farsi)
-          ),
-        );
-      },
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                scaffoldBackgroundColor: Colors.white,
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              home: Directionality(
+                textDirection: TextDirection.rtl,
+                // child: SetPreAppointmentBottomSheet(),
+                child: LoginScreen(),
+              ),
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              locale: const Locale(
+                  'fa', 'IR'), // * Set the locale to Persian (Farsi)
+            ),
+          );
+        },
+      ),
     );
   }
 }

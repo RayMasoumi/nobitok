@@ -29,6 +29,7 @@ final TextStyle kAppTitleTextStyle = TextStyle(
 final TextStyle kTextFieldLabelTextStyle = TextStyle(
   color: kTextFieldLabelColor,
   fontSize: 10.w,
+  fontFamily: kIranyekanFont,
 );
 final TextStyle kGrey12BoldTextStyle = TextStyle(
   color: kDividerColor,

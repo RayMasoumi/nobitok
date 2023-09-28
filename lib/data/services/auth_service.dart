@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:nobitok/constants/strings.dart';
@@ -16,6 +17,8 @@ class AuthService {
       print('yaaaaaaaaaaaaaaay');
       // * Fetch user information using the token
       // final user = await _fetchUserInformation();
+    } else {
+      print('noooooooooooooooooo');
     }
     return User(
         userId: 0,
@@ -30,28 +33,34 @@ class AuthService {
     // * Implement auth API request to get the token here
 
     final url = Uri.parse('$kBaseUrl$kAuthUrl');
-
-    final Map<String, dynamic> data = {
+    final data = {
       "username": username,
       "password": password,
     };
-
     final headers = {
       'Content-Type': 'application/json',
     };
 
     final body = json.encode(data);
 
-    final response = await http.post(url, body: body, headers: headers);
+    final response = await http.post(
+      url,
+      body: body,
+      headers: headers,
+    );
 
     try {
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         GetStorage().write(kTokenBox, jsonResponse['token']);
         GetStorage().write(kRefreshTokenBox, jsonResponse['refreshToken']);
+        debugPrint('Login success in _auth in auth_service.dart');
+
         return response.statusCode;
       } else {
-        throw Exception('Login failed in _auth in auth_service.dart');
+        debugPrint(
+            'Login failed in _auth in auth_service.dart \n status code: ${response.statusCode} \n body: ${response.body}');
+        return response.statusCode;
       }
     } catch (error) {
       throw Exception('Failed to connect to the server: $error');
@@ -76,6 +85,7 @@ class AuthService {
     try {
       if (response.statusCode == 200) {
         final userData = json.decode(response.body);
+        print('success to fetch user information');
         return User.fromJson(userData);
       } else {
         throw Exception('Failed to fetch user information');

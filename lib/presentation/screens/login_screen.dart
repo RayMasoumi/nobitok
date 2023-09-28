@@ -151,4 +151,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 }

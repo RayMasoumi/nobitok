@@ -17,7 +17,7 @@ class AuthService {
       // * Fetch user information using the token
       return await _fetchTodayAppointments();
     } else {
-      throw Exception('$kLoginException:$authStatusCode');
+      throw Exception('$kAuthException:$authStatusCode');
     }
   }
 

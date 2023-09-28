@@ -40,10 +40,16 @@ class AuthFailure extends AuthState {
     debugPrint('authFailure: $error');
     if (error.contains(kServerException)) {
       // todo show internet alert
-    } else if (error == '$kAuthException:401') {
+      print('server exception');
+    } else if (error.contains('$kAuthException:401')) {
       // todo show wrong username or password alert
+      print('auth exception');
+    } else if (error.contains(kFetchTodayAppointmentsDataException)) {
+      // todo
+      print('fetch today appointment');
     } else {
       // todo default alert
+      print('an exception');
     }
   }
 }

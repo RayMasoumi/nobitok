@@ -1,8 +1,10 @@
+import 'package:nobitok/methods/get_appointment_status_from_int.dart';
+
 import '../../constants/enums/appointment_status.dart';
 
 class Appointment {
   int appointmentId;
-  DateTime appointmentDate;
+  String appointmentDate;
   String? appointmentTime;
   String? appointmentDescription;
   int appointmentCustomerId;
@@ -22,10 +24,10 @@ class Appointment {
       appointmentId: json['id'] ?? 0,
       appointmentCustomerId: json['customerId'] ?? 0,
       appointmentDescription: json['description'] ?? '',
-      appointmentDate: DateTime.parse(json['date'] ?? DateTime.now()),
+      appointmentDate: json['date'] ?? '',
       appointmentTime: json['time'] ?? '',
       appointmentStatus:
-          json['appointmentStatus'] ?? AppointmentStatus.appointment,
+          getAppointmentStatusFromInt(json['appointmentStatus'] ?? 3),
     );
   }
 }

@@ -97,10 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 32.57.h,
                       ),
                       CustomLabeledTextField(
-                          keyboardType: TextInputType.visiblePassword,
-                          controller: passwordController,
-                          hintText: '********',
-                          label: 'رمز خود را وارد کنید'),
+                        keyboardType: TextInputType.visiblePassword,
+                        controller: passwordController,
+                        hintText: '********',
+                        label: 'رمز خود را وارد کنید',
+                      ),
                       SizedBox(
                         height: 25.h,
                       ),
@@ -132,9 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 20,
                         onPressed: () {
                           final username = usernameController.text;
-                          print(username);
                           final password = passwordController.text;
-                          print(password);
                           context.read<AuthCubit>().auth(username, password);
                         },
                         borderRadius: kBorderRadius8,

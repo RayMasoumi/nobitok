@@ -13,6 +13,5 @@ const kRefreshTokenBox = 'refreshTokenBox';
 
 // * exception strings
 const kServerException = 'server_error';
-const kAuthException = 'auth_Error';
+const kAuthException = 'auth_error';
 const kFetchTodayAppointmentsDataException = 'fetch_today_appointments_error';
-const kLoginException = 'login_error';

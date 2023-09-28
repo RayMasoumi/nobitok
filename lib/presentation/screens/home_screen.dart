@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
+import '../../methods/set_time_initial_value_method.dart';
 import '../widgets/custom_image_widget.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
@@ -24,7 +26,14 @@ class HomeScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          onPressed: () {},
+          onPressed: () {
+            setTimeInitialValue();
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const SetTimeBottomSheet(),
+              isScrollControlled: true,
+            );
+          },
           child: CustomImage(
               path: 'assets/icons/calendar-search.png',
               width: 24.w,

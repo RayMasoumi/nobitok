@@ -78,3 +78,8 @@ final TextStyle kLight13TextStyle = TextStyle(
     fontFamily: kIranyekanFont,
     fontSize: 13.w,
     fontWeight: FontWeight.w400);
+final TextStyle kBigNumberTextStyle = TextStyle(
+    color: Colors.black,
+    fontFamily: kIranyekanFont,
+    fontSize: 45.w,
+    fontWeight: FontWeight.w400);

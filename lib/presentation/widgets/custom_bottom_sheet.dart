@@ -19,11 +19,11 @@ class CustomBottomSheet extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(seconds: 10),
       child: Container(
-        // padding: halfScreen
-        //     ? EdgeInsets.zero
-        //     : EdgeInsets.only(
-        //         top: MediaQueryData.fromView(View.of(context)).padding.top,
-        //         bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: halfScreen
+            ? EdgeInsets.zero
+            : EdgeInsets.only(
+                top: MediaQueryData.fromView(View.of(context)).padding.top,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
         color: const Color(0xFF757575),
         child: Container(
           decoration: BoxDecoration(

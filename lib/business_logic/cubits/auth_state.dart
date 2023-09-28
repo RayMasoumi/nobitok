@@ -26,10 +26,10 @@ class AuthLoadingComplete extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  final User user;
+  final List<Appointment> appointments;
 
-  AuthSuccess(this.user) {
-    print('authSuccess: $user');
+  AuthSuccess(this.appointments) {
+    print('authSuccess: $appointments');
   }
 }
 
@@ -37,6 +37,13 @@ class AuthFailure extends AuthState {
   final String error;
 
   AuthFailure(this.error) {
-    print('authFailure: $error');
+    debugPrint('authFailure: $error');
+    if (error.contains(kServerException)) {
+      // todo show internet alert
+    } else if (error == '$kAuthException:401') {
+      // todo show wrong username or password alert
+    } else {
+      // todo default alert
+    }
   }
 }

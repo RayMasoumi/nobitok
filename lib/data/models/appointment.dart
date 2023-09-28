@@ -16,4 +16,16 @@ class Appointment {
     required this.appointmentCustomerId,
     required this.appointmentStatus,
   });
+
+  factory Appointment.fromJson(Map<String, dynamic> json) {
+    return Appointment(
+      appointmentId: json['id'] ?? 0,
+      appointmentCustomerId: json['customerId'] ?? 0,
+      appointmentDescription: json['description'] ?? '',
+      appointmentDate: DateTime.parse(json['date'] ?? DateTime.now()),
+      appointmentTime: json['time'] ?? '',
+      appointmentStatus:
+          json['appointmentStatus'] ?? AppointmentStatus.appointment,
+    );
+  }
 }

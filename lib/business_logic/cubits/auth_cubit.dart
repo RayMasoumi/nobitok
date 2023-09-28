@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/data/models/appointment.dart';
 
-import '../../data/models/user.dart';
 import '../../data/services/auth_service.dart';
 
 part 'auth_state.dart';

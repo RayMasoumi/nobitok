@@ -6,27 +6,19 @@ import 'package:http/http.dart' as http;
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/constants/urls.dart';
 
-import '../models/user.dart';
+import '../models/appointment.dart';
 
 class AuthService {
-  Future<User?> login(String username, String password) async {
+  Future<List<Appointment>?> login(String username, String password) async {
     // * Your login API call to get a token
     final int authStatusCode = await _auth(username, password);
 
     if (authStatusCode == 200) {
-      print('yaaaaaaaaaaaaaaay');
       // * Fetch user information using the token
-      // final user = await _fetchUserInformation();
+      return await _fetchTodayAppointments();
     } else {
-      print('noooooooooooooooooo');
+      throw Exception('$kLoginException:$authStatusCode');
     }
-    return User(
-        userId: 0,
-        username: 'username',
-        userEmail: 'userEmail',
-        userPhoneNumber: 'userPhoneNumber',
-        appointments: [],
-        preAppointments: []);
   }
 
   Future<int> _auth(String username, String password) async {
@@ -58,40 +50,42 @@ class AuthService {
 
         return response.statusCode;
       } else {
-        debugPrint(
-            'Login failed in _auth in auth_service.dart \n status code: ${response.statusCode} \n body: ${response.body}');
+        debugPrint('$kAuthException:${response.statusCode}');
         return response.statusCode;
       }
     } catch (error) {
-      throw Exception('Failed to connect to the server: $error');
+      throw Exception('$kServerException:$error');
     }
   }
 
-  Future<User> _fetchUserInformation() async {
-    // * Implement API request to fetch user information using the token here
-    // todo fix this function
-    final url = Uri.parse('$kBaseUrl');
-
-    final Map<String, dynamic> data = {};
+  Future<List<Appointment>> _fetchTodayAppointments() async {
+    // * Implement API request to fetch information using the token here
+    final url = Uri.parse('$kBaseUrl$kGetAllTodayAppointmentsUrl');
 
     final headers = {
+      'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
       'Content-Type': 'application/json',
     };
 
-    final body = json.encode(data);
-
-    final response = await http.post(url, body: body, headers: headers);
+    final response = await http.get(
+      url,
+      headers: headers,
+    );
 
     try {
       if (response.statusCode == 200) {
-        final userData = json.decode(response.body);
-        print('success to fetch user information');
-        return User.fromJson(userData);
+        final jsonResponse = json.decode(response.body);
+        List<dynamic> dataList = jsonResponse['dataList'];
+        List<Appointment> appointments = dataList.map((data) {
+          return Appointment.fromJson(data);
+        }).toList();
+        return appointments;
       } else {
-        throw Exception('Failed to fetch user information');
+        throw Exception(
+            '$kFetchTodayAppointmentsDataException:${response.body}');
       }
     } catch (error) {
-      throw Exception('Failed to connect to the server: $error');
+      throw Exception('$kServerException:$error');
     }
   }
 }

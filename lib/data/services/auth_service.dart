@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:nobitok/constants/strings.dart';
@@ -53,12 +54,13 @@ class AuthService {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         GetStorage().write(kTokenBox, jsonResponse['token']);
         GetStorage().write(kRefreshTokenBox, jsonResponse['refreshToken']);
-        print('Login success in _auth in auth_service.dart');
+        debugPrint('Login success in _auth in auth_service.dart');
 
         return response.statusCode;
       } else {
-        throw Exception(
+        debugPrint(
             'Login failed in _auth in auth_service.dart \n status code: ${response.statusCode} \n body: ${response.body}');
+        return response.statusCode;
       }
     } catch (error) {
       throw Exception('Failed to connect to the server: $error');

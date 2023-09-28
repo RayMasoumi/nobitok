@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
                       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                   useMaterial3: true,
                 ),
-                home: Directionality(
+                home: const Directionality(
                   textDirection: TextDirection.rtl,
                   // child: SetPreAppointmentBottomSheet(),
                   child: LoginScreen(),

@@ -9,6 +9,7 @@ import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
@@ -72,9 +73,14 @@ class MyApp extends StatelessWidget {
                   // child: SetPreAppointmentBottomSheet(),
                   child: LoginScreen(),
                 ),
+                onGenerateRoute: AppRouter().onGenerateRoute,
                 localizationsDelegates: const [
+                  GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale("fa", "IR"),
                 ],
                 locale: const Locale(
                     'fa', 'IR'), // * Set the locale to Persian (Farsi)

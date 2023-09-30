@@ -147,12 +147,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 preAppointments: []));
                             context.read<AppointmentsCubit>().addAppointments(
                                 kAppointmentsKey, state.appointments);
-                            // todo navigate to home screen
-                            // Navigator.of(context).pushNamedAndRemoveUntil(
-                            //   kHomeScreenRoute,
-                            //   (route) =>
-                            //       false, // * This function ensures that all previous pages are removed.
-                            // );
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              kHomeScreenRoute,
+                              (route) =>
+                                  false, // * This function ensures that all previous pages are removed.
+                            );
                             print('yayyyy');
                           } else if (state is AuthFailure) {
                             if (state.error.contains(kServerException)) {

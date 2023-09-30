@@ -44,14 +44,17 @@ class ChangePriceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 16, bottomPadding: 16),
 // * listView:
-            const Expanded(
+            Expanded(
               child: CustomListView(
                 height: 58,
                 tileLeftPadding: 12,
                 tileRightPadding: 12,
                 tileTopPadding: 12,
                 tileBottomPadding: 12,
-                listTile: PriceListTile(),
+                listTileBuilder: (index) {
+                  return const PriceListTile();
+                },
+                tilesList: const [],
               ),
             ),
 

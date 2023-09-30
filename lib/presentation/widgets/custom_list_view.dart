@@ -8,20 +8,23 @@ class CustomListView extends StatelessWidget {
     required this.tileRightPadding,
     required this.tileTopPadding,
     required this.tileBottomPadding,
-    required this.listTile,
+    required this.listTileBuilder,
     this.height = 88,
+    required this.tilesList,
   });
 
-  final Widget listTile;
+  final Widget Function(int index) listTileBuilder;
   final double height;
   final double tileTopPadding;
   final double tileBottomPadding;
   final double tileLeftPadding;
   final double tileRightPadding;
+  final List tilesList;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      itemCount: tilesList.length,
       itemBuilder: (context, index) {
         return Container(
           height: height.h,
@@ -51,7 +54,7 @@ class CustomListView extends StatelessWidget {
               right: tileRightPadding.w,
               left: tileLeftPadding.w,
             ),
-            child: listTile,
+            child: listTileBuilder(index),
           ),
         );
       },

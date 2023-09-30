@@ -33,13 +33,16 @@ class ServiceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:
-            const Expanded(
+            Expanded(
               child: CustomListView(
                 tileLeftPadding: 4,
                 tileRightPadding: 10,
                 tileTopPadding: 8,
                 tileBottomPadding: 8,
-                listTile: ServicesListTile(),
+                listTileBuilder: (index) {
+                  return const ServicesListTile();
+                },
+                tilesList: const [],
               ),
             ),
 // * bottom divider:

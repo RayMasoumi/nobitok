@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
+import '../../data/models/appointment.dart';
 import 'custom_button.dart';
 
 class CustomerListTile extends StatelessWidget {
@@ -10,10 +12,14 @@ class CustomerListTile extends StatelessWidget {
     super.key,
     required this.isAppointment,
     required this.isDocument,
+    required this.appointments,
+    required this.index,
   });
 
   final bool isAppointment;
   final bool isDocument;
+  final List<Appointment> appointments;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,7 @@ class CustomerListTile extends StatelessWidget {
                   width: 7.w,
                 ),
                 Text(
-                  'علی کیانی',
+                  appointments[index].appointmentCustomerName,
                   style: kBold14TextStyle,
                 ),
               ],
@@ -51,7 +57,7 @@ class CustomerListTile extends StatelessWidget {
                         width: 9.w,
                       ),
                       Text(
-                        'سنیدبیبمیسمبی',
+                        'ساعت: ${appointments[index].appointmentTime?.toPersianDigit()}',
                         style: kMedium12TextStyle,
                       ),
                       const Spacer(),
@@ -83,7 +89,7 @@ class CustomerListTile extends StatelessWidget {
           Visibility(
             visible: !isDocument,
             child: Text(
-              '1402/8/13',
+              appointments[index].appointmentDate.toPersianDate(),
               style: kBold12TextStyle,
             ),
           ),

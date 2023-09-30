@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
+import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider<AppointmentsCubit>(
                   create: (context) => AppointmentsCubit(),
+                ),
+                BlocProvider<TabCubit>(
+                  create: (context) => TabCubit(),
                 ),
               ],
               child: MaterialApp(

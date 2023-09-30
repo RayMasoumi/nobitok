@@ -5,7 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
+import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -44,10 +46,17 @@ class MyApp extends StatelessWidget {
           minTextAdapt: true,
           splitScreenMode: true,
           builder: (context, child) {
+            // * blocs and cubits
             return MultiBlocProvider(
               providers: [
                 BlocProvider<AuthCubit>(
-                  create: (context) => AuthCubit(authService, context),
+                  create: (context) => AuthCubit(authService),
+                ),
+                BlocProvider<UserCubit>(
+                  create: (context) => UserCubit(),
+                ),
+                BlocProvider<AppointmentsCubit>(
+                  create: (context) => AppointmentsCubit(),
                 ),
               ],
               child: MaterialApp(

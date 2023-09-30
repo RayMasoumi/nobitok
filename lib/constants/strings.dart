@@ -11,7 +11,17 @@ const kCurrency = 'تومان';
 const kTokenBox = 'tokenBox';
 const kRefreshTokenBox = 'refreshTokenBox';
 
+// * appointments map keys
+const kAppointmentsKey = 'appointment';
+const kPreAppointmentsKey = 'preAppointment';
+const kCompletedAppointmentsKey = 'completed';
+const kCancelledAppointmentsKey = 'cancelled';
+
 // * exception strings
 const kServerException = 'server_error';
 const kAuthException = 'auth_error';
 const kFetchTodayAppointmentsDataException = 'fetch_today_appointments_error';
+
+// * routes names
+const kLoginScreenRoute = '/login_screen';
+const kHomeScreenRoute = '/home_screen';

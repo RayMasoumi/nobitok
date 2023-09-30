@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
+import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/data/models/user.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
 import 'package:nobitok/presentation/widgets/middle_texted_divider.dart';
@@ -127,18 +131,62 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const Spacer(),
 // * login button:
-                      CustomButton(
-                        height: 44,
-                        width: 191,
-                        fontSize: 20,
-                        onPressed: () {
-                          final username = usernameController.text;
-                          final password = passwordController.text;
-                          context.read<AuthCubit>().auth(username, password);
+                      BlocListener<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthLoading) {
+                            context.loaderOverlay.show();
+                          } else if (state is AuthLoadingComplete) {
+                            context.loaderOverlay.hide();
+                          } else if (state is AuthSuccess) {
+                            context.read<UserCubit>().setUser(User(
+                                userId: 0,
+                                username: usernameController.text,
+                                userEmail: 'userEmail',
+                                userPhoneNumber: 'userPhoneNumber',
+                                appointments: state.appointments,
+                                preAppointments: []));
+                            context.read<AppointmentsCubit>().addAppointments(
+                                kAppointmentsKey, state.appointments);
+                            // todo navigate to home screen
+                            // Navigator.of(context).pushNamedAndRemoveUntil(
+                            //   kHomeScreenRoute,
+                            //   (route) =>
+                            //       false, // * This function ensures that all previous pages are removed.
+                            // );
+                            print('yayyyy');
+                          } else if (state is AuthFailure) {
+                            if (state.error.contains(kServerException)) {
+                              // todo show internet alert
+                              print('server exception');
+                            } else if (state.error
+                                .contains('$kAuthException:401')) {
+                              // todo show wrong username or password alert
+                              print('auth exception');
+                            } else if (state.error.contains(
+                                kFetchTodayAppointmentsDataException)) {
+                              // todo
+                              print('fetch today appointment');
+                            } else {
+                              // todo default alert
+                              print('an exception');
+                            }
+                          }
                         },
-                        borderRadius: kBorderRadius8,
-                        color: kGreenColor,
-                        text: 'ورود',
+                        child: CustomButton(
+                          height: 44,
+                          width: 191,
+                          fontSize: 20,
+                          onPressed: () async {
+                            final username = usernameController.text;
+                            final password = passwordController.text;
+                            final authCubit = context.read<AuthCubit>();
+                            // * authorize + get appointments
+                            await authCubit.auth(username, password);
+                          },
+                          borderRadius: kBorderRadius8,
+                          color: kGreenColor,
+                          text: 'ورود',
+                        ),
                       ),
                     ],
                   ),

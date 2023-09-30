@@ -46,6 +46,7 @@ class AuthService {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         GetStorage().write(kTokenBox, jsonResponse['token']);
         GetStorage().write(kRefreshTokenBox, jsonResponse['refreshToken']);
+
         debugPrint('Login success in _auth in auth_service.dart');
 
         return response.statusCode;

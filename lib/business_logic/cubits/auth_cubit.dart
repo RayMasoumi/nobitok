@@ -7,7 +7,8 @@ import '../../data/services/auth_service.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthService authService; // * authentication service
+  final AuthService authService;
+
   AuthCubit(this.authService) : super(AuthInitial());
 
   Future<void> auth(String username, String password) async {
@@ -16,9 +17,13 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final loginResponse = await authService.login(username, password);
 
-      emit(AuthSuccess(loginResponse!));
+      if (loginResponse != null) {
+        emit(AuthSuccess(loginResponse));
+      } else {
+        emit(AuthFailure("Login failed"));
+      }
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure('$e'));
     } finally {
       emit(AuthLoadingComplete());
     }

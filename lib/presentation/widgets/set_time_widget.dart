@@ -9,8 +9,10 @@ class SetTimeWidget extends StatelessWidget {
   const SetTimeWidget({
     super.key,
     required this.disabled,
+    required this.text,
   });
   final bool disabled;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -35,7 +37,7 @@ class SetTimeWidget extends StatelessWidget {
                     color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
-                    '12:00 AM',
+                    text,
                     style: kBold13TextStyle.copyWith(
                         color: const Color(0xff838383)),
                   ),

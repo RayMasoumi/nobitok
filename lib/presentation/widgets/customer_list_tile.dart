@@ -14,12 +14,14 @@ class CustomerListTile extends StatelessWidget {
     required this.isDocument,
     required this.appointments,
     required this.index,
+    required this.onDetailsPressed,
   });
 
   final bool isAppointment;
   final bool isDocument;
   final List<Appointment> appointments;
   final int index;
+  final Function() onDetailsPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +103,7 @@ class CustomerListTile extends StatelessWidget {
               borderRadius: kBorderRadius13,
               color: const Color(0xff6171FF),
               text: 'جزئیات',
-              onPressed: () {}),
+              onPressed: onDetailsPressed),
         ],
       ),
     );

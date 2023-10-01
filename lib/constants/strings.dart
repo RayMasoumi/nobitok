@@ -21,6 +21,9 @@ const kCancelledAppointmentsKey = 'cancelled';
 const kServerException = 'server_error';
 const kAuthException = 'auth_error';
 const kFetchTodayAppointmentsDataException = 'fetch_today_appointments_error';
+const kGetInvoiceDetailException = 'get_invoice_detail_error';
+const kGetCustomerDetailException = 'get_customer_detail_error';
+const kGetAppointmentDetailException = 'get_appointment_detail_error';
 
 // * routes names
 const kLoginScreenRoute = '/login_screen';

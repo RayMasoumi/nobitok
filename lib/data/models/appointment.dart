@@ -10,12 +10,14 @@ class Appointment {
   int appointmentCustomerId;
   String appointmentCustomerName;
   AppointmentStatus appointmentStatus;
+  int? appointmentInvoiceId;
 
   Appointment({
     required this.appointmentId,
     required this.appointmentDate,
     this.appointmentTime,
     this.appointmentDescription,
+    this.appointmentInvoiceId,
     required this.appointmentCustomerId,
     required this.appointmentStatus,
     required this.appointmentCustomerName,
@@ -31,6 +33,7 @@ class Appointment {
       appointmentStatus:
           getAppointmentStatusFromInt(json['appointmentStatus'] ?? 3),
       appointmentCustomerName: json['customerName'] ?? '',
+      appointmentInvoiceId: json['factorId'] ?? 0,
     );
   }
 }

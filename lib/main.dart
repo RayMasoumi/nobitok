@@ -5,11 +5,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
+import 'package:nobitok/business_logic/cubits/get_appointment_detail_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/data/services/get_details_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -18,12 +21,17 @@ import 'constants/sizes.dart';
 void main() {
   runApp(MyApp(
     authService: AuthService(),
+    appointmentDetailService: GetDetailsService(),
   ));
 }
 
 class MyApp extends StatelessWidget {
   final AuthService authService;
-  const MyApp({super.key, required this.authService});
+  final GetDetailsService appointmentDetailService;
+  const MyApp(
+      {super.key,
+      required this.authService,
+      required this.appointmentDetailService});
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +70,13 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider<TabCubit>(
                   create: (context) => TabCubit(),
+                ),
+                BlocProvider<GetAppointmentDetailCubit>(
+                  create: (context) =>
+                      GetAppointmentDetailCubit(appointmentDetailService),
+                ),
+                BlocProvider<AppointmentDetailCubit>(
+                  create: (context) => AppointmentDetailCubit(),
                 ),
               ],
               child: MaterialApp(

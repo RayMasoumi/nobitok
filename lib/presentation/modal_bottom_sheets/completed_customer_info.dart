@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/enums/appointment_status.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
+import '../../data/models/appointment.dart';
+import '../../data/models/appointment_detail.dart';
+import '../../data/models/customer.dart';
+import '../../data/models/invoice.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_image_widget.dart';
@@ -129,9 +134,11 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: true,
+                      text: 'date',
                     ),
                     SetTimeWidget(
                       disabled: true,
+                      text: 'time',
                     ),
                   ],
                 ),
@@ -162,7 +169,31 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                   height: 8.h,
                 ),
 // * listView
-                const SeperatedListViewWidget(),
+                SeparatedListViewWidget(
+                  // todo fixx thisss
+                  appointmentDetail: AppointmentDetail(
+                      invoiceDetail: Invoice(
+                          invoiceId: 0,
+                          invoiceDate: '',
+                          isPaid: true,
+                          customerId: 0,
+                          appointmentId: 0,
+                          invoiceTotal: 0,
+                          invoiceItems: []),
+                      customerDetail: Customer(
+                          customerId: 0,
+                          customerName: '',
+                          customerPhoneNumber: 'customerPhoneNumber',
+                          customerDateOfBirth: 'customerDateOfBirth',
+                          customerAppointments: [],
+                          customerInvoices: []),
+                      appointmentDetail: Appointment(
+                          appointmentId: 0,
+                          appointmentDate: 'appointmentDate',
+                          appointmentCustomerId: 0,
+                          appointmentStatus: AppointmentStatus.appointment,
+                          appointmentCustomerName: 'appointmentCustomerName')),
+                ),
               ],
             ),
 

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/styles.dart';
+import '../../data/models/appointment_detail.dart';
 
-class SeperatedListViewWidget extends StatelessWidget {
-  const SeperatedListViewWidget({
+class SeparatedListViewWidget extends StatelessWidget {
+  const SeparatedListViewWidget({
     super.key,
+    required this.appointmentDetail,
   });
 
+  final AppointmentDetail appointmentDetail;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -19,8 +23,11 @@ class SeperatedListViewWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             leadingAndTrailingTextStyle: kLight13TextStyle,
-            leading: const Text('پاکسازی صورت'),
-            trailing: const Text('100000 تومان'),
+            leading: Text(appointmentDetail
+                    .invoiceDetail.invoiceItems[index].invoiceItemServiceName ??
+                'خدمت'),
+            trailing: Text(
+                '${appointmentDetail.invoiceDetail.invoiceItems[index].invoiceItemPrice.toString().seRagham()} تومان'),
           );
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -28,7 +35,7 @@ class SeperatedListViewWidget extends StatelessWidget {
             height: 0,
           );
         },
-        itemCount: 3,
+        itemCount: appointmentDetail.invoiceDetail.invoiceItems.length,
       ),
     );
   }

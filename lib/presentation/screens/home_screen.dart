@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.only(left: 28.w),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: kBlue50,
+                    color: kBlue50Color,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/constants/strings.dart';
 
 import '../../business_logic/cubits/appointments_cubit.dart';
@@ -20,7 +21,14 @@ class CustomTabBar extends StatelessWidget {
       color: const Color(0xffEBEDFF),
       child: BlocListener<TabCubit, TabState>(
         listener: (context, state) {
-          if (state is PreAppointmentTabState) {
+          if (state is TabLoadingState) {
+            context.loaderOverlay.show();
+          } else if (state is TabLoadingCompleteState) {
+            context.loaderOverlay.hide();
+          }
+// * tab data loaded successfully:
+          else if (state is PreAppointmentTabState) {
+// * store the fetched data
 // * add pre-appointments to user's appointment list:
             context
                 .read<AppointmentsCubit>()

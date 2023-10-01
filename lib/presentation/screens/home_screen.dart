@@ -14,11 +14,10 @@ import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/get_appointment_detail_cubit.dart';
 import '../../business_logic/cubits/get_appointment_detail_state.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
-import '../../constants/enums/tab_state.dart';
+import '../../constants/styles.dart';
 import '../../methods/set_time_initial_value_method.dart';
-import '../widgets/custom_image_widget.dart';
+import '../modal_bottom_sheets/appointments_customer_info.dart';
 import '../widgets/custom_list_view.dart';
-import '../widgets/custom_tabbar.dart';
 import '../widgets/customer_list_tile.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/searchbar_widget.dart';
@@ -44,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                     color: kBlue50Color,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // * first fab
                         TimeFAB(
@@ -83,8 +82,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ]
-                  ),
+                      ]),
                 ),
               );
             } else {
@@ -133,7 +131,6 @@ class HomeScreen extends StatelessWidget {
                       listener: (context, state) {
                         // * states of fetching appointment details are being handled here
                         if (state is GetAppointmentDetailLoaded) {
-                          print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
                           context.loaderOverlay.hide();
                           context
                               .read<AppointmentDetailCubit>()
@@ -178,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                             },
                           );
                         },
-                        tilesList: context
+                        list: context
                             .read<AppointmentsCubit>()
                             .getAppointments(kAppointmentsKey),
                       ),
@@ -186,41 +183,45 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    CustomListView(
-                      tileLeftPadding: 0,
-                      tileRightPadding: 0,
-                      tileTopPadding: 16,
-                      tileBottomPadding: 8,
-                      listTileBuilder: (index) {
-                        return CustomerListTile(
-                          isAppointment: false,
-                          isDocument: false,
-                          appointments: const [],
-                          index: index,
-                          onDetailsPressed: () {},
-                        );
-                      },
-                      tilesList: const [],
-                    ),
+                    Builder(builder: (context) {
+                      return CustomListView(
+                        tileLeftPadding: 0,
+                        tileRightPadding: 0,
+                        tileTopPadding: 16,
+                        tileBottomPadding: 8,
+                        listTileBuilder: (index) {
+                          return CustomerListTile(
+                            isAppointment: false,
+                            isDocument: false,
+                            appointments: const [],
+                            index: index,
+                            onDetailsPressed: () {},
+                          );
+                        },
+                        list: const [],
+                      );
+                    }),
 
 // *Tab 3 content
                     // * documents list view:
-                    CustomListView(
-                      tileLeftPadding: 0,
-                      tileRightPadding: 0,
-                      tileTopPadding: 16,
-                      tileBottomPadding: 8,
-                      listTileBuilder: (index) {
-                        return CustomerListTile(
-                          isAppointment: false,
-                          isDocument: true,
-                          appointments: const [],
-                          index: index,
-                          onDetailsPressed: () {},
-                        );
-                      },
-                      list: const [],
-                    ),
+                    Builder(builder: (context) {
+                      return CustomListView(
+                        tileLeftPadding: 0,
+                        tileRightPadding: 0,
+                        tileTopPadding: 16,
+                        tileBottomPadding: 8,
+                        listTileBuilder: (index) {
+                          return CustomerListTile(
+                            isAppointment: false,
+                            isDocument: true,
+                            appointments: const [],
+                            index: index,
+                            onDetailsPressed: () {},
+                          );
+                        },
+                        list: const [],
+                      );
+                    }),
                   ],
                 ),
               ),

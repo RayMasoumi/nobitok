@@ -25,5 +25,7 @@ const kFetchTodayAppointmentsDataException = 'fetch_today_appointments_error';
 // * routes names
 const kLoginScreenRoute = '/login_screen';
 const kHomeScreenRoute = '/home_screen';
+const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
+const kLoginException = 'login_error';
 
 // * hero tags

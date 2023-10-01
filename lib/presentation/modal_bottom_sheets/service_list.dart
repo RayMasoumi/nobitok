@@ -42,7 +42,7 @@ class ServiceBottomSheet extends StatelessWidget {
                 listTileBuilder: (index) {
                   return const ServicesListTile();
                 },
-                tilesList: const [],
+                list: const [],
               ),
             ),
 // * bottom divider:

@@ -27,61 +27,58 @@ class _SetTimeBottomSheetState extends State<SetTimeBottomSheet> {
     return SizedBox(
       height: 264.h,
       width: 375.w,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SizedBox(
-          height: 264.h,
-          width: 375.w,
-          child: CustomBottomSheet(
-            halfScreen: true,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+      child: SizedBox(
+        height: 264.h,
+        width: 375.w,
+        child: CustomBottomSheet(
+          halfScreen: true,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
 // * title:
-                const BottomSheetTopBar(title: 'ساعت را وارد کنید : '),
-                SizedBox(
-                  height: 23.h,
-                ),
+              const BottomSheetTopBar(title: 'ساعت را وارد کنید : '),
+              SizedBox(
+                height: 23.h,
+              ),
 // * time field:
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 // * hour textField
-                    const TimeInputTextField(
-                      isMinute: false,
-                    ),
-                    SizedBox(
-                      height: 72.h,
-                      width: 24.w,
-                      child: Center(
-                        child: Text(
-                          ':',
-                          style: kBigNumberTextStyle.copyWith(fontSize: 57.w),
-                        ),
+                  const TimeInputTextField(
+                    isMinute: false,
+                  ),
+                  SizedBox(
+                    height: 72.h,
+                    width: 24.w,
+                    child: Center(
+                      child: Text(
+                        ':',
+                        style: kBigNumberTextStyle.copyWith(fontSize: 57.w),
                       ),
                     ),
+                  ),
 // * minute textField
-                    const TimeInputTextField(
-                      isMinute: true,
-                    ),
-                  ],
-                ),
+                  const TimeInputTextField(
+                    isMinute: true,
+                  ),
+                ],
+              ),
 // * bottom divider:
-                const PaddedDivider(topPadding: 15, bottomPadding: 16),
+              const PaddedDivider(topPadding: 15, bottomPadding: 16),
 
 // * submit button:
-                CustomButton(
-                  height: 46,
-                  width: 196,
-                  fontSize: 16,
-                  borderRadius: kBorderRadius12,
-                  color: kGreenColor,
-                  text: 'تایید',
-                  onPressed: () {},
-                ),
-              ],
-            ),
+              CustomButton(
+                height: 46,
+                width: 196,
+                fontSize: 16,
+                borderRadius: kBorderRadius12,
+                color: kGreenColor,
+                text: 'تایید',
+                onPressed: () {},
+              ),
+            ],
           ),
         ),
       ),

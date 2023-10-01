@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
                   create: (context) => AppointmentsCubit(),
                 ),
                 BlocProvider<TabCubit>(
-                  create: (context) => TabCubit(),
+                  create: (context) => TabCubit(authService),
                 ),
               ],
               child: MaterialApp(

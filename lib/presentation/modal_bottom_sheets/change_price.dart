@@ -54,7 +54,7 @@ class ChangePriceBottomSheet extends StatelessWidget {
                 listTileBuilder: (index) {
                   return const PriceListTile();
                 },
-                tilesList: const [],
+                list: const [],
               ),
             ),
 

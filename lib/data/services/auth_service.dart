@@ -15,7 +15,7 @@ class AuthService {
 
     if (authStatusCode == 200) {
       // * Fetch user information using the token
-      return await _fetchTodayAppointments();
+      return await fetchTodayAppointments();
     } else {
       throw Exception('$kAuthException:$authStatusCode');
     }
@@ -35,13 +35,12 @@ class AuthService {
 
     final body = json.encode(data);
 
-    final response = await http.post(
-      url,
-      body: body,
-      headers: headers,
-    );
-
     try {
+      final response = await http.post(
+        url,
+        body: body,
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         GetStorage().write(kTokenBox, jsonResponse['token']);
@@ -59,7 +58,7 @@ class AuthService {
     }
   }
 
-  Future<List<Appointment>> _fetchTodayAppointments() async {
+  Future<List<Appointment>> fetchTodayAppointments() async {
     // * Implement API request to fetch information using the token here
     final url = Uri.parse('$kBaseUrl$kGetAllTodayAppointmentsUrl');
 
@@ -68,12 +67,11 @@ class AuthService {
       'Content-Type': 'application/json',
     };
 
-    final response = await http.get(
-      url,
-      headers: headers,
-    );
-
     try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         List<dynamic> dataList = jsonResponse['dataList'];
@@ -82,7 +80,10 @@ class AuthService {
         }).toList();
         return appointments;
       } else {
+        print('Response Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
         throw Exception(
+//! fetch_today_appointments_error
             '$kFetchTodayAppointmentsDataException:${response.body}');
       }
     } catch (error) {

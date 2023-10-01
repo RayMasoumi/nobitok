@@ -9,9 +9,11 @@ class SetDateWidget extends StatelessWidget {
   const SetDateWidget({
     super.key,
     required this.disabled,
+    required this.text,
   });
 
   final bool disabled;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class SetDateWidget extends StatelessWidget {
                     color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
-                    '1402/05/11',
+                    text,
                     style: kBold13TextStyle.copyWith(
                         color: const Color(0xff838383)),
                   ),

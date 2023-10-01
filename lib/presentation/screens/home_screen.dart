@@ -9,7 +9,6 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
-import '../../constants/enums/tab_state.dart';
 import '../../methods/set_time_initial_value_method.dart';
 import '../widgets/custom_image_widget.dart';
 import '../widgets/custom_list_view.dart';
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
 // * floating action button:
         floatingActionButton: BlocBuilder<TabCubit, TabState>(
           builder: (context, state) {
-            if (state == TabState.documents) {
+            if (state is DocumentsTabState) {
               return Padding(
                 padding: EdgeInsets.only(left: 28.w),
                 child: Container(
@@ -127,43 +126,51 @@ class HomeScreen extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     // * appointments list view:
-                    CustomListView(
-                      tileLeftPadding: 0,
-                      tileRightPadding: 0,
-                      tileTopPadding: 16,
-                      tileBottomPadding: 8,
-                      listTileBuilder: (index) {
-                        return CustomerListTile(
-                          isAppointment: true,
-                          isDocument: false,
-                          appointments: context
-                              .read<AppointmentsCubit>()
-                              .getAppointments(kAppointmentsKey),
-                          index: index,
-                        );
-                      },
-                      tilesList: context
-                          .read<AppointmentsCubit>()
-                          .getAppointments(kAppointmentsKey),
-                    ),
+                    Builder(builder: (context) {
+                      return CustomListView(
+                        tileLeftPadding: 0,
+                        tileRightPadding: 0,
+                        tileTopPadding: 16,
+                        tileBottomPadding: 8,
+                        listTileBuilder: (index) {
+                          return CustomerListTile(
+                            isAppointment: true,
+                            isDocument: false,
+                            appointments: context
+                                .read<AppointmentsCubit>()
+                                .getAppointments(kAppointmentsKey),
+                            index: index,
+                          );
+                        },
+                        list: context
+                            .read<AppointmentsCubit>()
+                            .getAppointments(kAppointmentsKey),
+                      );
+                    }),
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    CustomListView(
-                      tileLeftPadding: 0,
-                      tileRightPadding: 0,
-                      tileTopPadding: 16,
-                      tileBottomPadding: 8,
-                      listTileBuilder: (index) {
-                        return CustomerListTile(
-                          isAppointment: false,
-                          isDocument: false,
-                          appointments: const [],
-                          index: index,
-                        );
-                      },
-                      tilesList: const [],
-                    ),
+                    Builder(builder: (context) {
+                      return CustomListView(
+                        tileLeftPadding: 0,
+                        tileRightPadding: 0,
+                        tileTopPadding: 16,
+                        tileBottomPadding: 8,
+                        listTileBuilder: (index) {
+                          return CustomerListTile(
+                            isAppointment: true,
+                            isDocument: false,
+                            appointments: context
+                                .read<AppointmentsCubit>()
+                                .getAppointments(kPreAppointmentsKey),
+                            index: index,
+                          );
+                        },
+                        list: context
+                            .read<AppointmentsCubit>()
+                            .getAppointments(kPreAppointmentsKey),
+                      );
+                    }),
 
 // *Tab 3 content
                     // * documents list view:
@@ -180,7 +187,7 @@ class HomeScreen extends StatelessWidget {
                           index: index,
                         );
                       },
-                      tilesList: const [],
+                      list: const [],
                     ),
                   ],
                 ),

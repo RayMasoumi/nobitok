@@ -137,22 +137,29 @@ class _LoginScreenState extends State<LoginScreen> {
                             context.loaderOverlay.show();
                           } else if (state is AuthLoadingComplete) {
                             context.loaderOverlay.hide();
+// * logged in successfully:
                           } else if (state is AuthSuccess) {
-                            context.read<UserCubit>().setUser(User(
-                                userId: 0,
-                                username: usernameController.text,
-                                userEmail: 'userEmail',
-                                userPhoneNumber: 'userPhoneNumber',
-                                appointments: state.appointments,
-                                preAppointments: []));
+                            context.read<UserCubit>().setUser(
+// * create user:
+                                  User(
+                                    userId: 0,
+                                    username: usernameController.text,
+                                    userEmail: 'userEmail',
+                                    userPhoneNumber: 'userPhoneNumber',
+                                    appointments: state.appointments,
+                                    preAppointments: [],
+                                  ),
+                                );
+// * add appointments to user's appointment list:
                             context.read<AppointmentsCubit>().addAppointments(
                                 kAppointmentsKey, state.appointments);
+
+// * navigate to home screen:
                             Navigator.of(context).pushNamedAndRemoveUntil(
                               kHomeScreenRoute,
                               (route) =>
                                   false, // * This function ensures that all previous pages are removed.
                             );
-                            print('yayyyy');
                           } else if (state is AuthFailure) {
                             if (state.error.contains(kServerException)) {
                               // todo show internet alert

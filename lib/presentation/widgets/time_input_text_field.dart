@@ -49,7 +49,7 @@ class TimeInputTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: kBorderRadius8,
-            borderSide: const BorderSide(color: kBlue200),
+            borderSide: const BorderSide(color: kBlue200Color),
           ),
 
           contentPadding: EdgeInsets.symmetric(

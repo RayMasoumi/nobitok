@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
-import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/enums/tab_state.dart';
 import '../../methods/set_time_initial_value_method.dart';
-import '../widgets/custom_image_widget.dart';
 import '../widgets/custom_list_view.dart';
+import '../widgets/custom_tabbar.dart';
 import '../widgets/customer_list_tile.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/searchbar_widget.dart';
+import '../widgets/time_f_a_b.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,62 +31,65 @@ class HomeScreen extends StatelessWidget {
 // * floating action button:
         floatingActionButton: BlocBuilder<TabCubit, TabState>(
           builder: (context, state) {
+            // * if we're on documents tab then we have 2 fab
             if (state == TabState.documents) {
               return Padding(
                 padding: EdgeInsets.only(left: 28.w),
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: kBlue50,
+                  decoration: BoxDecoration(
+                    color: kLightGreyColor,
+                    borderRadius: BorderRadius.circular(19),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: EdgeInsets.all(4.r),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // * first fab
+                        TimeFAB(
+                          onPressed: () {
+                            setTimeInitialValue();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => const SetTimeBottomSheet(),
+                              isScrollControlled: true,
+                            );
+                          },
                         ),
-                        onPressed: () {
-                          setTimeInitialValue();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => const SetTimeBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        },
-                        child: CustomImage(
-                            path: 'assets/icons/calendar-search.png',
-                            width: 24.w,
-                            height: 24.h),
-                      ),
-                      FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        // * second fab
+                        SizedBox(
+                          width: 200.w,
+                          child: FloatingActionButton(
+                            backgroundColor: kGreenColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(19),
+                            ),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  MdiIcons.fileDocumentEditOutline,
+                                  size: 24.r,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  'ایجاد پرونده جدید',
+                                  style: kTitle15TextStyle.copyWith(
+                                      color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        onPressed: () {
-                          setTimeInitialValue();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) => const SetTimeBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        },
-                        child: CustomImage(
-                            path: 'assets/icons/calendar-search.png',
-                            width: 24.w,
-                            height: 24.h),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
             } else {
-              return FloatingActionButton(
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
+              // * we're not on tab document so we only have this fab
+              return TimeFAB(
                 onPressed: () {
                   setTimeInitialValue();
                   showModalBottomSheet(
@@ -93,10 +98,6 @@ class HomeScreen extends StatelessWidget {
                     isScrollControlled: true,
                   );
                 },
-                child: CustomImage(
-                    path: 'assets/icons/calendar-search.png',
-                    width: 24.w,
-                    height: 24.h),
               );
             }
           },

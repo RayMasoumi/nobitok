@@ -76,7 +76,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                         //TODO call
                       },
                       child: InfoCardWidget(
-                        color: kBlue300,
+                        color: kBlue300Color,
                         horizontalPadding: 14,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,7 +175,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     width: 116,
                     fontSize: 12,
                     borderRadius: kBorderRadius8,
-                    color: kBlue300,
+                    color: kBlue300Color,
                     text: 'افزودن خدمت',
                     onPressed: () {}),
                 CustomButton(
@@ -211,7 +211,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   width: 160,
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
-                  color: kBlue300,
+                  color: kBlue300Color,
                   text: 'ثبت پبش نوبت',
                   onPressed: () {},
                 ),

@@ -32,7 +32,7 @@ class SetTimeWidget extends StatelessWidget {
                 children: [
                   CustomImage(
                     path: 'assets/icons/clock-edit.png',
-                    color: disabled ? const Color(0xff838383) : kBlue300,
+                    color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
                     '12:00 AM',

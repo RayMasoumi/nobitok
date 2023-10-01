@@ -76,7 +76,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                         //TODO call
                       },
                       child: InfoCardWidget(
-                        color: kBlue300,
+                        color: kBlue300Color,
                         horizontalPadding: 14,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

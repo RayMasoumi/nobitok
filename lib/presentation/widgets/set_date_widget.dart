@@ -35,7 +35,7 @@ class SetDateWidget extends StatelessWidget {
                   Icon(
                     Icons.edit_calendar_outlined,
                     size: 24.w,
-                    color: disabled ? const Color(0xff838383) : kBlue300,
+                    color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
                     '1402/05/11',

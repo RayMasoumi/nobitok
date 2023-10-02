@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/data/models/appointment.dart';
-
-import '../../data/services/auth_service.dart';
+import 'package:nobitok/data/services/auth_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthService authService;
 
-  AuthCubit(this.authService) : super(AuthInitial());
+  AuthCubit(
+    this.authService,
+  ) : super(AuthInitial());
 
   Future<void> auth(String username, String password) async {
     emit(AuthLoading());

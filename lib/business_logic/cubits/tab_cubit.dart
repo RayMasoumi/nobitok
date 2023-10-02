@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/data/services/get_pre_appointment_service.dart';
 
 import '../../data/models/appointment.dart';
-import '../../data/services/auth_service.dart';
 import '../../methods/get_today_date.dart';
 
 part 'tab_state.dart';
 
 class TabCubit extends Cubit<TabState> {
-  TabCubit(this.authService) : super(AppointmentTabState(const [])) {
+  TabCubit(
+    this.authService,
+  ) : super(AppointmentTabState(const [])) {
     _initialize();
   }
   final AuthService authService;

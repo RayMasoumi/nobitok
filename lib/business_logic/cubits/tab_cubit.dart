@@ -45,7 +45,7 @@ class TabCubit extends Cubit<TabState> {
         emit(newState);
       } else if (newTabKey == 'documentTab') {
         emit(TabLoadingCompleteState());
-        newState = DocumentsTabState([]); //TODO
+        newState = DocumentsTabState(const []); //TODO
         emit(newState);
       }
     } catch (error) {

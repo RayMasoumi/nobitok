@@ -15,6 +15,7 @@ import '../../business_logic/cubits/get_appointment_detail_cubit.dart';
 import '../../business_logic/cubits/get_appointment_detail_state.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/styles.dart';
+import '../../data/models/appointment.dart';
 import '../../methods/set_time_initial_value_method.dart';
 import '../modal_bottom_sheets/appointments_customer_info.dart';
 import '../widgets/custom_list_view.dart';
@@ -39,50 +40,55 @@ class HomeScreen extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.only(left: 28.w),
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: kBlue50Color,
+                  decoration: BoxDecoration(
+                    color: kLightGreyColor,
+                    borderRadius: BorderRadius.circular(19),
                   ),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // * first fab
-                        TimeFAB(
-                          onPressed: () {
-                            setTimeInitialValue();
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => const SetTimeBottomSheet(),
-                              isScrollControlled: true,
-                            );
-                          },
-                        ),
-                        // * second fab
-                        SizedBox(
-                          width: 200.w,
-                          child: FloatingActionButton(
-                            backgroundColor: kGreenColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(19),
-                            ),
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  MdiIcons.fileDocumentEditOutline,
-                                  size: 24.r,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'ایجاد پرونده جدید',
-                                  style: kTitle15TextStyle.copyWith(
-                                      color: Colors.white),
-                                ),
-                              ],
+                  child: Padding(
+                    padding: EdgeInsets.all(4.r),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // * first fab
+                          TimeFAB(
+                            onPressed: () {
+                              setTimeInitialValue();
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) =>
+                                    const SetTimeBottomSheet(),
+                                isScrollControlled: true,
+                              );
+                            },
+                          ),
+                          // * second fab
+                          SizedBox(
+                            width: 200.w,
+                            child: FloatingActionButton(
+                              backgroundColor: kGreenColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(19),
+                              ),
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    MdiIcons.fileDocumentEditOutline,
+                                    size: 24.r,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'ایجاد پرونده جدید',
+                                    style: kTitle15TextStyle.copyWith(
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ]),
+                        ]),
+                  ),
                 ),
               );
             } else {
@@ -183,45 +189,55 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    Builder(builder: (context) {
-                      return CustomListView(
-                        tileLeftPadding: 0,
-                        tileRightPadding: 0,
-                        tileTopPadding: 16,
-                        tileBottomPadding: 8,
-                        listTileBuilder: (index) {
-                          return CustomerListTile(
-                            isAppointment: false,
-                            isDocument: false,
-                            appointments: const [],
-                            index: index,
-                            onDetailsPressed: () {},
-                          );
-                        },
-                        list: const [],
-                      );
-                    }),
+                    BlocBuilder<AppointmentsCubit,
+                        Map<String, List<Appointment>>>(
+                      builder: (context, state) {
+                        return CustomListView(
+                          tileLeftPadding: 0,
+                          tileRightPadding: 0,
+                          tileTopPadding: 16,
+                          tileBottomPadding: 8,
+                          listTileBuilder: (index) {
+                            return CustomerListTile(
+                              isAppointment: false,
+                              isDocument: false,
+                              appointments: context
+                                  .read<AppointmentsCubit>()
+                                  .getAppointments(kPreAppointmentsKey),
+                              index: index,
+                              onDetailsPressed: () {},
+                            );
+                          },
+                          list: context
+                              .read<AppointmentsCubit>()
+                              .getAppointments(kPreAppointmentsKey),
+                        );
+                      },
+                    ),
 
 // *Tab 3 content
                     // * documents list view:
-                    Builder(builder: (context) {
-                      return CustomListView(
-                        tileLeftPadding: 0,
-                        tileRightPadding: 0,
-                        tileTopPadding: 16,
-                        tileBottomPadding: 8,
-                        listTileBuilder: (index) {
-                          return CustomerListTile(
-                            isAppointment: false,
-                            isDocument: true,
-                            appointments: const [],
-                            index: index,
-                            onDetailsPressed: () {},
-                          );
-                        },
-                        list: const [],
-                      );
-                    }),
+                    BlocBuilder<AppointmentsCubit,
+                        Map<String, List<Appointment>>>(
+                      builder: (context, state) {
+                        return CustomListView(
+                          tileLeftPadding: 0,
+                          tileRightPadding: 0,
+                          tileTopPadding: 16,
+                          tileBottomPadding: 8,
+                          listTileBuilder: (index) {
+                            return CustomerListTile(
+                              isAppointment: false,
+                              isDocument: true,
+                              appointments: const [],
+                              index: index,
+                              onDetailsPressed: () {},
+                            );
+                          },
+                          list: const [],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

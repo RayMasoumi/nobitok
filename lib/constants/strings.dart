@@ -16,6 +16,7 @@ const kAppointmentsKey = 'appointment';
 const kPreAppointmentsKey = 'preAppointment';
 const kCompletedAppointmentsKey = 'completed';
 const kCancelledAppointmentsKey = 'cancelled';
+const kDocumentsKey = 'documents';
 
 // * exception strings
 const kServerException = 'server_error';

@@ -52,9 +52,9 @@ class CustomTabBar extends StatelessWidget {
               case 1:
                 tabCubit.changeTab(kPreAppointmentsKey);
                 break;
-              // case 2:
-              //   tabCubit.changeTab(2);
-              //   break;
+              case 2:
+                tabCubit.changeTab(kDocumentsKey);
+                break;
               default:
             }
           },

@@ -32,26 +32,28 @@ class TabCubit extends Cubit<TabState> {
     try {
       // * Depending on the tab index, you can fetch and update data here
       if (newTabKey == kAppointmentsKey) {
+        List<Appointment> appointments;
+        appointments = await authService.fetchTodayAppointments();
         emit(TabLoadingCompleteState());
-        newState =
-            AppointmentTabState(await authService.fetchTodayAppointments());
-        emit(newState);
+
+        emit(AppointmentTabState(appointments));
       } else if (newTabKey == kPreAppointmentsKey) {
+        List<Appointment> preAppointments;
+        preAppointments = await PreAppointmentService()
+            .fetchPreAppointments(getTodayDate(), '1402/11/10');
+        //TODO
         emit(TabLoadingCompleteState());
-        newState = PreAppointmentTabState(
-          await PreAppointmentService()
-              .fetchPreAppointments(getTodayDate(), '1402/11/10'),
-        ); //TODO
-        emit(newState);
-      } else if (newTabKey == 'documentTab') {
-        emit(TabLoadingCompleteState());
+
+        emit(PreAppointmentTabState(preAppointments));
+      } else if (newTabKey == kDocumentsKey) {
         newState = DocumentsTabState(const []); //TODO
+        emit(TabLoadingCompleteState());
+
         emit(newState);
       }
     } catch (error) {
-      emit(TabErrorState('$error'));
-    } finally {
       emit(TabLoadingCompleteState());
+      emit(TabErrorState('$error'));
     }
   }
 }

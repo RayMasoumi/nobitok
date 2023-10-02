@@ -2,7 +2,7 @@ import 'invoice_item.dart';
 
 class Invoice {
   int invoiceId;
-  DateTime invoiceDate;
+  String invoiceDate;
   bool isPaid;
   int customerId;
   int appointmentId;

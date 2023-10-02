@@ -8,9 +8,8 @@ class Customer {
   String? customerEmail;
   String customerPhoneNumber;
   String? customerIdCode; //code melli
-  String customerPassword;
   String? customerDocumentCode; //shomare parvande
-  DateTime customerDateOfBirth;
+  String customerDateOfBirth;
   List<Appointment> customerAppointments;
   List<Invoice> customerInvoices;
 
@@ -20,7 +19,6 @@ class Customer {
     this.customerEmail,
     required this.customerPhoneNumber,
     this.customerIdCode,
-    required this.customerPassword,
     this.customerDocumentCode,
     required this.customerDateOfBirth,
     required this.customerAppointments,

@@ -9,7 +9,12 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
 import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 
+import '../../constants/enums/appointment_status.dart';
 import '../../constants/styles.dart';
+import '../../data/models/appointment.dart';
+import '../../data/models/appointment_detail.dart';
+import '../../data/models/customer.dart';
+import '../../data/models/invoice.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/set_time_widget.dart';
@@ -126,9 +131,11 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: false,
+                      text: 'date',
                     ),
                     SetTimeWidget(
                       disabled: false,
+                      text: 'time',
                     ),
                   ],
                 ),
@@ -159,7 +166,30 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   height: 8.h,
                 ),
 // * listView
-                const SeperatedListViewWidget(),
+                SeparatedListViewWidget(
+                  appointmentDetail: AppointmentDetail(
+                      invoiceDetail: Invoice(
+                          invoiceId: 0,
+                          invoiceDate: '',
+                          isPaid: true,
+                          customerId: 0,
+                          appointmentId: 0,
+                          invoiceTotal: 0,
+                          invoiceItems: []),
+                      customerDetail: Customer(
+                          customerId: 0,
+                          customerName: '',
+                          customerPhoneNumber: 'customerPhoneNumber',
+                          customerDateOfBirth: 'customerDateOfBirth',
+                          customerAppointments: [],
+                          customerInvoices: []),
+                      appointmentDetail: Appointment(
+                          appointmentId: 0,
+                          appointmentDate: 'appointmentDate',
+                          appointmentCustomerId: 0,
+                          appointmentStatus: AppointmentStatus.appointment,
+                          appointmentCustomerName: 'appointmentCustomerName')),
+                ),
               ],
             ),
 // * invoice button:

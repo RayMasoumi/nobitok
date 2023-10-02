@@ -33,6 +33,12 @@ class CustomTabBar extends StatelessWidget {
             context
                 .read<AppointmentsCubit>()
                 .addAppointments(kPreAppointmentsKey, state.preAppointments);
+          } else if (state is AppointmentTabState) {
+// * store the fetched data
+// * add appointments to user's appointment list:
+            context
+                .read<AppointmentsCubit>()
+                .addAppointments(kAppointmentsKey, state.appointments);
           }
         },
         child: TabBar(

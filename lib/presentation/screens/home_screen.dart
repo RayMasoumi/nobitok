@@ -154,37 +154,39 @@ class HomeScreen extends StatelessWidget {
                           // todo show appropriate alert
                         }
                       },
-                      child: CustomListView(
-                        tileLeftPadding: 0,
-                        tileRightPadding: 0,
-                        tileTopPadding: 16,
-                        tileBottomPadding: 8,
-                        listTileBuilder: (index) {
-                          return CustomerListTile(
-                            isAppointment: true,
-                            isDocument: false,
-                            appointments: context
-                                .read<AppointmentsCubit>()
-                                .getAppointments(kAppointmentsKey),
-                            index: index,
-                            onDetailsPressed: () async {
-                              // * creating instances
-                              final appointmentDetailCubit =
-                                  context.read<GetAppointmentDetailCubit>();
-                              final appointmentsList =
-                                  context.read<AppointmentsCubit>();
-                              // * giving this appointment as a parameter to fetch its data
-                              await appointmentDetailCubit
-                                  .fetchAppointmentDetail(
-                                      appointmentsList.getAppointments(
-                                          kAppointmentsKey)[index]);
-                            },
-                          );
-                        },
-                        list: context
-                            .read<AppointmentsCubit>()
-                            .getAppointments(kAppointmentsKey),
-                      ),
+                      child: Builder(builder: (context) {
+                        return CustomListView(
+                          tileLeftPadding: 0,
+                          tileRightPadding: 0,
+                          tileTopPadding: 16,
+                          tileBottomPadding: 8,
+                          listTileBuilder: (index) {
+                            return CustomerListTile(
+                              isAppointment: true,
+                              isDocument: false,
+                              appointments: context
+                                  .read<AppointmentsCubit>()
+                                  .getAppointments(kAppointmentsKey),
+                              index: index,
+                              onDetailsPressed: () async {
+                                // * creating instances
+                                final appointmentDetailCubit =
+                                    context.read<GetAppointmentDetailCubit>();
+                                final appointmentsList =
+                                    context.read<AppointmentsCubit>();
+                                // * giving this appointment as a parameter to fetch its data
+                                await appointmentDetailCubit
+                                    .fetchAppointmentDetail(
+                                        appointmentsList.getAppointments(
+                                            kAppointmentsKey)[index]);
+                              },
+                            );
+                          },
+                          list: context
+                              .read<AppointmentsCubit>()
+                              .getAppointments(kAppointmentsKey),
+                        );
+                      }),
                     ),
 
 // *Tab 2 content

@@ -13,29 +13,45 @@ import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/repositories/auth_repository.dart';
 import 'package:nobitok/data/repositories/get_appointments_repository.dart';
+import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/data/services/get_appointments_service.dart';
 import 'package:nobitok/data/services/get_details_service.dart';
+import 'package:nobitok/data/services/get_pre_appointment_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
 
 void main() {
+// *auth
   final AuthService authService = AuthService();
   final AuthRepository authRepository =
       AuthRepository(authService: authService);
+// * appointments
   final GetAppointmentsService getAppointmentsService =
       GetAppointmentsService();
   final GetAppointmentsRepository getAppointmentsRepository =
-      GetAppointmentsRepository(getAppointmentsService: getAppointmentsService);
-  runApp(MyApp(
-    authService: authService,
-    appointmentDetailService: GetDetailsService(),
-    authRepository: authRepository,
-    getAppointmentsRepository: getAppointmentsRepository,
+      GetAppointmentsRepository(
     getAppointmentsService: getAppointmentsService,
-  ));
+  );
+// * pre-appointments
+  final GetPreAppointmentService getPreAppointmentService =
+      GetPreAppointmentService();
+  final PreAppointmentRepository preAppointmentRepository =
+      PreAppointmentRepository(service: getPreAppointmentService);
+
+  runApp(
+    MyApp(
+      authService: authService,
+      appointmentDetailService: GetDetailsService(),
+      authRepository: authRepository,
+      getAppointmentsRepository: getAppointmentsRepository,
+      getAppointmentsService: getAppointmentsService,
+      preAppointmentService: getPreAppointmentService,
+      preAppointmentRepository: preAppointmentRepository,
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -44,13 +60,18 @@ class MyApp extends StatelessWidget {
   final GetAppointmentsRepository getAppointmentsRepository;
   final GetAppointmentsService getAppointmentsService;
   final GetDetailsService appointmentDetailService;
-  const MyApp(
-      {super.key,
-      required this.authService,
-      required this.appointmentDetailService,
-      required this.authRepository,
-      required this.getAppointmentsRepository,
-      required this.getAppointmentsService});
+  final GetPreAppointmentService preAppointmentService;
+  final PreAppointmentRepository preAppointmentRepository;
+  const MyApp({
+    super.key,
+    required this.authService,
+    required this.appointmentDetailService,
+    required this.authRepository,
+    required this.getAppointmentsRepository,
+    required this.getAppointmentsService,
+    required this.preAppointmentService,
+    required this.preAppointmentRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +110,8 @@ class MyApp extends StatelessWidget {
                   create: (context) => AppointmentsCubit(),
                 ),
                 BlocProvider<TabCubit>(
-                  create: (context) => TabCubit(authService),
+                  create: (context) => TabCubit(
+                      getAppointmentsRepository, preAppointmentRepository),
                 ),
                 BlocProvider<GetAppointmentDetailCubit>(
                   create: (context) =>

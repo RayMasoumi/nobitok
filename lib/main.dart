@@ -11,7 +11,10 @@ import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/get_appointment_detail_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
+import 'package:nobitok/data/repositories/auth_repository.dart';
+import 'package:nobitok/data/repositories/get_appointments_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/data/services/get_appointments_service.dart';
 import 'package:nobitok/data/services/get_details_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
@@ -19,19 +22,35 @@ import 'package:nobitok/presentation/screens/login_screen.dart';
 import 'constants/sizes.dart';
 
 void main() {
+  final AuthService authService = AuthService();
+  final AuthRepository authRepository =
+      AuthRepository(authService: authService);
+  final GetAppointmentsService getAppointmentsService =
+      GetAppointmentsService();
+  final GetAppointmentsRepository getAppointmentsRepository =
+      GetAppointmentsRepository(getAppointmentsService: getAppointmentsService);
   runApp(MyApp(
-    authService: AuthService(),
+    authService: authService,
     appointmentDetailService: GetDetailsService(),
+    authRepository: authRepository,
+    getAppointmentsRepository: getAppointmentsRepository,
+    getAppointmentsService: getAppointmentsService,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final AuthService authService;
+  final AuthRepository authRepository;
+  final GetAppointmentsRepository getAppointmentsRepository;
+  final GetAppointmentsService getAppointmentsService;
   final GetDetailsService appointmentDetailService;
   const MyApp(
       {super.key,
       required this.authService,
-      required this.appointmentDetailService});
+      required this.appointmentDetailService,
+      required this.authRepository,
+      required this.getAppointmentsRepository,
+      required this.getAppointmentsService});
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +79,8 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<AuthCubit>(
-                  create: (context) => AuthCubit(
-                    authService,
-                  ),
+                  create: (context) =>
+                      AuthCubit(authRepository, getAppointmentsRepository),
                 ),
                 BlocProvider<UserCubit>(
                   create: (context) => UserCubit(),

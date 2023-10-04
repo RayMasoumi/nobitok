@@ -11,3 +11,9 @@ const kGetPreAppointmentsUrl = '/Appointment/getPreAppointmentsByDate';
 // * api get details service
 const kGetInvoiceDetailUrl = '/Factor/getFactorById';
 const kGetCustomerDetailUrl = '/Customer/getCustomerById';
+
+// * api get all documents service:
+const kGetAllDocumentsUrl = '/Document/GetAllDocuments';
+
+// * api get all services service:
+const kGetAllServicesUrl = 'Service/getAllServices';

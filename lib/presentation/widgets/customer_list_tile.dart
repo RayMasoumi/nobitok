@@ -76,7 +76,7 @@ class CustomerListTile extends StatelessWidget {
                         width: 9.w,
                       ),
                       Text(
-                        '0916455145656',
+                        appointments[index].appointmentCustomerPhoneNumber!,
                         style: kMedium12TextStyle,
                       ),
                       const Spacer(),

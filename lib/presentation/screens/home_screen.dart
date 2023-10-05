@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
-import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
@@ -150,44 +149,46 @@ class HomeScreen extends StatelessWidget {
                           // todo show appropriate alert
                         }
                       },
-                      child: Builder(builder: (context) {
-                        return CustomListView(
-                          tileLeftPadding: 0,
-                          tileRightPadding: 0,
-                          tileTopPadding: 16,
-                          tileBottomPadding: 8,
-                          listTileBuilder: (index) {
-                            return CustomerListTile(
-                              isAppointment: true,
-                              isDocument: false,
-                              appointments: context
-                                  .read<AppointmentsCubit>()
-                                  .getAppointments(kAppointmentsKey),
-                              index: index,
-                              onDetailsPressed: () async {
-                                // * creating instances
-                                final appointmentDetailCubit =
-                                    context.read<AppointmentDetailCubit>();
-                                final appointmentsList =
-                                    context.read<AppointmentsCubit>();
-                                // * giving this appointment as a parameter to fetch its data
-                                await appointmentDetailCubit
-                                    .fetchAppointmentDetail(
-                                        appointmentsList.getAppointments(
-                                            kAppointmentsKey)[index]);
-                              },
-                            );
-                          },
-                          list: context
-                              .read<AppointmentsCubit>()
-                              .getAppointments(kAppointmentsKey),
-                        );
-                      }),
+                      child: BlocBuilder<TabCubit, TabState>(
+                        builder: (context, state) {
+                          return CustomListView(
+                            tileLeftPadding: 0,
+                            tileRightPadding: 0,
+                            tileTopPadding: 16,
+                            tileBottomPadding: 8,
+                            listTileBuilder: (index) {
+                              return CustomerListTile(
+                                isAppointment: true,
+                                isDocument: false,
+                                appointments: context
+                                    .read<AppointmentsCubit>()
+                                    .getAppointments(kAppointmentsKey),
+                                index: index,
+                                onDetailsPressed: () async {
+                                  // * creating instances
+                                  final appointmentDetailCubit =
+                                      context.read<AppointmentDetailCubit>();
+                                  final appointmentsList =
+                                      context.read<AppointmentsCubit>();
+                                  // * giving this appointment as a parameter to fetch its data
+                                  await appointmentDetailCubit
+                                      .fetchAppointmentDetail(
+                                          appointmentsList.getAppointments(
+                                              kAppointmentsKey)[index]);
+                                },
+                              );
+                            },
+                            list: context
+                                .read<AppointmentsCubit>()
+                                .getAppointments(kAppointmentsKey),
+                          );
+                        },
+                      ),
                     ),
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    BlocBuilder<AppointmentsCubit, AppointmentsState>(
+                    BlocBuilder<TabCubit, TabState>(
                       builder: (context, state) {
                         return CustomListView(
                           tileLeftPadding: 0,
@@ -214,7 +215,7 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 3 content
                     // * documents list view:
-                    BlocBuilder<AppointmentsCubit, AppointmentsState>(
+                    BlocBuilder<TabCubit, TabState>(
                       builder: (context, state) {
                         return CustomListView(
                           tileLeftPadding: 0,

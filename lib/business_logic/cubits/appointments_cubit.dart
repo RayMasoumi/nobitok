@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/appointment.dart';
-import 'appointments_state.dart';
 
 class AppointmentsCubit extends Cubit<AppointmentsState> {
   AppointmentsCubit() : super(AppointmentsState(allAppointments: {}));

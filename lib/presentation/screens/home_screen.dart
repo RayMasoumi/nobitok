@@ -137,9 +137,6 @@ class HomeScreen extends StatelessWidget {
                         // * states of fetching appointment details are being handled here
                         if (state is AppointmentDetailLoaded) {
                           context.loaderOverlay.hide();
-                          context
-                              .read<AppointmentDetailCubit>()
-                              .setAppointmentDetail(state.appointmentDetail!);
                           showModalBottomSheet(
                             context: context,
                             builder: (context) =>

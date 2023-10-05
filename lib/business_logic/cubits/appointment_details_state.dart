@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 
 import '../../data/models/appointment_detail.dart';
 
-class AppointmentDetailsState {
+abstract class AppointmentDetailsState {
   final AppointmentDetail? appointmentDetail;
 
   AppointmentDetailsState({required this.appointmentDetail});
 }
 
 class AppointmentDetailInitial extends AppointmentDetailsState {
-  AppointmentDetailInitial() : super(appointmentDetail: null) {
+  AppointmentDetailInitial({required super.appointmentDetail}) {
     debugPrint('AppointmentDetailInitial');
   }
 }

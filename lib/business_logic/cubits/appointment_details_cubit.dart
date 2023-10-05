@@ -17,7 +17,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
   AppointmentDetailCubit(
       {required this.getInvoiceDetailsRepository,
       required this.getCustomerDetailsRepository})
-      : super(AppointmentDetailsState(appointmentDetail: null));
+      : super(AppointmentDetailInitial(appointmentDetail: null));
 
   Future<void> fetchAppointmentDetail(Appointment appointment) async {
     emit(AppointmentDetailLoading());

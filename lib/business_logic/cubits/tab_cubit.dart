@@ -13,21 +13,9 @@ class TabCubit extends Cubit<TabState> {
   TabCubit(
     this.appointmentsRepository,
     this.preAppointmentRepository,
-  ) : super(AppointmentTabState(const [])) {
-    _initialize();
-  }
+  ) : super(AppointmentTabState(const []));
   final GetAppointmentsRepository appointmentsRepository;
   final PreAppointmentRepository preAppointmentRepository;
-
-  Future<void> _initialize() async {
-    try {
-      final todayAppointments =
-          await appointmentsRepository.fetchTodayAppointments();
-      emit(AppointmentTabState(todayAppointments));
-    } catch (error) {
-      throw Exception('$kServerException:$error');
-    }
-  }
 
   void changeTab(String newTabKey) async {
     TabState newState;

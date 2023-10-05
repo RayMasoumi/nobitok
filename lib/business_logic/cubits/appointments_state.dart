@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import '../../data/models/appointment.dart';
-
-class AppointmentsState {
-  final Map<String, List<Appointment>> allAppointments;
-
-  AppointmentsState({required this.allAppointments});
-=======
 import 'package:flutter/cupertino.dart';
 
 import '../../data/models/appointment.dart';
@@ -38,5 +30,4 @@ class AppointmentsLoadingFailed extends AppointmentsState {
   AppointmentsLoadingFailed() {
     debugPrint('appointments loading failed state');
   }
->>>>>>> document
 }

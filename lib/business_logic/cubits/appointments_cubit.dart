@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 
 import '../../data/models/appointment.dart';
 
 class AppointmentsCubit extends Cubit<Map<String, List<Appointment>>> {
-  AppointmentsCubit() : super({});
+  AppointmentsCubit() : super(AppointmentsInitialState());
 
   // * Add a list of appointments with a given key
   // * the keys are stored in strings under the name of appointment keys

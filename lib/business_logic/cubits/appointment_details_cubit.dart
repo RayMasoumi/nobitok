@@ -28,8 +28,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
           appointment.appointmentInvoiceId!,
           appointment);
 
-      emit(AppointmentDetailsState(appointmentDetail: appointmentDetail));
-      emit(AppointmentDetailLoaded());
+      emit(AppointmentDetailLoaded(appointmentDetail: appointmentDetail));
     } catch (e) {
       emit(AppointmentDetailError(
           error: 'Failed to fetch appointment detail: $e'));

@@ -4,18 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
+import '../../business_logic/cubits/appointment_details_state.dart';
 import '../../business_logic/cubits/appointments_cubit.dart';
-import '../../business_logic/cubits/get_appointment_detail_cubit.dart';
-import '../../business_logic/cubits/get_appointment_detail_state.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/styles.dart';
-import '../../data/models/appointment.dart';
 import '../../methods/set_time_initial_value_method.dart';
 import '../modal_bottom_sheets/appointments_customer_info.dart';
 import '../widgets/custom_list_view.dart';
@@ -132,24 +131,24 @@ class HomeScreen extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     // * appointments list view:
-                    BlocListener<GetAppointmentDetailCubit,
-                        GetAppointmentDetailState>(
+                    BlocListener<AppointmentDetailCubit,
+                        AppointmentDetailsState>(
                       listener: (context, state) {
                         // * states of fetching appointment details are being handled here
-                        if (state is GetAppointmentDetailLoaded) {
+                        if (state is AppointmentDetailLoaded) {
                           context.loaderOverlay.hide();
                           context
                               .read<AppointmentDetailCubit>()
-                              .setAppointmentDetail(state.appointmentDetail);
+                              .setAppointmentDetail(state.appointmentDetail!);
                           showModalBottomSheet(
                             context: context,
                             builder: (context) =>
                                 const AppointmentsCustomerInfoBottomSheet(),
                             isScrollControlled: true,
                           );
-                        } else if (state is GetAppointmentDetailLoading) {
+                        } else if (state is AppointmentDetailLoading) {
                           context.loaderOverlay.show();
-                        } else if (state is GetAppointmentDetailError) {
+                        } else if (state is AppointmentDetailError) {
                           context.loaderOverlay.hide();
                           // todo show appropriate alert
                         }
@@ -171,7 +170,7 @@ class HomeScreen extends StatelessWidget {
                               onDetailsPressed: () async {
                                 // * creating instances
                                 final appointmentDetailCubit =
-                                    context.read<GetAppointmentDetailCubit>();
+                                    context.read<AppointmentDetailCubit>();
                                 final appointmentsList =
                                     context.read<AppointmentsCubit>();
                                 // * giving this appointment as a parameter to fetch its data
@@ -191,8 +190,7 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    BlocBuilder<AppointmentsCubit,
-                        Map<String, List<Appointment>>>(
+                    BlocBuilder<AppointmentsCubit, AppointmentsState>(
                       builder: (context, state) {
                         return CustomListView(
                           tileLeftPadding: 0,
@@ -219,8 +217,7 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 3 content
                     // * documents list view:
-                    BlocBuilder<AppointmentsCubit,
-                        Map<String, List<Appointment>>>(
+                    BlocBuilder<AppointmentsCubit, AppointmentsState>(
                       builder: (context, state) {
                         return CustomListView(
                           tileLeftPadding: 0,

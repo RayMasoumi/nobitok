@@ -8,20 +8,22 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
-import 'package:nobitok/business_logic/cubits/get_appointment_detail_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/repositories/auth_repository.dart';
 import 'package:nobitok/data/repositories/get_appointments_repository.dart';
+import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
+import 'package:nobitok/data/repositories/get_invoice_details_repository.dart';
 import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/data/services/get_appointments_service.dart';
-import 'package:nobitok/data/services/get_details_service.dart';
-import 'package:nobitok/data/services/get_pre_appointment_service.dart';
+import 'package:nobitok/data/services/get_customer_details_service.dart';
+import 'package:nobitok/data/services/get_invoice_details_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
+import 'data/services/get_pre_appointment_service.dart';
 
 void main() {
 // *auth
@@ -41,15 +43,27 @@ void main() {
   final PreAppointmentRepository preAppointmentRepository =
       PreAppointmentRepository(service: getPreAppointmentService);
 
+  // * appointment details
+  final GetInvoiceDetailsService getInvoiceDetailsService =
+      GetInvoiceDetailsService();
+  final GetInvoiceDetailsRepository getInvoiceDetailsRepository =
+      GetInvoiceDetailsRepository(
+          getInvoiceDetailsService: getInvoiceDetailsService);
+  final GetCustomerDetailsService getCustomerDetailsService =
+      GetCustomerDetailsService();
+  final GetCustomerDetailsRepository getCustomerDetailsRepository =
+      GetCustomerDetailsRepository(
+          getCustomerDetailsService: getCustomerDetailsService);
   runApp(
     MyApp(
       authService: authService,
-      appointmentDetailService: GetDetailsService(),
       authRepository: authRepository,
       getAppointmentsRepository: getAppointmentsRepository,
       getAppointmentsService: getAppointmentsService,
       preAppointmentService: getPreAppointmentService,
       preAppointmentRepository: preAppointmentRepository,
+      getInvoiceDetailsRepository: getInvoiceDetailsRepository,
+      getCustomerDetailsRepository: getCustomerDetailsRepository,
     ),
   );
 }
@@ -59,18 +73,20 @@ class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
   final GetAppointmentsRepository getAppointmentsRepository;
   final GetAppointmentsService getAppointmentsService;
-  final GetDetailsService appointmentDetailService;
   final GetPreAppointmentService preAppointmentService;
   final PreAppointmentRepository preAppointmentRepository;
+  final GetInvoiceDetailsRepository getInvoiceDetailsRepository;
+  final GetCustomerDetailsRepository getCustomerDetailsRepository;
   const MyApp({
     super.key,
     required this.authService,
-    required this.appointmentDetailService,
     required this.authRepository,
     required this.getAppointmentsRepository,
     required this.getAppointmentsService,
     required this.preAppointmentService,
     required this.preAppointmentRepository,
+    required this.getInvoiceDetailsRepository,
+    required this.getCustomerDetailsRepository,
   });
 
   @override
@@ -113,12 +129,11 @@ class MyApp extends StatelessWidget {
                   create: (context) => TabCubit(
                       getAppointmentsRepository, preAppointmentRepository),
                 ),
-                BlocProvider<GetAppointmentDetailCubit>(
-                  create: (context) =>
-                      GetAppointmentDetailCubit(appointmentDetailService),
-                ),
                 BlocProvider<AppointmentDetailCubit>(
-                  create: (context) => AppointmentDetailCubit(),
+                  create: (context) => AppointmentDetailCubit(
+                      getInvoiceDetailsRepository: getInvoiceDetailsRepository,
+                      getCustomerDetailsRepository:
+                          getCustomerDetailsRepository),
                 ),
               ],
               child: MaterialApp(

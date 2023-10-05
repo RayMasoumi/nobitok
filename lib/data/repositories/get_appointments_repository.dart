@@ -10,6 +10,7 @@ class GetAppointmentsRepository {
 
   GetAppointmentsRepository({required this.getAppointmentsService});
 
+  // * calling fetch today's appointments function in get appointments service
   Future<List<Appointment>> fetchTodayAppointments() async {
     final response = await getAppointmentsService.fetchTodayAppointments();
     if (response.statusCode == 200) {

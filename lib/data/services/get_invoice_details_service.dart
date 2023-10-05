@@ -4,16 +4,14 @@ import 'package:http/http.dart' as http;
 import '../../constants/strings.dart';
 import '../../constants/urls.dart';
 
-class GetAppointmentsService {
-  Future<http.Response> fetchTodayAppointments() async {
-    // * Implement API request to fetch appointments using the token here
-    final url = Uri.parse('$kBaseUrl$kGetAllTodayAppointmentsUrl');
+class GetInvoiceDetailsService {
+  Future<http.Response> fetchInvoiceDetails(int invoiceId) async {
+    final url = Uri.parse('$kBaseUrl$kGetInvoiceDetailUrl?Id=$invoiceId');
 
     final headers = {
       'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
       'Content-Type': 'application/json',
     };
-
     try {
       final response = await http.get(
         url,

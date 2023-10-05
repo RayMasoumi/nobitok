@@ -11,6 +11,7 @@ class AuthRepository {
 
   AuthRepository({required this.authService});
 
+  // * calling auth in auth service and storing the tokens
   Future<int> getToken(String username, String password) async {
     final response = await authService.auth(username, password);
     if (response.statusCode == 200) {

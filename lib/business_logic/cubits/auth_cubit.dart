@@ -31,13 +31,14 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // * for login we need tokens and all today's appointments
   Future<List<Appointment>> login(String username, String password) async {
-    // * Your login API call to get a token
+    // * login API call to get a token
 
     int authStatusCode = await authRepository.getToken(username, password);
 
     if (authStatusCode == 200) {
-      // * Fetch user information using the token
+      // * Fetch appointments
       return await getAppointmentsRepository.fetchTodayAppointments();
     } else {
       throw Exception('$kAuthException:$authStatusCode');

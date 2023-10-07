@@ -17,4 +17,6 @@ const Color kYellowColor = Color(0xFFFFCD81);
 const Color kBlue300Color = Color(0xff7B88FF);
 const Color kBlue200Color = Color(0xffA4AEFF);
 const Color kBlue50Color = Color(0xffEBEDFF);
+const Color kBlue500Color = Color(0xff3A4EFF);
+const Color kRed600Color = Color(0xffE84F4F);
 const Color kLightGreyColor = Color(0xFFF4F4F4);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
@@ -9,12 +10,8 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
 import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 
-import '../../constants/enums/appointment_status.dart';
+import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../constants/styles.dart';
-import '../../data/models/appointment.dart';
-import '../../data/models/appointment_detail.dart';
-import '../../data/models/customer.dart';
-import '../../data/models/invoice.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/set_time_widget.dart';
@@ -24,6 +21,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appointmentDetails = context.read<AppointmentDetailCubit>();
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -61,7 +59,12 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                     SizedBox(
                       width: 11.w,
                     ),
-                    Text('رضا کیانی', style: kBold16TextStyle),
+                    Text(
+                        appointmentDetails
+                            .getAppointmentDetails()
+                            .customerDetail
+                            .customerName,
+                        style: kBold16TextStyle),
                   ],
                 ),
                 SizedBox(
@@ -89,7 +92,10 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                               width: 16,
                             ),
                             Text(
-                              '+989125879338',
+                              appointmentDetails
+                                  .getAppointmentDetails()
+                                  .customerDetail
+                                  .customerPhoneNumber,
                               style: kBold13TextStyle.copyWith(
                                   color: Colors.white),
                             ),
@@ -103,7 +109,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                       color: const Color(0xffC8C8C8),
                       child: Center(
                         child: Text(
-                          'شماره پرونده : 87554',
+                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode}',
                           style: kBold13TextStyle.copyWith(color: Colors.white),
                         ),
                       ),
@@ -126,16 +132,25 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   height: 8.h,
                 ),
 // * date and time buttons:
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SetDateWidget(
                       disabled: false,
                       text: 'date',
+                      onPressed: () async {
+                        // showModalBottomSheet(
+                        //   context: context,
+                        //   builder: (context) => const SetDateBottomSheet(),
+                        //   isScrollControlled: true,
+                        // );
+                      },
+                      // todo,
                     ),
-                    SetTimeWidget(
+                    const SetTimeWidget(
                       disabled: false,
                       text: 'time',
+                      // todo
                     ),
                   ],
                 ),
@@ -167,28 +182,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  appointmentDetail: AppointmentDetail(
-                      invoiceDetail: Invoice(
-                          invoiceId: 0,
-                          invoiceDate: '',
-                          isPaid: true,
-                          customerId: 0,
-                          appointmentId: 0,
-                          invoiceTotal: 0,
-                          invoiceItems: []),
-                      customerDetail: Customer(
-                          customerId: 0,
-                          customerName: '',
-                          customerPhoneNumber: 'customerPhoneNumber',
-                          customerDateOfBirth: 'customerDateOfBirth',
-                          customerAppointments: [],
-                          customerInvoices: []),
-                      appointmentDetail: Appointment(
-                          appointmentId: 0,
-                          appointmentDate: 'appointmentDate',
-                          appointmentCustomerId: 0,
-                          appointmentStatus: AppointmentStatus.appointment,
-                          appointmentCustomerName: 'appointmentCustomerName')),
+                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
                 ),
               ],
             ),

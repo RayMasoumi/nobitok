@@ -129,14 +129,15 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   height: 8.h,
                 ),
 // * date and time buttons:
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SetDateWidget(
                       disabled: true,
                       text: 'date',
+                      onPressed: () {},
                     ),
-                    SetTimeWidget(
+                    const SetTimeWidget(
                       disabled: true,
                       text: 'time',
                     ),

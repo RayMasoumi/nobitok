@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
@@ -147,6 +148,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                           .appointmentDetail
                           .appointmentDate
                           .toPersianDate(),
+                      onPressed: () {},
                     ),
                     SetTimeWidget(
                       disabled: true,
@@ -238,7 +240,15 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   borderRadius: kBorderRadius8,
                   color: kBlue300Color,
                   text: 'ثبت پبش نوبت',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) =>
+                          const SetPreAppointmentBottomSheet(),
+                      isScrollControlled: true,
+                    );
+                  },
                 ),
               ],
             ),

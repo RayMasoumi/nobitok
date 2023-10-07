@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/methods/get_today_date.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
@@ -68,7 +69,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       style: kLight14TextStyle,
                     ),
                     Text(
-                      'تاریخ تولد: ${appointmentDetails.getAppointmentDetails().customerDetail.customerDateOfBirth}',
+                      'تاریخ تولد: ${appointmentDetails.getAppointmentDetails().customerDetail.customerDateOfBirth.toPersianDate()}',
                       style: kLight14TextStyle,
                     ),
                   ],

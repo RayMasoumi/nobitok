@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
-import 'package:persian_number_utility/persian_number_utility.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/methods/get_today_date.dart';
+import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
-import '../../methods/get_today_date.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_image_widget.dart';

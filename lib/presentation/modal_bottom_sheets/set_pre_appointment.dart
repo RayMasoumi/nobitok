@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
-import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/customer_document_number_widget.dart';
+import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
-import 'package:nobitok/presentation/widgets/info_card_widget.dart';
+import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
 import 'package:nobitok/presentation/widgets/set_date_widget.dart';
@@ -53,20 +54,11 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
             Column(
               children: [
 // * name and last name:
-                Row(
-                  children: [
-                    Text('نام و نام خانوادگی :', style: kBold16TextStyle),
-                    SizedBox(
-                      width: 11.w,
-                    ),
-                    Text(
-                        appointmentDetails
-                            .getAppointmentDetails()
-                            .customerDetail
-                            .customerName,
-                        style: kBold16TextStyle),
-                  ],
-                ),
+                CustomerNameWidget(
+                    name: appointmentDetails
+                        .getAppointmentDetails()
+                        .customerDetail
+                        .customerName),
                 SizedBox(
                   height: 16.h,
                 ),
@@ -76,44 +68,19 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 // * phone number card:
-                    InkWell(
-                      onTap: () {
-                        //TODO call
-                      },
-                      child: InfoCardWidget(
-                        color: kBlue300Color,
-                        horizontalPadding: 14,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CustomImage(
-                              path: 'assets/icons/call.png',
-                              height: 16,
-                              width: 16,
-                            ),
-                            Text(
-                              appointmentDetails
-                                  .getAppointmentDetails()
-                                  .customerDetail
-                                  .customerPhoneNumber,
-                              style: kBold13TextStyle.copyWith(
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CallCustomerWidget(
+                      phoneNumber: appointmentDetails
+                          .getAppointmentDetails()
+                          .customerDetail
+                          .customerPhoneNumber,
                     ),
 // * file code card:
-                    InfoCardWidget(
-                      horizontalPadding: 14,
-                      color: const Color(0xffC8C8C8),
-                      child: Center(
-                        child: Text(
-                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode}',
-                          style: kBold13TextStyle.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    CustomerDocumentNumberWidget(
+                        docNumber: appointmentDetails
+                                .getAppointmentDetails()
+                                .customerDetail
+                                .customerDocumentCode ??
+                            ''),
                   ],
                 ),
               ],

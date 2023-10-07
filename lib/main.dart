@@ -176,7 +176,7 @@ class MyApp extends StatelessWidget {
                 ),
                 home: const Directionality(
                   textDirection: TextDirection.rtl,
-                  // child: SetPreAppointmentBottomSheet(),
+                  // child: AddAppointmentScreen(),
                   child: LoginScreen(),
                 ),
                 onGenerateRoute: AppRouter().onGenerateRoute,

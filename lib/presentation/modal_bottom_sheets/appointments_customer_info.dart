@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
+import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
@@ -42,20 +43,11 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
             Column(
               children: [
 // * name and last name:
-                Row(
-                  children: [
-                    Text('نام و نام خانوادگی :', style: kBold16TextStyle),
-                    SizedBox(
-                      width: 11.w,
-                    ),
-                    Text(
-                      appointmentDetails
-                          .getAppointmentDetails()
-                          .customerDetail
-                          .customerName,
-                      style: kBold16TextStyle,
-                    ),
-                  ],
+                CustomerNameWidget(
+                  name: appointmentDetails
+                      .getAppointmentDetails()
+                      .customerDetail
+                      .customerName,
                 ),
                 SizedBox(
                   height: 16.h,

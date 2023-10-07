@@ -27,11 +27,12 @@ const kGetCustomerDetailException = 'get_customer_detail_error';
 const kGetAppointmentDetailException = 'get_appointment_detail_error';
 const kGetAllDocumentsException = 'get_all_documents_error';
 const kGetAllCustomersException = 'get_all_Customers_error';
+const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
+const kLoginException = 'login_error';
 
 // * routes names
 const kLoginScreenRoute = '/login_screen';
 const kHomeScreenRoute = '/home_screen';
-const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
-const kLoginException = 'login_error';
+const kAddAppointmentScreenRoute = '/add_appointment_screen';
 
 // * hero tags

@@ -4,10 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
+import 'package:nobitok/presentation/widgets/document_list_tile.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/appointment_details_state.dart';
@@ -159,7 +161,6 @@ class HomeScreen extends StatelessWidget {
                             listTileBuilder: (index) {
                               return CustomerListTile(
                                 isAppointment: true,
-                                isDocument: false,
                                 appointments: context
                                     .read<AppointmentsCubit>()
                                     .getAppointments(kAppointmentsKey),
@@ -198,7 +199,6 @@ class HomeScreen extends StatelessWidget {
                           listTileBuilder: (index) {
                             return CustomerListTile(
                               isAppointment: false,
-                              isDocument: false,
                               appointments: context
                                   .read<AppointmentsCubit>()
                                   .getAppointments(kPreAppointmentsKey),
@@ -223,15 +223,14 @@ class HomeScreen extends StatelessWidget {
                           tileTopPadding: 16,
                           tileBottomPadding: 8,
                           listTileBuilder: (index) {
-                            return CustomerListTile(
-                              isAppointment: false,
-                              isDocument: true,
-                              appointments: const [],
+                            return DocumentListTile(
                               index: index,
                               onDetailsPressed: () {},
+                              customers:
+                                  context.read<CustomerCubit>().getCustomers(),
                             );
                           },
-                          list: const [],
+                          list: context.read<CustomerCubit>().getCustomers(),
                         );
                       },
                     ),

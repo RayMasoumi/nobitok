@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/data/models/appointment.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
-import '../../data/models/appointment.dart';
 import 'custom_button.dart';
 
 class CustomerListTile extends StatelessWidget {
   const CustomerListTile({
     super.key,
     required this.isAppointment,
-    required this.isDocument,
     required this.appointments,
     required this.index,
     required this.onDetailsPressed,
   });
 
   final bool isAppointment;
-  final bool isDocument;
+
   final List<Appointment> appointments;
   final int index;
   final Function() onDetailsPressed;
@@ -88,12 +87,9 @@ class CustomerListTile extends StatelessWidget {
 // * list tile trailing:
       trailing: Column(
         children: [
-          Visibility(
-            visible: !isDocument,
-            child: Text(
-              appointments[index].appointmentDate.toPersianDate(),
-              style: kBold12TextStyle,
-            ),
+          Text(
+            appointments[index].appointmentDate.toPersianDate(),
+            style: kBold12TextStyle,
           ),
           const Spacer(),
           CustomButton(

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/data/models/customer.dart';
+import 'package:nobitok/data/repositories/customers_repository.dart';
 
 import '../../data/models/appointment.dart';
 import '../../data/repositories/get_appointments_repository.dart';
@@ -13,13 +15,13 @@ class TabCubit extends Cubit<TabState> {
   TabCubit(
     this.appointmentsRepository,
     this.preAppointmentRepository,
+    this.customerRepository,
   ) : super(AppointmentTabState(const []));
   final GetAppointmentsRepository appointmentsRepository;
   final PreAppointmentRepository preAppointmentRepository;
+  final CustomerRepository customerRepository;
 
   void changeTab(String newTabKey) async {
-    TabState newState;
-
     emit(TabLoadingState());
 
     try {
@@ -39,10 +41,9 @@ class TabCubit extends Cubit<TabState> {
 
         emit(PreAppointmentTabState(preAppointments));
       } else if (newTabKey == kDocumentsKey) {
-        newState = DocumentsTabState(const []); //TODO
+        List<Customer> customers = await customerRepository.fetchAllCustomers();
         emit(TabLoadingCompleteState());
-
-        emit(newState);
+        emit(DocumentsTabState(customers));
       }
     } catch (error) {
       emit(TabLoadingCompleteState());

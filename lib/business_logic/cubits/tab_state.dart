@@ -39,8 +39,8 @@ class PreAppointmentTabState extends TabState {
 }
 
 class DocumentsTabState extends TabState {
-  final List<dynamic> documents;
-  DocumentsTabState(this.documents) {
+  final List<Customer> customers;
+  DocumentsTabState(this.customers) {
     debugPrint('DocumentsTabState');
   }
 }

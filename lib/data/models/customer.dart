@@ -10,8 +10,8 @@ class Customer {
   String? customerIdCode; //code melli
   String? customerDocumentCode; //shomare parvande
   String customerDateOfBirth;
-  List<Appointment> customerAppointments;
-  List<Invoice> customerInvoices;
+  List<Appointment>? customerAppointments;
+  List<Invoice>? customerInvoices;
 
   Customer({
     required this.customerId,
@@ -21,7 +21,16 @@ class Customer {
     this.customerIdCode,
     this.customerDocumentCode,
     required this.customerDateOfBirth,
-    required this.customerAppointments,
-    required this.customerInvoices,
+    this.customerAppointments,
+    this.customerInvoices,
   });
+
+  factory Customer.fromJson(Map<String, dynamic> json) {
+    return Customer(
+      customerId: json['id'] ?? 0,
+      customerName: json['name'] ?? '',
+      customerPhoneNumber: json['phoneNumber'] ?? '',
+      customerDateOfBirth: json['dateOfBirth'] ?? '',
+    );
+  }
 }

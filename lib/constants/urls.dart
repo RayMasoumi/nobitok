@@ -16,4 +16,7 @@ const kGetCustomerDetailUrl = '/Customer/getCustomerById';
 const kGetAllDocumentsUrl = '/Document/GetAllDocuments';
 
 // * api get all services service:
-const kGetAllServicesUrl = 'Service/getAllServices';
+const kGetAllServicesUrl = '/Service/getAllServices';
+
+// * api get all customers service:
+const kGetAllCustomersUrl = '/Customer/getAllCustomers';

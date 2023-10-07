@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/constants/strings.dart';
 
 import '../../business_logic/cubits/appointments_cubit.dart';
@@ -39,6 +40,8 @@ class CustomTabBar extends StatelessWidget {
             context
                 .read<AppointmentsCubit>()
                 .addAppointments(kAppointmentsKey, state.appointments);
+          } else if (state is DocumentsTabState) {
+            context.read<CustomerCubit>().addCustomers(state.customers);
           }
         },
         child: TabBar(

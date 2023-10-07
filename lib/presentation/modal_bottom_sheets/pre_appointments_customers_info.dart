@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
+import 'package:nobitok/methods/get_today_date.dart';
 
 import '../../constants/colors.dart';
-import '../../constants/enums/appointment_status.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
-import '../../data/models/appointment.dart';
-import '../../data/models/appointment_detail.dart';
-import '../../data/models/customer.dart';
-import '../../data/models/invoice.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_image_widget.dart';
@@ -24,6 +22,8 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppointmentDetailCubit appointmentDetails =
+        context.read<AppointmentDetailCubit>();
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -48,7 +48,12 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     SizedBox(
                       width: 11.w,
                     ),
-                    Text('رضا کیانی', style: kBold16TextStyle),
+                    Text(
+                        appointmentDetails
+                            .getAppointmentDetails()
+                            .customerDetail
+                            .customerName,
+                        style: kBold16TextStyle),
                   ],
                 ),
                 SizedBox(
@@ -59,11 +64,11 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'کد ملی: 1748596587',
+                      'کد ملی: ${appointmentDetails.getAppointmentDetails().customerDetail.customerIdCode}',
                       style: kLight14TextStyle,
                     ),
                     Text(
-                      'تاریخ تولد: 1350/08/10',
+                      'تاریخ تولد: ${appointmentDetails.getAppointmentDetails().customerDetail.customerDateOfBirth}',
                       style: kLight14TextStyle,
                     ),
                   ],
@@ -92,7 +97,10 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                               width: 16,
                             ),
                             Text(
-                              '+989125879338',
+                              appointmentDetails
+                                  .getAppointmentDetails()
+                                  .customerDetail
+                                  .customerPhoneNumber,
                               style: kBold13TextStyle.copyWith(
                                   color: Colors.white),
                             ),
@@ -106,7 +114,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       color: const Color(0xffC8C8C8),
                       child: Center(
                         child: Text(
-                          'شماره پرونده : 87554',
+                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode}',
                           style: kBold13TextStyle.copyWith(color: Colors.white),
                         ),
                       ),
@@ -134,12 +142,13 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: true,
-                      text: 'date',
+                      text: getTodayDate(),
                       onPressed: () {},
                     ),
-                    const SetTimeWidget(
+                    SetTimeWidget(
                       disabled: true,
-                      text: 'time',
+                      text:
+                          ' ${DateTime.now().minute.toString()} : ${DateTime.now().hour.toString()}',
                     ),
                   ],
                 ),
@@ -171,28 +180,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  appointmentDetail: AppointmentDetail(
-                      invoiceDetail: Invoice(
-                          invoiceId: 0,
-                          invoiceDate: '',
-                          isPaid: true,
-                          customerId: 0,
-                          appointmentId: 0,
-                          invoiceTotal: 0,
-                          invoiceItems: []),
-                      customerDetail: Customer(
-                          customerId: 0,
-                          customerName: '',
-                          customerPhoneNumber: 'customerPhoneNumber',
-                          customerDateOfBirth: 'customerDateOfBirth',
-                          customerAppointments: [],
-                          customerInvoices: []),
-                      appointmentDetail: Appointment(
-                          appointmentId: 0,
-                          appointmentDate: 'appointmentDate',
-                          appointmentCustomerId: 0,
-                          appointmentStatus: AppointmentStatus.appointment,
-                          appointmentCustomerName: 'appointmentCustomerName')),
+                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
                 ),
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/document_list_tile.dart';
@@ -135,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                     BlocListener<AppointmentDetailCubit,
                         AppointmentDetailsState>(
                       listener: (context, state) {
-                        // * states of fetching appointment details are being handled here
+// * states of fetching appointment details are being handled here
                         if (state is AppointmentDetailLoaded) {
                           context.loaderOverlay.hide();
                           showModalBottomSheet(
@@ -189,28 +190,59 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 2 content
                     // * pre-appointments list view:
-                    BlocBuilder<TabCubit, TabState>(
-                      builder: (context, state) {
-                        return CustomListView(
-                          tileLeftPadding: 0,
-                          tileRightPadding: 0,
-                          tileTopPadding: 16,
-                          tileBottomPadding: 8,
-                          listTileBuilder: (index) {
-                            return CustomerListTile(
-                              isAppointment: false,
-                              appointments: context
-                                  .read<AppointmentsCubit>()
-                                  .getAppointments(kPreAppointmentsKey),
-                              index: index,
-                              onDetailsPressed: () {},
-                            );
-                          },
-                          list: context
-                              .read<AppointmentsCubit>()
-                              .getAppointments(kPreAppointmentsKey),
-                        );
+                    BlocListener<AppointmentDetailCubit,
+                        AppointmentDetailsState>(
+                      listener: (context, state) {
+// * states of fetching pre-appointment details are being handled here
+                        if (state is AppointmentDetailLoaded) {
+                          context.loaderOverlay.hide();
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                const PreAppointmentsCustomerInfoBottomSheet(),
+                            isScrollControlled: true,
+                          );
+                        } else if (state is AppointmentDetailLoading) {
+                          context.loaderOverlay.show();
+                        } else if (state is AppointmentDetailError) {
+                          context.loaderOverlay.hide();
+                          // todo show appropriate alert
+                        }
                       },
+                      child: BlocBuilder<TabCubit, TabState>(
+                        builder: (context, state) {
+                          return CustomListView(
+                            tileLeftPadding: 0,
+                            tileRightPadding: 0,
+                            tileTopPadding: 16,
+                            tileBottomPadding: 8,
+                            listTileBuilder: (index) {
+                              return CustomerListTile(
+                                isAppointment: false,
+                                appointments: context
+                                    .read<AppointmentsCubit>()
+                                    .getAppointments(kPreAppointmentsKey),
+                                index: index,
+                                onDetailsPressed: () async {
+                                  // * creating instances
+                                  final appointmentDetailCubit =
+                                      context.read<AppointmentDetailCubit>();
+                                  final appointmentsList =
+                                      context.read<AppointmentsCubit>();
+                                  // * giving this appointment as a parameter to fetch its data
+                                  await appointmentDetailCubit
+                                      .fetchAppointmentDetail(
+                                          appointmentsList.getAppointments(
+                                              kPreAppointmentsKey)[index]);
+                                },
+                              );
+                            },
+                            list: context
+                                .read<AppointmentsCubit>()
+                                .getAppointments(kPreAppointmentsKey),
+                          );
+                        },
+                      ),
                     ),
 
 // *Tab 3 content

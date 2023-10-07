@@ -27,6 +27,7 @@ const kGetCustomerDetailException = 'get_customer_detail_error';
 const kGetAppointmentDetailException = 'get_appointment_detail_error';
 const kGetAllDocumentsException = 'get_all_documents_error';
 const kGetAllCustomersException = 'get_all_Customers_error';
+const kGetAllServicesException = 'get_all_Services_error';
 
 // * routes names
 const kLoginScreenRoute = '/login_screen';

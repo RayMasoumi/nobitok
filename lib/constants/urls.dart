@@ -20,3 +20,6 @@ const kGetAllServicesUrl = '/Service/getAllServices';
 
 // * api get all customers service:
 const kGetAllCustomersUrl = '/Customer/getAllCustomers';
+
+// * api get all services:
+const getAllServicesUrl = '/Service/getAllServices';

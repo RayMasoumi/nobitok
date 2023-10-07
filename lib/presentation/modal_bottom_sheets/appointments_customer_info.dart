@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/service_list.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -204,7 +205,14 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     borderRadius: kBorderRadius8,
                     color: kBlue300Color,
                     text: 'افزودن خدمت',
-                    onPressed: () {}),
+                    onPressed: () {
+                      //?Navigator.of(context).pop(); //?? do we need this?
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => const ServiceBottomSheet(),
+                        isScrollControlled: true,
+                      );
+                    }),
                 CustomButton(
                     height: 32,
                     width: 88,

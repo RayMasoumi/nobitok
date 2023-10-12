@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
@@ -7,6 +9,7 @@ import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
+import '../../business_logic/cubits/service_state.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/service_list_tile.dart';
 
@@ -34,15 +37,19 @@ class ServiceBottomSheet extends StatelessWidget {
             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:
             Expanded(
-              child: CustomListView(
-                tileLeftPadding: 4,
-                tileRightPadding: 10,
-                tileTopPadding: 8,
-                tileBottomPadding: 8,
-                listTileBuilder: (index) {
-                  return const ServicesListTile();
+              child: BlocBuilder<ServiceCubit, ServiceState>(
+                builder: (context, state) {
+                  return CustomListView(
+                    tileLeftPadding: 4,
+                    tileRightPadding: 10,
+                    tileTopPadding: 8,
+                    tileBottomPadding: 8,
+                    listTileBuilder: (index) {
+                      return const ServicesListTile();
+                    },
+                    list: context.read<ServiceCubit>().getServices(),
+                  );
                 },
-                list: const [],
               ),
             ),
 // * bottom divider:

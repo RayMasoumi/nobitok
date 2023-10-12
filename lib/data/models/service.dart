@@ -1,6 +1,6 @@
 class Service {
   int serviceId;
-  int? serviceName;
+  String? serviceName;
   double servicePrice;
   int? serviceQuantity;
 
@@ -13,7 +13,7 @@ class Service {
   factory Service.fromJson(Map<String, dynamic> json) {
     return Service(
       serviceId: json['id'] ?? 0,
-      servicePrice: json['price'] ?? 0,
+      servicePrice: json['price'] ?? 0.0,
       serviceName: json['name'] ?? '',
       serviceQuantity: json['qty'] ?? 1,
     );

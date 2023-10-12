@@ -5,7 +5,7 @@ import '../../constants/strings.dart';
 import '../../constants/urls.dart';
 
 class GetAllServicesService {
-  Future<http.Response> fetchAllServices() async {
+  Future<http.Response> fetchAllServicesService() async {
     // * Implement API request to fetch services using the token here
     final url = Uri.parse('$kBaseUrl$kGetAllServicesUrl');
 

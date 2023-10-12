@@ -6,6 +6,7 @@ import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dar
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
+import '../../business_logic/cubits/service_cubit.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
@@ -205,8 +206,12 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     borderRadius: kBorderRadius8,
                     color: kBlue300Color,
                     text: 'افزودن خدمت',
-                    onPressed: () {
+                    onPressed: () async {
                       //?Navigator.of(context).pop(); //?? do we need this?
+                      await context
+                          .read<ServiceCubit>()
+                          .fetchServicesFromRepository();
+
                       showModalBottomSheet(
                         context: context,
                         builder: (context) => const ServiceBottomSheet(),

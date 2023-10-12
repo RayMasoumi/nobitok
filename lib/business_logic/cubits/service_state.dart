@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import '../../data/models/service.dart';
 
 class ServiceState {
-  final List<Service>? allServices;
+  List<Service>? allServices;
 
-  const ServiceState({this.allServices});
+  ServiceState({this.allServices});
 }
 
 class ServiceInitialState extends ServiceState {
@@ -21,7 +21,7 @@ class ServiceLoading extends ServiceState {
 }
 
 class ServiceLoadingCompleted extends ServiceState {
-  ServiceLoadingCompleted() {
+  ServiceLoadingCompleted({required super.allServices}) {
     debugPrint('Service loading completed state');
   }
 }

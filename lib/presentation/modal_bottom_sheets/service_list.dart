@@ -50,7 +50,8 @@ class ServiceBottomSheet extends StatelessWidget {
                         index: index,
                       );
                     },
-                    list: context.read<ServiceCubit>().getServices(),
+                    itemCount:
+                        context.read<ServiceCubit>().getServices().length,
                   );
                 },
               ),

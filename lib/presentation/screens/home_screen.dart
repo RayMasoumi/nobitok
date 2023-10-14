@@ -13,7 +13,6 @@ import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
-import 'package:nobitok/presentation/widgets/document_list_tile.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/appointment_details_state.dart';
@@ -24,6 +23,7 @@ import '../../methods/set_time_initial_value_method.dart';
 import '../modal_bottom_sheets/appointments_customer_info.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
+import '../widgets/document_list_tile.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/searchbar_widget.dart';
 import '../widgets/time_f_a_b.dart';
@@ -183,9 +183,10 @@ class HomeScreen extends StatelessWidget {
                                 },
                               );
                             },
-                            list: context
+                            itemCount: context
                                 .read<AppointmentsCubit>()
-                                .getAppointments(kAppointmentsKey),
+                                .getAppointments(kAppointmentsKey)
+                                .length,
                           );
                         },
                       ),
@@ -240,9 +241,10 @@ class HomeScreen extends StatelessWidget {
                                 },
                               );
                             },
-                            list: context
+                            itemCount: context
                                 .read<AppointmentsCubit>()
-                                .getAppointments(kPreAppointmentsKey),
+                                .getAppointments(kPreAppointmentsKey)
+                                .length,
                           );
                         },
                       ),
@@ -275,6 +277,7 @@ class HomeScreen extends StatelessWidget {
                             tileRightPadding: 0,
                             tileTopPadding: 16,
                             tileBottomPadding: 8,
+                            isDocument: true,
                             listTileBuilder: (index) {
                               return DocumentListTile(
                                 index: index,
@@ -294,7 +297,11 @@ class HomeScreen extends StatelessWidget {
                                     .getCustomers(),
                               );
                             },
-                            list: context.read<CustomerCubit>().getCustomers(),
+                            itemCount: context
+                                    .read<CustomerCubit>()
+                                    .getCustomers()
+                                    .length +
+                                1,
                           );
                         },
                       ),

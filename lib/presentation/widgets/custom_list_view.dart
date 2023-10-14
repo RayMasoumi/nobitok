@@ -10,7 +10,8 @@ class CustomListView extends StatelessWidget {
     required this.tileBottomPadding,
     required this.listTileBuilder,
     this.height = 88,
-    required this.list,
+    this.isDocument = false,
+    required this.itemCount,
   });
 
   final Widget Function(int index) listTileBuilder;
@@ -19,44 +20,49 @@ class CustomListView extends StatelessWidget {
   final double tileBottomPadding;
   final double tileLeftPadding;
   final double tileRightPadding;
-  final List list;
+  final int itemCount;
+  final bool isDocument;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: list.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
-        return Container(
-          height: height.h,
-          width: 335.w,
-          margin: EdgeInsets.only(
-            left: 6.w,
-            right: 6.w,
-            bottom: 10.h,
-            top: 6.h,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(13),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x1E000000),
-                blurRadius: 8,
-                offset: Offset(0, 0),
-                spreadRadius: 2,
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: tileTopPadding.h,
-              bottom: tileBottomPadding.h,
-              right: tileRightPadding.w,
-              left: tileLeftPadding.w,
-            ),
-            child: listTileBuilder(index),
-          ),
-        );
+        return ((index == itemCount - 1) && isDocument)
+            ? SizedBox(
+                height: 70.h,
+              )
+            : Container(
+                height: height.h,
+                width: 335.w,
+                margin: EdgeInsets.only(
+                  left: 6.w,
+                  right: 6.w,
+                  bottom: 10.h,
+                  top: 6.h,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(13),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x1E000000),
+                      blurRadius: 8,
+                      offset: Offset(0, 0),
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: tileTopPadding.h,
+                    bottom: tileBottomPadding.h,
+                    right: tileRightPadding.w,
+                    left: tileLeftPadding.w,
+                  ),
+                  child: listTileBuilder(index),
+                ),
+              );
       },
     );
   }

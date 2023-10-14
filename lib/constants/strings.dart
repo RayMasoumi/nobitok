@@ -30,6 +30,7 @@ const kGetAllCustomersException = 'get_all_Customers_error';
 const kGetAllServicesException = 'get_all_Services_error';
 const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
 const kLoginException = 'login_error';
+const kEditInvoiceException = 'edit_invoice_error';
 
 // * routes names
 const kLoginScreenRoute = '/login_screen';

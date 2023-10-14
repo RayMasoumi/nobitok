@@ -2,7 +2,7 @@ part of 'invoice_cubit.dart';
 
 @immutable
 class InvoiceState {
-  final List<InvoiceItem>? invoices;
+  final List<Invoice>? invoices;
 
   const InvoiceState({this.invoices});
 }
@@ -21,7 +21,7 @@ class InvoiceLoading extends InvoiceState {
 
 class InvoiceLoadingCompleted extends InvoiceState {
   // * initializes the invoices property in the InvoiceState superclass:
-  InvoiceLoadingCompleted({List<InvoiceItem>? invoices})
+  InvoiceLoadingCompleted({List<Invoice>? invoices})
       : super(invoices: invoices) {
     debugPrint('Invoice loading completed state');
   }

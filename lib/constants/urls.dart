@@ -23,3 +23,6 @@ const kGetAllCustomersUrl = '/Customer/getAllCustomers';
 
 // * api get all services:
 const getAllServicesUrl = '/Service/getAllServices';
+
+// * api edit invoice:
+const kEditInvoiceUrl = '/Factor/editFactor';

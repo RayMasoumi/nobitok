@@ -1,5 +1,5 @@
 class InvoiceItem {
-  int invoiceItemId;
+  int? invoiceItemId;
   int? invoiceId;
   int? invoiceItemServiceId;
   String? invoiceItemServiceName;
@@ -8,7 +8,7 @@ class InvoiceItem {
   int invoiceItemQuantity;
 
   InvoiceItem({
-    required this.invoiceItemId,
+    this.invoiceItemId,
     this.invoiceId,
     this.invoiceItemServiceName,
     this.invoiceItemServiceId,

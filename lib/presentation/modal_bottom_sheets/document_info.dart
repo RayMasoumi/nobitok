@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
+import '../../data/models/customer.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/print_document_widget.dart';
 
@@ -18,6 +22,8 @@ class DocumentInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Customer customerDetail =
+        context.read<DocumentDetailsCubit>().getDocumentDetails();
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -31,7 +37,9 @@ class DocumentInfoBottomSheet extends StatelessWidget {
             ),
             const PaddedDivider(topPadding: 0, bottomPadding: 8.0),
 // * name
-            const CustomerNameWidget(name: 'name'),
+            CustomerNameWidget(
+              name: customerDetail.customerName,
+            ),
             SizedBox(
               height: 16.h,
             ),
@@ -40,11 +48,11 @@ class DocumentInfoBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'کد ملی: 123456789',
+                  'کد ملی: ${customerDetail.customerIdCode?.toPersianDigit()}',
                   style: kLight14TextStyle,
                 ),
                 Text(
-                  'تاریخ تولد: 1111',
+                  'تاریخ تولد: ${customerDetail.customerDateOfBirth.toPersianDate()}',
                   style: kLight14TextStyle,
                 ),
               ],
@@ -52,13 +60,17 @@ class DocumentInfoBottomSheet extends StatelessWidget {
             SizedBox(
               height: 24.h,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 // * phone number
-                CallCustomerWidget(phoneNumber: '09123456789'),
+                CallCustomerWidget(
+                    phoneNumber:
+                        customerDetail.customerPhoneNumber.toPersianDigit()),
 // * doc number
-                CustomerDocumentNumberWidget(docNumber: '12345'),
+                CustomerDocumentNumberWidget(
+                    docNumber:
+                        customerDetail.customerDocumentCode!.toPersianDigit()),
               ],
             ),
             const PaddedDivider(topPadding: 8.0, bottomPadding: 8.0),
@@ -106,15 +118,15 @@ class DocumentInfoBottomSheet extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'شماره یک',
+                                'شماره ${index + 1}',
                                 style: kBold13TextStyle,
                               ),
                               Text(
-                                '1401/01/01',
+                                '${customerDetail.customerInvoices?[index].invoiceDate.toPersianDate()}',
                                 style: kBold13TextStyle,
                               ),
                               Text(
-                                '700.000 تومان',
+                                '${customerDetail.customerInvoices?[index].invoiceTotal.toString().toPersianDigit().seRagham()} تومان',
                                 style: kBold13TextStyle,
                               ),
                             ],
@@ -125,15 +137,19 @@ class DocumentInfoBottomSheet extends StatelessWidget {
                           ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
+                            itemCount: customerDetail
+                                .customerInvoices![index].invoiceItems.length,
+                            itemBuilder: (context, index2) {
                               return ListTile(
                                 leadingAndTrailingTextStyle: kBold13TextStyle,
-                                leading: const Text(
-                                  'ریش',
+                                leading: Text(
+                                  customerDetail
+                                      .customerInvoices![index]
+                                      .invoiceItems[index2]
+                                      .invoiceItemServiceName!,
                                 ),
-                                trailing: const Text(
-                                  '100.000 تومان',
+                                trailing: Text(
+                                  '${customerDetail.customerInvoices![index].invoiceItems[index2].invoiceItemPrice.toString().toPersianDigit().seRagham()} تومان',
                                 ),
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 0),
@@ -153,7 +169,7 @@ class DocumentInfoBottomSheet extends StatelessWidget {
                       indent: 8.0.w,
                     );
                   },
-                  itemCount: 3,
+                  itemCount: customerDetail.customerInvoices!.length,
                 ),
               ),
             ),

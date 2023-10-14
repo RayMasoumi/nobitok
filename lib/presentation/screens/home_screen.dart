@@ -5,6 +5,8 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
+import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/document_details_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
@@ -248,31 +250,54 @@ class HomeScreen extends StatelessWidget {
 
 // *Tab 3 content
                     // * documents list view:
-                    BlocBuilder<TabCubit, TabState>(
-                      builder: (context, state) {
-                        return CustomListView(
-                          tileLeftPadding: 0,
-                          tileRightPadding: 0,
-                          tileTopPadding: 16,
-                          tileBottomPadding: 8,
-                          listTileBuilder: (index) {
-                            return DocumentListTile(
-                              index: index,
-                              onDetailsPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) =>
-                                      const DocumentInfoBottomSheet(),
-                                  isScrollControlled: true,
-                                );
-                              },
-                              customers:
-                                  context.read<CustomerCubit>().getCustomers(),
-                            );
-                          },
-                          list: context.read<CustomerCubit>().getCustomers(),
-                        );
+                    BlocListener<DocumentDetailsCubit, DocumentDetailsState>(
+                      listener: (context, state) {
+// * states of fetching documents details are being handled here
+                        if (state is DocumentDetailLoaded) {
+                          context.loaderOverlay.hide();
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                const DocumentInfoBottomSheet(),
+                            isScrollControlled: true,
+                          );
+                        } else if (state is DocumentDetailLoading) {
+                          context.loaderOverlay.show();
+                        } else if (state is DocumentDetailError) {
+                          context.loaderOverlay.hide();
+                          // todo show appropriate alert
+                        }
                       },
+                      child: BlocBuilder<TabCubit, TabState>(
+                        builder: (context, state) {
+                          return CustomListView(
+                            tileLeftPadding: 0,
+                            tileRightPadding: 0,
+                            tileTopPadding: 16,
+                            tileBottomPadding: 8,
+                            listTileBuilder: (index) {
+                              return DocumentListTile(
+                                index: index,
+                                onDetailsPressed: () async {
+                                  // * creating instances
+                                  final documentDetailCubit =
+                                      context.read<DocumentDetailsCubit>();
+                                  final customer = context
+                                      .read<CustomerCubit>()
+                                      .getCustomers()[index];
+                                  // * giving the customer id as a parameter to fetch its data
+                                  await documentDetailCubit
+                                      .fetchDocumentDetail(customer.customerId);
+                                },
+                                customers: context
+                                    .read<CustomerCubit>()
+                                    .getCustomers(),
+                              );
+                            },
+                            list: context.read<CustomerCubit>().getCustomers(),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),

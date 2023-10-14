@@ -21,7 +21,8 @@ class ServiceLoading extends ServiceState {
 }
 
 class ServiceLoadingCompleted extends ServiceState {
-  ServiceLoadingCompleted({required super.allServices}) {
+  ServiceLoadingCompleted({List<Service>? allServices})
+      : super(allServices: allServices) {
     debugPrint('Service loading completed state');
   }
 }

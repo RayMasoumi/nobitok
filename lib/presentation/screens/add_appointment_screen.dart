@@ -9,8 +9,8 @@ import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../constants/styles.dart';
-import '../modal_bottom_sheets/customer_document_number_widget.dart';
 import '../widgets/call_customer_widget.dart';
+import '../widgets/customer_document_number_widget.dart';
 import '../widgets/customer_name_widget.dart';
 import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';

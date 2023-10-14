@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
-import 'custom_image_widget.dart';
 import 'info_card_widget.dart';
 
-class CallCustomerWidget extends StatelessWidget {
-  const CallCustomerWidget({
+class PrintDocumentWidget extends StatelessWidget {
+  const PrintDocumentWidget({
     super.key,
-    required this.phoneNumber,
   });
-
-  final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +22,16 @@ class CallCustomerWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const CustomImage(
-              path: 'assets/icons/call.png',
-              height: 16,
-              width: 16,
+            Icon(
+              MdiIcons.fileDocumentMultipleOutline,
+              color: Colors.white,
+              size: 24,
             ),
             Text(
-              phoneNumber,
-              style: kBold13TextStyle.copyWith(color: Colors.white),
+              'چاپ پرونده',
+              style: kBold13TextStyle.copyWith(
+                color: Colors.white,
+              ),
             ),
           ],
         ),

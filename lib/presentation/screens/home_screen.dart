@@ -7,6 +7,7 @@ import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
@@ -257,7 +258,14 @@ class HomeScreen extends StatelessWidget {
                           listTileBuilder: (index) {
                             return DocumentListTile(
                               index: index,
-                              onDetailsPressed: () {},
+                              onDetailsPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) =>
+                                      const DocumentInfoBottomSheet(),
+                                  isScrollControlled: true,
+                                );
+                              },
                               customers:
                                   context.read<CustomerCubit>().getCustomers(),
                             );

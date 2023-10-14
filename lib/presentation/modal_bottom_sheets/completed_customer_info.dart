@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
+import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 
 import '../../constants/enums/appointment_status.dart';
 import '../../constants/sizes.dart';

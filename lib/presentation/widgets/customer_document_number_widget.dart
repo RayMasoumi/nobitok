@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/styles.dart';
-import '../widgets/info_card_widget.dart';
+import 'info_card_widget.dart';
 
 class CustomerDocumentNumberWidget extends StatelessWidget {
   const CustomerDocumentNumberWidget({

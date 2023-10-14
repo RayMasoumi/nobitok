@@ -45,10 +45,11 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
               children: [
 // * name and last name:
                 CustomerNameWidget(
-                    name: appointmentDetails
-                        .getAppointmentDetails()
-                        .customerDetail
-                        .customerName),
+                  name: appointmentDetails
+                      .getAppointmentDetails()
+                      .customerDetail
+                      .customerName,
+                ),
                 SizedBox(
                   height: 16.h,
                 ),

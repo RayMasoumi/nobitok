@@ -17,7 +17,6 @@ class CustomerListTile extends StatelessWidget {
   });
 
   final bool isAppointment;
-
   final List<Appointment> appointments;
   final int index;
   final Function() onDetailsPressed;

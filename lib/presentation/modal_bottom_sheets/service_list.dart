@@ -45,7 +45,10 @@ class ServiceBottomSheet extends StatelessWidget {
                     tileTopPadding: 8,
                     tileBottomPadding: 8,
                     listTileBuilder: (index) {
-                      return const ServicesListTile();
+                      return ServicesListTile(
+                        services: context.read<ServiceCubit>().getServices(),
+                        index: index,
+                      );
                     },
                     list: context.read<ServiceCubit>().getServices(),
                   );

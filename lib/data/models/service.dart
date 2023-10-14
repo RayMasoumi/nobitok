@@ -2,7 +2,7 @@ class Service {
   int serviceId;
   String? serviceName;
   double servicePrice;
-  int? serviceQuantity;
+  int serviceQuantity;
 
   Service(
       {required this.serviceId,

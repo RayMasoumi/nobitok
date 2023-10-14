@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/data/models/service.dart';
 
 import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 import 'custom_input_quantity_widget.dart';
 
-class ServicesListTile extends StatelessWidget {
+class ServicesListTile extends StatefulWidget {
   const ServicesListTile({
     super.key,
     required this.services,
@@ -16,6 +17,13 @@ class ServicesListTile extends StatelessWidget {
   final List<Service> services;
   final int index;
 
+  @override
+  State<ServicesListTile> createState() => _ServicesListTileState();
+}
+
+class _ServicesListTileState extends State<ServicesListTile> {
+  bool isChecked = false; //TODO change later
+  int? quantity;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -33,7 +41,7 @@ class ServicesListTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      services[index].serviceName!,
+                      widget.services[widget.index].serviceName!,
                       style: kBold13TextStyle,
                       textAlign: TextAlign.start,
                     ),
@@ -43,7 +51,7 @@ class ServicesListTile extends StatelessWidget {
 // * service price:
                 Row(
                   children: [
-                    Text(services[index].servicePrice.toString()),
+                    Text(widget.services[widget.index].servicePrice.toString()),
                     const Text(' $kCurrency'),
                   ],
                 ),
@@ -63,17 +71,18 @@ class ServicesListTile extends StatelessWidget {
                     SizedBox(
                       height: 18.h,
                       width: 18.w,
-                      child: Builder(builder: (context) {
-                        return Checkbox(
-                          value: false,
-                          onChanged: (value) {
-                            value = !value!;
-                          },
-                          side: const BorderSide(
-                            color: Color(0xff49454F),
-                          ),
-                        );
-                      }),
+                      child: Checkbox(
+                        activeColor: kGreenColor,
+                        value: isChecked,
+                        onChanged: (value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        },
+                        side: const BorderSide(
+                          color: Color(0xff49454F),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: 12.w,
@@ -83,7 +92,7 @@ class ServicesListTile extends StatelessWidget {
 
 // * quantity:
                 CustomInputQuantityWidget(
-                  service: services[index],
+                  service: widget.services[widget.index],
                 ),
               ],
             ),

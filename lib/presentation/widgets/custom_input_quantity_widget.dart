@@ -8,7 +8,7 @@ import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
 
 import '../../constants/sizes.dart';
 
-class CustomInputQuantityWidget extends StatefulWidget {
+class CustomInputQuantityWidget extends StatelessWidget {
   const CustomInputQuantityWidget({
     super.key,
     required this.service,
@@ -16,12 +16,6 @@ class CustomInputQuantityWidget extends StatefulWidget {
 
   final Service service;
 
-  @override
-  State<CustomInputQuantityWidget> createState() =>
-      _CustomInputQuantityWidgetState();
-}
-
-class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,14 +33,12 @@ class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
           InkWell(
             child: const CustomImage(path: 'assets/icons/Add.png'),
             onTap: () {
-              setState(() {
-                changeQuantity(true, widget.service);
-              });
+              changeQuantity(true, service);
             },
           ),
           Expanded(
             child: Text(
-              widget.service.serviceQuantity.toString(),
+              service.serviceQuantity.toString(),
               textAlign: TextAlign.center,
               style: kBold13TextStyle,
             ),
@@ -54,9 +46,7 @@ class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
           GestureDetector(
             child: const CustomImage(path: 'assets/icons/subtract.png'),
             onTap: () {
-              setState(() {
-                changeQuantity(false, widget.service);
-              });
+              changeQuantity(false, service);
             },
           ),
         ],

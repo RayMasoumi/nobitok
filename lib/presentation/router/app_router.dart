@@ -1,6 +1,7 @@
 // * creating a class for routing in between screens(similar to namedRouting):
 
 import 'package:flutter/material.dart';
+import 'package:nobitok/presentation/screens/add_appointment_screen.dart';
 import 'package:nobitok/presentation/screens/home_screen.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -15,6 +16,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case kHomeScreenRoute:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+      case kAddAppointmentScreenRoute:
+        return MaterialPageRoute(builder: (_) => const AddAppointmentScreen());
 
       default:
         return null;

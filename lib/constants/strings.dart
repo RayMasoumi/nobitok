@@ -36,5 +36,6 @@ const kLoginException = 'login_error';
 const kLoginScreenRoute = '/login_screen';
 const kHomeScreenRoute = '/home_screen';
 const kAddAppointmentScreenRoute = '/add_appointment_screen';
+const kCreateNewDocumentScreenRoute = '/create_new_document_screen';
 
 // * hero tags

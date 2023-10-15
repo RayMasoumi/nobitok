@@ -11,6 +11,7 @@ import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/new_document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
@@ -21,6 +22,8 @@ import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
 import 'package:nobitok/data/repositories/get_document_details_repository.dart';
 import 'package:nobitok/data/repositories/get_invoice_details_repository.dart';
 import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
+import 'package:nobitok/data/repositories/post_new_customer_repository.dart';
+import 'package:nobitok/data/repositories/post_new_document_repository.dart';
 import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/data/services/get_all_customers_service.dart';
@@ -30,6 +33,8 @@ import 'package:nobitok/data/services/get_appointments_service.dart';
 import 'package:nobitok/data/services/get_customer_details_service.dart';
 import 'package:nobitok/data/services/get_document_details_service.dart';
 import 'package:nobitok/data/services/get_invoice_details_service.dart';
+import 'package:nobitok/data/services/post_new_customer_service.dart';
+import 'package:nobitok/data/services/post_new_document_service.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -84,6 +89,16 @@ void main() {
   final GetDocumentDetailsRepository getDocumentDetailsRepository =
       GetDocumentDetailsRepository(
           getDocumentDetailsService: getDocumentDetailsService);
+  // * new document
+  final PostNewDocumentService postNewDocumentService =
+      PostNewDocumentService();
+  final PostNewDocumentRepository postNewDocumentRepository =
+      PostNewDocumentRepository(postNewDocumentService);
+  // * new customer
+  final PostNewCustomerService postNewCustomerService =
+      PostNewCustomerService();
+  final PostNewCustomerRepository postNewCustomerRepository =
+      PostNewCustomerRepository(postNewCustomerService);
   runApp(
     MyApp(
       authRepository: authRepository,
@@ -95,6 +110,8 @@ void main() {
       customerRepository: customerRepository,
       serviceRepository: serviceRepository,
       getDocumentDetailsRepository: getDocumentDetailsRepository,
+      postNewDocumentRepository: postNewDocumentRepository,
+      postNewCustomerRepository: postNewCustomerRepository,
     ),
   );
 }
@@ -109,6 +126,9 @@ class MyApp extends StatelessWidget {
   final CustomerRepository customerRepository;
   final ServiceRepository serviceRepository;
   final GetDocumentDetailsRepository getDocumentDetailsRepository;
+
+  final PostNewDocumentRepository postNewDocumentRepository;
+  final PostNewCustomerRepository postNewCustomerRepository;
   const MyApp({
     super.key,
     required this.authRepository,
@@ -120,6 +140,8 @@ class MyApp extends StatelessWidget {
     required this.customerRepository,
     required this.serviceRepository,
     required this.getDocumentDetailsRepository,
+    required this.postNewDocumentRepository,
+    required this.postNewCustomerRepository,
   });
 
   @override
@@ -174,6 +196,11 @@ class MyApp extends StatelessWidget {
                     create: (context) => DocumentCubit()),
                 BlocProvider<ServiceCubit>(
                   create: (context) => ServiceCubit(serviceRepository),
+                ),
+                BlocProvider<NewDocumentCubit>(
+                  create: (context) => NewDocumentCubit(
+                      postNewDocumentRepository: postNewDocumentRepository,
+                      postNewCustomerRepository: postNewCustomerRepository),
                 ),
                 BlocProvider<DocumentDetailsCubit>(
                   create: (context) => DocumentDetailsCubit(

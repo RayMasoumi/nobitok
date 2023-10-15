@@ -7,7 +7,7 @@ import '../../constants/urls.dart';
 class GetDocumentDetailsService {
   Future<http.Response> fetchDocumentDetails(int customerId) async {
     final url =
-        Uri.parse('$kBaseUrl$kGetDocumentDetails?CustomerId=$customerId');
+        Uri.parse('$kBaseUrl$kGetDocumentDetailsUrl?CustomerId=$customerId');
     final headers = {
       'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
       'Content-Type': 'application/json',

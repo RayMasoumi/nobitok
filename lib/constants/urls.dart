@@ -22,4 +22,10 @@ const kGetAllServicesUrl = '/Service/getAllServices';
 const kGetAllCustomersUrl = '/Customer/getAllCustomers';
 
 // * api get document details:
-const kGetDocumentDetails = '/Appointment/getCustomerAppointments';
+const kGetDocumentDetailsUrl = '/Appointment/getCustomerAppointments';
+
+// * api post new document
+const String kPostNewDocumentUrl = '/Document/AddDocument';
+
+// * api post new customer
+const String kPostNewCustomerUrl = '/Customer/addCustomer';

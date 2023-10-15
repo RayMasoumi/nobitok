@@ -1,52 +1,52 @@
 class Document {
   final int documentId;
   final int customerId;
-  final bool? drugConsume;
-  final bool? thyroidDisease;
-  final bool? bloodPressure;
-  final bool? smokingOrAlcoholConsumption;
-  final bool? acutanConsumption;
-  final bool? cardiovascularDisease;
-  final bool? pregnancy;
-  final bool? diabetes;
-  final bool? breastFeeding;
-  final bool? deformedWounds;
-  final bool? herpes;
-  final bool? radioTherapy;
-  final bool? medicalAllergy;
-  final bool? neuropsychiatricDiseases;
-  final bool? hiv;
-  final bool? hepatitis;
-  final String? shockDuringInjection;
-  final String? presenceOfMetalPlates;
-  final bool? roaccutane;
-  final bool? daccutane;
-  final bool? tattoo;
+  bool drugConsume;
+  bool thyroidDisease;
+  bool bloodPressure;
+  bool smokingOrAlcoholConsumption;
+  bool acutanConsumption;
+  bool cardiovascularDisease;
+  bool pregnancy;
+  bool diabetes;
+  bool breastFeeding;
+  bool deformedWounds;
+  bool herpes;
+  bool radioTherapy;
+  bool medicalAllergy;
+  bool neuropsychiatricDiseases;
+  bool hiv;
+  bool hepatitis;
+  String shockDuringInjection;
+  String presenceOfMetalPlates;
+  bool roaccutane;
+  bool daccutane;
+  bool tattoo;
 
   Document({
     required this.documentId,
     required this.customerId,
-    this.drugConsume,
-    this.thyroidDisease,
-    this.bloodPressure,
-    this.smokingOrAlcoholConsumption,
-    this.acutanConsumption,
-    this.cardiovascularDisease,
-    this.pregnancy,
-    this.diabetes,
-    this.breastFeeding,
-    this.deformedWounds,
-    this.herpes,
-    this.radioTherapy,
-    this.medicalAllergy,
-    this.neuropsychiatricDiseases,
-    this.hiv,
-    this.hepatitis,
-    this.shockDuringInjection,
-    this.presenceOfMetalPlates,
-    this.roaccutane,
-    this.daccutane,
-    this.tattoo,
+    this.drugConsume = false,
+    this.thyroidDisease = false,
+    this.bloodPressure = false,
+    this.smokingOrAlcoholConsumption = false,
+    this.acutanConsumption = false,
+    this.cardiovascularDisease = false,
+    this.pregnancy = false,
+    this.diabetes = false,
+    this.breastFeeding = false,
+    this.deformedWounds = false,
+    this.herpes = false,
+    this.radioTherapy = false,
+    this.medicalAllergy = false,
+    this.neuropsychiatricDiseases = false,
+    this.hiv = false,
+    this.hepatitis = false,
+    this.shockDuringInjection = '',
+    this.presenceOfMetalPlates = '',
+    this.roaccutane = false,
+    this.daccutane = false,
+    this.tattoo = false,
   });
 
   factory Document.fromJson(Map<String, dynamic> json) {

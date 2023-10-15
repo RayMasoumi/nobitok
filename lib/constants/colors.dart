@@ -15,6 +15,7 @@ const Color kDividerColor = Color(0xFF9C9C9C);
 const Color kGreenColor = Color(0xFF68D88F);
 const Color kYellowColor = Color(0xFFFFCD81);
 const Color kBlue300Color = Color(0xff7B88FF);
+const Color kBlue400Color = Color(0xff6171FF);
 const Color kBlue200Color = Color(0xffA4AEFF);
 const Color kBlue50Color = Color(0xffEBEDFF);
 const Color kBlue500Color = Color(0xff3A4EFF);

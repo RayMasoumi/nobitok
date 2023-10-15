@@ -69,11 +69,15 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(
                             width: 200.w,
                             child: FloatingActionButton(
+                              heroTag: 'AddDocumentFAB',
                               backgroundColor: kGreenColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(19),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context)
+                                    .pushNamed(kCreateNewDocumentScreenRoute);
+                              },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [

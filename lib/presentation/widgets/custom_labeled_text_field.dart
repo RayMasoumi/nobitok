@@ -13,6 +13,8 @@ class CustomLabeledTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.label,
+    this.icon,
+    this.disabled = false,
   });
 
   final bool isPassword;
@@ -20,6 +22,8 @@ class CustomLabeledTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final String label;
+  final Icon? icon;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class CustomLabeledTextField extends StatelessWidget {
               ? TextDirection.ltr
               : TextDirection.rtl,
           textInputAction: TextInputAction.none,
-          enabled: true,
+          enabled: !disabled,
           textAlign: keyboardType == TextInputType.phone
               ? TextAlign.right
               : TextAlign.start,
@@ -45,6 +49,8 @@ class CustomLabeledTextField extends StatelessWidget {
           cursorColor: Colors.grey,
           keyboardType: keyboardType,
           decoration: InputDecoration(
+            suffixIcon: icon,
+            suffixIconColor: kBlue400Color,
             floatingLabelStyle: kTextFieldLabelTextStyle,
             labelText: label,
             floatingLabelBehavior: FloatingLabelBehavior.auto,

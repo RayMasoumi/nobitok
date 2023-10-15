@@ -30,8 +30,9 @@ const kGetAllDocumentsException = 'get_all_documents_error';
 const kGetAllCustomersException = 'get_all_Customers_error';
 const kGetAllServicesException = 'get_all_Services_error';
 const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
+const kSendNewDocumentException = 'send_new_document_error';
+const kSendNewCustomerException = 'send_new_customer_error';
 const kLoginException = 'login_error';
-
 // * routes names
 const kLoginScreenRoute = '/login_screen';
 const kHomeScreenRoute = '/home_screen';

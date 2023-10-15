@@ -47,8 +47,12 @@ class SearchbarWidget extends StatelessWidget {
             //       hintStyle: TextStyle(color: Color(0xff5D5D5D))),
             // ),
             const Spacer(),
-            CustomIcon(
-                iconPath: 'assets/icons/bell-outline.png', iconSize: 24.w),
+
+            InkWell(
+              onTap: () {},
+              child: CustomIcon(
+                  iconPath: 'assets/icons/bell-outline.png', iconSize: 24.w),
+            ),
             SizedBox(
               width: 8.w,
             ),

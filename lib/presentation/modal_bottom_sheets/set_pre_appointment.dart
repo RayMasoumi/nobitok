@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/custom_jalali_date_picker.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
@@ -55,10 +56,11 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
               children: [
 // * name and last name:
                 CustomerNameWidget(
-                    name: appointmentDetails
-                        .getAppointmentDetails()
-                        .customerDetail
-                        .customerName),
+                  name: appointmentDetails
+                      .getAppointmentDetails()
+                      .customerDetail
+                      .customerName,
+                ),
                 SizedBox(
                   height: 16.h,
                 ),
@@ -106,11 +108,7 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                       disabled: false,
                       text: 'date',
                       onPressed: () async {
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   builder: (context) => const SetDateBottomSheet(),
-                        //   isScrollControlled: true,
-                        // );
+                        String date = await customJalaliDatePicker(context);
                       },
                       // todo,
                     ),

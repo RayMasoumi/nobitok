@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/service_list.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
@@ -228,14 +230,33 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 // * submit appointment button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 14,
-                  borderRadius: kBorderRadius8,
-                  color: kGreenColor,
-                  text: 'تکمیل نوبت',
-                  onPressed: () {},
+                BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
+                  listener: (context, state) {
+                    if (state is AppointmentDetailLoading) {
+                      context.loaderOverlay.show();
+                    } else if (state is AppointmentDetailSent) {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog
+                      Navigator.of(context).pop();
+                    } else if (state is AppointmentDetailError) {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog
+                    } else {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog.
+                    }
+                  },
+                  child: CustomButton(
+                    height: 40,
+                    width: 160,
+                    fontSize: 14,
+                    borderRadius: kBorderRadius8,
+                    color: kGreenColor,
+                    text: 'تکمیل نوبت',
+                    onPressed: () async {
+                      await appointmentDetails.completeTheAppointment();
+                    },
+                  ),
                 ),
 // * add pre appointment button:
                 CustomButton(

@@ -3,6 +3,7 @@ import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/data/models/appointment.dart';
 import 'package:nobitok/data/models/appointment_detail.dart';
 import 'package:nobitok/data/repositories/add_appointment_from_pre_appointment_repository.dart';
+import 'package:nobitok/data/repositories/complete_appointment_repository.dart';
 import 'package:nobitok/data/repositories/invoice_repository.dart';
 
 import '../../constants/enums/appointment_status.dart';
@@ -21,8 +22,10 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
   final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
   final AddAppointmentFromPreAppointmentRepository
       addAppointmentFromPreAppointmentRepository;
+  final CompleteAppointmentRepository completeAppointmentRepository;
   AppointmentDetailCubit(
-      {required this.invoiceRepository,
+      {required this.completeAppointmentRepository,
+      required this.invoiceRepository,
       required this.addAppointmentFromPreAppointmentRepository,
       required this.postNewPreAppointmentRepository,
       required this.getInvoiceDetailsRepository,
@@ -79,6 +82,24 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     } catch (e) {
       emit(AppointmentDetailError(
           error: 'Failed to send appointment detail: $e'));
+    }
+  }
+
+  // complete appointment
+  Future<void> completeTheAppointment() async {
+    AppointmentDetail appointmentDetail = getAppointmentDetails();
+    emit(AppointmentDetailLoading());
+
+    try {
+      final sent = await completeAppointmentOfRepository(appointmentDetail);
+
+      sent
+          ? emit(AppointmentDetailSent())
+          : emit(AppointmentDetailError(
+              error: 'could not complete the appointment'));
+    } catch (e) {
+      emit(AppointmentDetailError(
+          error: 'Failed to complete appointment detail: $e'));
     }
   }
 
@@ -183,6 +204,20 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
       }
     } catch (e) {
       // ! 'send_new_appointment_error'
+      throw Exception('$e:in AppointmentDetailsCubit');
+    }
+  }
+
+  Future<bool> completeAppointmentOfRepository(
+      AppointmentDetail appointmentDetail) async {
+    bool status;
+    try {
+      status = await completeAppointmentRepository
+          .completeAppointment(appointmentDetail);
+
+      return status;
+    } catch (e) {
+      // ! 'complete_appointment_error'
       throw Exception('$e:in AppointmentDetailsCubit');
     }
   }

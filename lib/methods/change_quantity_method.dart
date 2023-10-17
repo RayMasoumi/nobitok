@@ -1,11 +1,9 @@
-import 'package:nobitok/data/models/service.dart';
-
-void changeQuantity(bool isIncrement, Service service) {
+void changeQuantity(bool isIncrement, int quantity) {
   if (isIncrement) {
-    service.serviceQuantity++;
+    quantity++;
   } else {
-    if (service.serviceQuantity > 0) {
-      service.serviceQuantity--;
+    if (quantity > 0) {
+      quantity--;
     }
   }
 }

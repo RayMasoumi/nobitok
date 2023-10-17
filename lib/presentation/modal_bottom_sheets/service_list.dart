@@ -69,7 +69,6 @@ class ServiceBottomSheet extends StatelessWidget {
                                 .read<ServiceCubit>()
                                 .getServices()[index]);
                           }
-                          print('on changed...');
                         },
                         alreadySelectedServices: selectedServices,
                       );
@@ -109,10 +108,18 @@ class ServiceBottomSheet extends StatelessWidget {
                     context
                         .read<InvoiceCubit>()
                         .addInvoiceItem(invoiceId, invoiceItems);
+                    await context
+                        .read<AppointmentDetailCubit>()
+                        .fetchAppointmentDetail(context
+                            .read<AppointmentDetailCubit>()
+                            .getAppointmentDetails()
+                            .appointmentDetail);
+
                     for (InvoiceItem item in invoiceItems) {
                       print(item.invoiceItemServiceName);
                       print(item.invoiceItemQuantity);
                     }
+                    Navigator.pop(context);
                   },
                 ),
 // * add service button:
@@ -122,7 +129,7 @@ class ServiceBottomSheet extends StatelessWidget {
                   fontSize: 13,
                   borderRadius: kBorderRadius12,
                   color: kYellowColor,
-                  text: 'افزودن خدمات',
+                  text: 'تغییر قیمت',
                   onPressed: () {},
                 ),
               ],

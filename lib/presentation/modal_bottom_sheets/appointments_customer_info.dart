@@ -151,6 +151,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                               .appointmentDetail
                               .appointmentTime ??
                           '00:00',
+                      onPressed: () {},
                     ),
                   ],
                 ),

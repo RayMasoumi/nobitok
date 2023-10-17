@@ -24,9 +24,9 @@ TextEditingController minuteTextFieldController = TextEditingController();
 class _SetTimeBottomSheetState extends State<SetTimeBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 264.h,
-      width: 375.w,
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: SizedBox(
         height: 264.h,
         width: 375.w,
@@ -45,9 +45,9 @@ class _SetTimeBottomSheetState extends State<SetTimeBottomSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-// * hour textField
+// * minute textField
                   const TimeInputTextField(
-                    isMinute: false,
+                    isMinute: true,
                   ),
                   SizedBox(
                     height: 72.h,
@@ -59,9 +59,9 @@ class _SetTimeBottomSheetState extends State<SetTimeBottomSheet> {
                       ),
                     ),
                   ),
-// * minute textField
+// * hour textField
                   const TimeInputTextField(
-                    isMinute: true,
+                    isMinute: false,
                   ),
                 ],
               ),
@@ -76,7 +76,10 @@ class _SetTimeBottomSheetState extends State<SetTimeBottomSheet> {
                 borderRadius: kBorderRadius12,
                 color: kGreenColor,
                 text: 'تایید',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pop(
+                      '${hourTextFieldController.text}:${minuteTextFieldController.text}');
+                },
               ),
             ],
           ),

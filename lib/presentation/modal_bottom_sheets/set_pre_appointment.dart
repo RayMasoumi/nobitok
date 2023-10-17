@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/calculate_date_method.dart';
+import 'package:nobitok/methods/calculate_time_method.dart';
 import 'package:nobitok/methods/custom_jalali_date_picker.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
@@ -11,20 +14,34 @@ import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/seperated_list_view_widget.dart';
 import 'package:nobitok/presentation/widgets/set_date_widget.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../constants/styles.dart';
+import '../../methods/set_time_initial_value_method.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/set_time_widget.dart';
 
-class SetPreAppointmentBottomSheet extends StatelessWidget {
+class SetPreAppointmentBottomSheet extends StatefulWidget {
   const SetPreAppointmentBottomSheet({super.key});
+
+  @override
+  State<SetPreAppointmentBottomSheet> createState() =>
+      _SetPreAppointmentBottomSheetState();
+}
+
+class _SetPreAppointmentBottomSheetState
+    extends State<SetPreAppointmentBottomSheet> {
+  String selectedDate = formatDateJalali(Jalali.now());
+  String selectedTime =
+      formatTimeString('${DateTime.now().hour}:${DateTime.now().minute}');
 
   @override
   Widget build(BuildContext context) {
     final appointmentDetails = context.read<AppointmentDetailCubit>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
@@ -106,16 +123,13 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: false,
-                      text: 'date',
-                      onPressed: () async {
-                        String date = await customJalaliDatePicker(context);
-                      },
-                      // todo,
+                      text: selectedDate,
+                      onPressed: updateSelectedDate,
                     ),
-                    const SetTimeWidget(
+                    SetTimeWidget(
                       disabled: false,
-                      text: 'time',
-                      // todo
+                      text: selectedTime,
+                      onPressed: updateSelectedTime,
                     ),
                   ],
                 ),
@@ -182,5 +196,24 @@ class SetPreAppointmentBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> updateSelectedDate() async {
+    String newSelectedDate = await customJalaliDatePicker(context);
+    setState(() {
+      selectedDate = newSelectedDate;
+    });
+  }
+
+  Future<void> updateSelectedTime() async {
+    setTimeInitialValue();
+    String newSelectedTime = await showModalBottomSheet(
+      context: context,
+      builder: (context) => const SetTimeBottomSheet(),
+      isScrollControlled: true,
+    );
+    setState(() {
+      selectedTime = formatTimeString(newSelectedTime);
+    });
   }
 }

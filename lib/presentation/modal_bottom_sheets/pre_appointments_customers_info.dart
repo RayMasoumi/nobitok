@@ -143,6 +143,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       disabled: true,
                       text:
                           ' ${DateTime.now().minute.toString()} : ${DateTime.now().hour.toString()}',
+                      onPressed: () {},
                     ),
                   ],
                 ),

@@ -9,28 +9,28 @@ import '../models/invoice_item.dart';
 
 class EditInvoiceService {
   Future<http.Response> editInvoice(
-    int invoiceItemId,
-    int quantity,
-    int serviceId,
-    int price,
-    List<InvoiceItem> selectedServices,
+    int invoiceId,
+    List<InvoiceItem> invoiceItems,
   ) async {
-// * Implement API request to fetch information using the token here
     final url = Uri.parse('$kBaseUrl$kEditInvoiceUrl');
 
     final headers = {
       'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
       'Content-Type': 'application/json',
     };
+
+    // * Create a list of factor items from the invoiceItems list
+    final factorItems = invoiceItems.map((item) {
+      return {
+        "quantity": item.invoiceItemQuantity,
+        "serviceId": item.invoiceItemServiceId,
+        "price": item.invoiceItemPrice,
+      };
+    }).toList();
+
     final data = {
-      "id": 3,
-      "factorItems": [
-        {
-          "quantity": 3,
-          "serviceId": 8,
-          "price": 10000,
-        }
-      ]
+      "id": invoiceId,
+      "factorItems": factorItems,
     };
 
     final body = json.encode(data);

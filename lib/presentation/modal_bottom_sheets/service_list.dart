@@ -9,7 +9,12 @@ import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
+import '../../business_logic/cubits/appointment_details_cubit.dart';
+import '../../business_logic/cubits/invoice_cubit.dart';
 import '../../business_logic/cubits/service_state.dart';
+import '../../data/models/invoice_item.dart';
+import '../../data/models/service.dart';
+import '../../methods/cast_services_to_invoice_items.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/service_list_tile.dart';
 
@@ -18,6 +23,7 @@ class ServiceBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Service> selectedServices = [];
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -48,6 +54,18 @@ class ServiceBottomSheet extends StatelessWidget {
                       return ServicesListTile(
                         services: context.read<ServiceCubit>().getServices(),
                         index: index,
+                        checkboxOnChanged: (bool? value) {
+                          if (value == true) {
+                            selectedServices.add(context
+                                .read<ServiceCubit>()
+                                .getServices()[index]);
+                          } else {
+                            selectedServices.remove(context
+                                .read<ServiceCubit>()
+                                .getServices()[index]);
+                          }
+                         print('on changed...');
+                        },
                       );
                     },
                     list: context.read<ServiceCubit>().getServices(),
@@ -69,8 +87,25 @@ class ServiceBottomSheet extends StatelessWidget {
                   borderRadius: kBorderRadius12,
                   color: kGreenColor,
                   text: 'تایید',
-                  onPressed: () {
-                    // context.read<InvoiceCubit>().addInvoiceItem(invoiceId, invoiceItemId, quantity, serviceId, price, selectedServices)
+                  onPressed: () async {
+                    for (Service service in selectedServices) {
+                      print(service.serviceName);
+                      print('services is not empty');
+                    }
+                    int? invoiceId = context
+                        .read<AppointmentDetailCubit>()
+                        .getAppointmentDetails()
+                        .invoiceDetail
+                        .invoiceId;
+                    List<InvoiceItem> invoiceItems =
+                        castServicesToInvoiceItems(selectedServices);
+                    context
+                        .read<InvoiceCubit>()
+                        .addInvoiceItem(invoiceId, invoiceItems);
+                    for (InvoiceItem item in invoiceItems) {
+                      print(item.invoiceItemServiceName);
+                      print(item.invoiceItemQuantity);
+                    }
                   },
                 ),
 // * add service button:

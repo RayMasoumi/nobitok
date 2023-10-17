@@ -10,6 +10,7 @@ import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_cubit.dart';
+import 'package:nobitok/business_logic/cubits/invoice_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
@@ -19,8 +20,10 @@ import 'package:nobitok/data/repositories/get_appointments_repository.dart';
 import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
 import 'package:nobitok/data/repositories/get_invoice_details_repository.dart';
 import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
+import 'package:nobitok/data/repositories/invoice_repository.dart';
 import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/data/services/edit_invoice_service.dart';
 import 'package:nobitok/data/services/get_all_customers_service.dart';
 import 'package:nobitok/data/services/get_all_documents_service.dart';
 import 'package:nobitok/data/services/get_all_services.dart';
@@ -75,6 +78,10 @@ void main() {
   final GetAllServicesService getAllServicesService = GetAllServicesService();
   final ServiceRepository serviceRepository =
       ServiceRepository(getAllServicesService);
+  // * invoices/invoiceItems:
+  final EditInvoiceService editInvoiceService = EditInvoiceService();
+  final InvoiceRepository invoiceRepository =
+      InvoiceRepository(editInvoiceService: editInvoiceService);
   runApp(
     MyApp(
       authService: authService,
@@ -91,6 +98,8 @@ void main() {
       customerRepository: customerRepository,
       getAllServicesService: getAllServicesService,
       serviceRepository: serviceRepository,
+      editInvoiceService: editInvoiceService,
+      invoiceRepository: invoiceRepository,
     ),
   );
 }
@@ -110,6 +119,8 @@ class MyApp extends StatelessWidget {
   final CustomerRepository customerRepository;
   final GetAllServicesService getAllServicesService;
   final ServiceRepository serviceRepository;
+  final InvoiceRepository invoiceRepository;
+  final EditInvoiceService editInvoiceService;
   const MyApp({
     super.key,
     required this.authService,
@@ -126,6 +137,8 @@ class MyApp extends StatelessWidget {
     required this.customerRepository,
     required this.getAllServicesService,
     required this.serviceRepository,
+    required this.invoiceRepository,
+    required this.editInvoiceService,
   });
 
   @override
@@ -181,6 +194,8 @@ class MyApp extends StatelessWidget {
                 BlocProvider<ServiceCubit>(
                   create: (context) => ServiceCubit(serviceRepository),
                 ),
+                BlocProvider<InvoiceCubit>(
+                    create: (context) => InvoiceCubit(invoiceRepository))
               ],
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,

@@ -13,16 +13,11 @@ class InvoiceCubit extends Cubit<InvoiceState> {
 
   Future<void> addInvoiceItem(
     int invoiceId,
-    int invoiceItemId,
-    int quantity,
-    int serviceId,
-    int price,
-    List<InvoiceItem> selectedServices,
+    List<InvoiceItem> invoiceItems,
   ) async {
     try {
       emit(InvoiceLoading());
-      final success = await repository.editInvoice(
-          invoiceItemId, quantity, serviceId, price, selectedServices);
+      final success = await repository.editInvoice(invoiceId, invoiceItems);
       if (success) {
         emit(InvoiceLoadingCompleted());
       } else {

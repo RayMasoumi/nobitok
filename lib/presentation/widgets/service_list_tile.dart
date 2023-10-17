@@ -12,10 +12,12 @@ class ServicesListTile extends StatefulWidget {
     super.key,
     required this.services,
     required this.index,
+    required this.checkboxOnChanged,
   });
 
   final List<Service> services;
   final int index;
+  final Function(bool?) checkboxOnChanged;
 
   @override
   State<ServicesListTile> createState() => _ServicesListTileState();
@@ -24,8 +26,11 @@ class ServicesListTile extends StatefulWidget {
 class _ServicesListTileState extends State<ServicesListTile> {
   bool isChecked = false; //TODO change later
   int? quantity;
+  List<int> selectedServicesIds = []; //TODO change initial value
   @override
   Widget build(BuildContext context) {
+    // * set factor:
+    //TODO selectedServicesIds = ??
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -78,6 +83,7 @@ class _ServicesListTileState extends State<ServicesListTile> {
                           setState(() {
                             isChecked = value!;
                           });
+                          widget.checkboxOnChanged(isChecked);
                         },
                         side: const BorderSide(
                           color: Color(0xff49454F),

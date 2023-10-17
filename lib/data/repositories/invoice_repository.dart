@@ -8,10 +8,10 @@ class InvoiceRepository {
 
   InvoiceRepository({required this.editInvoiceService});
 
-  Future<bool> editInvoice(int invoiceItemId, int quantity, int serviceId,
-      int price, List<InvoiceItem> selectedServices) async {
-    final response = await editInvoiceService.editInvoice(
-        invoiceItemId, quantity, serviceId, price, selectedServices);
+  Future<bool> editInvoice(
+      int invoiceItemId, List<InvoiceItem> invoiceItems) async {
+    final response =
+        await editInvoiceService.editInvoice(invoiceItemId, invoiceItems);
     if (response.statusCode == 200) {
       // TODO ?? anything i should do?
       return true;

@@ -16,7 +16,10 @@ dependencies:
     sdk: flutter
 
   flutter_localizations:
+
     sdk: flutter
+
+
 
 
   cupertino_icons: ^1.0.6
@@ -25,7 +28,7 @@ dependencies:
   bloc_test: ^9.1.4
   equatable: ^2.0.5
   connectivity_plus: ^4.0.2
-  persian_datetime_picker: ^2.6.0
+  persian_datetime_picker: ^2.5.1
   http: ^1.1.0
   get_storage: ^2.1.1
   loader_overlay: ^2.3.2

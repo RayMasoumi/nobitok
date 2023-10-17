@@ -57,6 +57,12 @@ class CustomLabeledTextField extends StatelessWidget {
             labelStyle: kTextFieldLabelTextStyle,
             filled: true,
             fillColor: Colors.white,
+            errorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: kRed600Color),
+            ),
+            focusedErrorBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: kRed600Color),
+            ),
             border: OutlineInputBorder(
               borderRadius: kBorderRadius8,
               borderSide: const BorderSide(color: kTextFieldBorderColor),

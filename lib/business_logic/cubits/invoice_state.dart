@@ -1,10 +1,15 @@
-part of 'invoice_cubit.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:nobitok/data/models/service.dart';
 
-@immutable
+import '../../data/models/invoice.dart';
+import '../../data/models/invoice_item.dart';
+
 class InvoiceState {
   final List<Invoice>? invoices;
+  final List<Service>? selectedServices;
+  final List<InvoiceItem>? invoiceItems;
 
-  const InvoiceState({this.invoices});
+  const InvoiceState({this.selectedServices, this.invoiceItems, this.invoices});
 }
 
 class InvoiceInitialState extends InvoiceState {
@@ -21,8 +26,7 @@ class InvoiceLoading extends InvoiceState {
 
 class InvoiceLoadingCompleted extends InvoiceState {
   // * initializes the invoices property in the InvoiceState superclass:
-  InvoiceLoadingCompleted({List<Invoice>? invoices})
-      : super(invoices: invoices) {
+  InvoiceLoadingCompleted() {
     debugPrint('Invoice loading completed state');
   }
 }

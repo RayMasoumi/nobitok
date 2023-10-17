@@ -69,7 +69,9 @@ class ServiceBottomSheet extends StatelessWidget {
                   borderRadius: kBorderRadius12,
                   color: kGreenColor,
                   text: 'تایید',
-                  onPressed: () {},
+                  onPressed: () {
+                    // context.read<InvoiceCubit>().addInvoiceItem(invoiceId, invoiceItemId, quantity, serviceId, price, selectedServices)
+                  },
                 ),
 // * add service button:
                 CustomButton(

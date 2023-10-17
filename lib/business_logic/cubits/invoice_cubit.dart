@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/constants/strings.dart';
 
-import '../../data/models/invoice.dart';
 import '../../data/models/invoice_item.dart';
 import '../../data/repositories/invoice_repository.dart';
-
-part 'invoice_state.dart';
+import 'invoice_state.dart';
 
 class InvoiceCubit extends Cubit<InvoiceState> {
   // * This cubit should have methods for adding, editing, and deleting invoices and invoice items. Additionally, you can have methods for calculating the total amount for an invoice.

@@ -32,3 +32,6 @@ const String kPostNewCustomerUrl = '/Customer/addCustomer';
 
 // * api post new pre appointment
 const String kPostNewPreAppointmentUrl = '/Appointment/addAppointment';
+
+// * api edit invoice:
+const kEditInvoiceUrl = '/Factor/editFactor';

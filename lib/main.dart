@@ -11,6 +11,7 @@ import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/invoice_cubit.dart';
 import 'package:nobitok/business_logic/cubits/new_document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
@@ -22,10 +23,12 @@ import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
 import 'package:nobitok/data/repositories/get_document_details_repository.dart';
 import 'package:nobitok/data/repositories/get_invoice_details_repository.dart';
 import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
+import 'package:nobitok/data/repositories/invoice_repository.dart';
 import 'package:nobitok/data/repositories/post_new_customer_repository.dart';
 import 'package:nobitok/data/repositories/post_new_document_repository.dart';
 import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/data/services/edit_invoice_service.dart';
 import 'package:nobitok/data/services/get_all_customers_service.dart';
 import 'package:nobitok/data/services/get_all_documents_service.dart';
 import 'package:nobitok/data/services/get_all_services.dart';
@@ -85,6 +88,10 @@ void main() {
   final GetAllServicesService getAllServicesService = GetAllServicesService();
   final ServiceRepository serviceRepository =
       ServiceRepository(getAllServicesService);
+  // * invoices/invoiceItems:
+  final EditInvoiceService editInvoiceService = EditInvoiceService();
+  final InvoiceRepository invoiceRepository =
+      InvoiceRepository(editInvoiceService: editInvoiceService);
   // * document details:
   final GetDocumentDetailsService getDocumentDetailsService =
       GetDocumentDetailsService();
@@ -108,50 +115,74 @@ void main() {
       PostNewPreAppointmentRepository(postNewPreAppointmentService);
   runApp(
     MyApp(
+      authService: authService,
       authRepository: authRepository,
       getAppointmentsRepository: getAppointmentsRepository,
+      getAppointmentsService: getAppointmentsService,
+      preAppointmentService: getPreAppointmentService,
       preAppointmentRepository: preAppointmentRepository,
       getInvoiceDetailsRepository: getInvoiceDetailsRepository,
       getCustomerDetailsRepository: getCustomerDetailsRepository,
+      getAllDocumentsService: getAllDocumentsService,
       documentRepository: documentRepository,
+      getAllCustomersService: getAllCustomersService,
       customerRepository: customerRepository,
+      getAllServicesService: getAllServicesService,
       serviceRepository: serviceRepository,
       getDocumentDetailsRepository: getDocumentDetailsRepository,
       postNewDocumentRepository: postNewDocumentRepository,
       postNewCustomerRepository: postNewCustomerRepository,
+      editInvoiceService: editInvoiceService,
+      invoiceRepository: invoiceRepository,
       postNewPreAppointmentRepository: postNewPreAppointmentRepository,
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  final AuthService authService;
   final AuthRepository authRepository;
   final GetAppointmentsRepository getAppointmentsRepository;
+  final GetAppointmentsService getAppointmentsService;
+  final GetPreAppointmentService preAppointmentService;
   final PreAppointmentRepository preAppointmentRepository;
   final GetInvoiceDetailsRepository getInvoiceDetailsRepository;
   final GetCustomerDetailsRepository getCustomerDetailsRepository;
+  final GetAllDocumentsService getAllDocumentsService;
   final DocumentRepository documentRepository;
+  final GetAllCustomersService getAllCustomersService;
   final CustomerRepository customerRepository;
+  final GetAllServicesService getAllServicesService;
   final ServiceRepository serviceRepository;
   final GetDocumentDetailsRepository getDocumentDetailsRepository;
 
   final PostNewDocumentRepository postNewDocumentRepository;
   final PostNewCustomerRepository postNewCustomerRepository;
   final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
+  final InvoiceRepository invoiceRepository;
+  final EditInvoiceService editInvoiceService;
   const MyApp({
     super.key,
+    required this.authService,
     required this.authRepository,
     required this.getAppointmentsRepository,
+    required this.getAppointmentsService,
+    required this.preAppointmentService,
     required this.preAppointmentRepository,
     required this.getInvoiceDetailsRepository,
     required this.getCustomerDetailsRepository,
+    required this.getAllDocumentsService,
     required this.documentRepository,
+    required this.getAllCustomersService,
     required this.customerRepository,
+    required this.getAllServicesService,
     required this.serviceRepository,
     required this.getDocumentDetailsRepository,
     required this.postNewDocumentRepository,
     required this.postNewCustomerRepository,
     required this.postNewPreAppointmentRepository,
+    required this.invoiceRepository,
+    required this.editInvoiceService,
   });
 
   @override
@@ -220,6 +251,8 @@ class MyApp extends StatelessWidget {
                     getDocumentDetailsRepository: getDocumentDetailsRepository,
                   ),
                 ),
+                BlocProvider<InvoiceCubit>(
+                    create: (context) => InvoiceCubit(invoiceRepository))
               ],
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,

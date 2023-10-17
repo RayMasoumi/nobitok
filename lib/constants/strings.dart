@@ -34,6 +34,8 @@ const kSendNewDocumentException = 'send_new_document_error';
 const kSendNewPreAppointmentException = 'send_new_pre_appointment_error';
 const kSendNewCustomerException = 'send_new_customer_error';
 const kLoginException = 'login_error';
+const kEditInvoiceException = 'edit_invoice_error';
+
 // * routes names
 const kLoginScreenRoute = '/login_screen';
 const kHomeScreenRoute = '/home_screen';

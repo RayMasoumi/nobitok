@@ -1,8 +1,10 @@
-class Service {
-  int serviceId;
-  String? serviceName;
-  double servicePrice;
-  int? serviceQuantity;
+import 'package:equatable/equatable.dart';
+
+class Service extends Equatable {
+  final int serviceId;
+  final String? serviceName;
+  final double servicePrice;
+  int serviceQuantity;
 
   Service(
       {required this.serviceId,
@@ -10,6 +12,8 @@ class Service {
       required this.servicePrice,
       this.serviceQuantity = 1});
 
+  @override
+  List<Object?> get props => [serviceId];
   factory Service.fromJson(Map<String, dynamic> json) {
     return Service(
       serviceId: json['id'] ?? 0,

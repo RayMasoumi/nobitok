@@ -40,7 +40,9 @@ import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
 import 'data/repositories/customers_repository.dart';
+import 'data/repositories/post_new_pre_appointment_repository.dart';
 import 'data/services/get_pre_appointment_service.dart';
+import 'data/services/post_new_pre_appointment_service.dart';
 
 void main() {
 // *auth
@@ -99,6 +101,11 @@ void main() {
       PostNewCustomerService();
   final PostNewCustomerRepository postNewCustomerRepository =
       PostNewCustomerRepository(postNewCustomerService);
+  // * new pre appointment
+  final PostNewPreAppointmentService postNewPreAppointmentService =
+      PostNewPreAppointmentService();
+  final PostNewPreAppointmentRepository postNewPreAppointmentRepository =
+      PostNewPreAppointmentRepository(postNewPreAppointmentService);
   runApp(
     MyApp(
       authRepository: authRepository,
@@ -112,6 +119,7 @@ void main() {
       getDocumentDetailsRepository: getDocumentDetailsRepository,
       postNewDocumentRepository: postNewDocumentRepository,
       postNewCustomerRepository: postNewCustomerRepository,
+      postNewPreAppointmentRepository: postNewPreAppointmentRepository,
     ),
   );
 }
@@ -129,6 +137,7 @@ class MyApp extends StatelessWidget {
 
   final PostNewDocumentRepository postNewDocumentRepository;
   final PostNewCustomerRepository postNewCustomerRepository;
+  final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
   const MyApp({
     super.key,
     required this.authRepository,
@@ -142,6 +151,7 @@ class MyApp extends StatelessWidget {
     required this.getDocumentDetailsRepository,
     required this.postNewDocumentRepository,
     required this.postNewCustomerRepository,
+    required this.postNewPreAppointmentRepository,
   });
 
   @override
@@ -188,7 +198,9 @@ class MyApp extends StatelessWidget {
                   create: (context) => AppointmentDetailCubit(
                       getInvoiceDetailsRepository: getInvoiceDetailsRepository,
                       getCustomerDetailsRepository:
-                          getCustomerDetailsRepository),
+                          getCustomerDetailsRepository,
+                      postNewPreAppointmentRepository:
+                          postNewPreAppointmentRepository),
                 ),
                 BlocProvider<CustomerCubit>(
                     create: (context) => CustomerCubit()),

@@ -9,13 +9,16 @@ import '../../data/models/customer.dart';
 import '../../data/models/invoice.dart';
 import '../../data/repositories/get_customer_details_repository.dart';
 import '../../data/repositories/get_invoice_details_repository.dart';
+import '../../data/repositories/post_new_pre_appointment_repository.dart';
 
 class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
   final GetCustomerDetailsRepository getCustomerDetailsRepository;
   final GetInvoiceDetailsRepository getInvoiceDetailsRepository;
 
+  final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
   AppointmentDetailCubit(
-      {required this.getInvoiceDetailsRepository,
+      {required this.postNewPreAppointmentRepository,
+      required this.getInvoiceDetailsRepository,
       required this.getCustomerDetailsRepository})
       : super(AppointmentDetailInitial(appointmentDetail: null));
 
@@ -91,6 +94,28 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
       // ! 'get_customer_detail_error'
       throw Exception(
           '$kGetCustomerDetailException:$e:in AppointmentDetailsCubit');
+    }
+  }
+
+  Future<int> sendNewPreAppointmentToRepository(
+      String date, String time, AppointmentDetail appointmentDetail) async {
+    final int factorId;
+    try {
+      factorId = await postNewPreAppointmentRepository.sendNewPreAppointment(
+          date, time, appointmentDetail);
+
+      final bool factorStatusCode;
+      try {
+        // ? factorStatusCode = await
+
+        return 200;
+      } catch (e) {
+        // ! 'send_new_pre_appointment_error'
+        throw Exception('$e:in AppointmentDetailsCubit');
+      }
+    } catch (e) {
+      // ! 'send_new_pre_appointment_error'
+      throw Exception('$e:in AppointmentDetailsCubit');
     }
   }
 }

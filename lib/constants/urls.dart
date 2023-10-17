@@ -29,3 +29,6 @@ const String kPostNewDocumentUrl = '/Document/AddDocument';
 
 // * api post new customer
 const String kPostNewCustomerUrl = '/Customer/addCustomer';
+
+// * api post new pre appointment
+const String kPostNewPreAppointmentUrl = '/Appointment/addAppointment';

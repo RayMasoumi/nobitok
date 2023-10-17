@@ -6,7 +6,4 @@ void changeQuantity(bool isIncrement, int quantity) {
       quantity--;
     }
   }
-  if (widget.quantity > 1) {
-    widget.onQuantityChanged(widget.quantity - 1);
-  }
 }

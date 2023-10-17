@@ -13,36 +13,37 @@ class ServicesListTile extends StatefulWidget {
     required this.services,
     required this.index,
     required this.checkboxOnChanged,
+    required this.alreadySelectedServices,
   });
 
   final List<Service> services;
   final int index;
   final Function(bool?) checkboxOnChanged;
+  final List<Service> alreadySelectedServices;
 
   @override
   State<ServicesListTile> createState() => _ServicesListTileState();
 }
 
 class _ServicesListTileState extends State<ServicesListTile> {
-  bool isChecked = false; //TODO change later
-  int? quantity;
-  List<int> selectedServicesIds = []; //TODO change initial value
   @override
   Widget build(BuildContext context) {
-    // * set factor:
-    //TODO selectedServicesIds = ??
+    // for (Service service in widget.alreadySelectedServices) {
+    //   print(service);
+    // }
+    bool isChecked =
+        widget.alreadySelectedServices.contains(widget.services[widget.index]);
+    print(isChecked);
     return Card(
       elevation: 0,
       color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-// * right side of the tile:
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-// * service name:
                 Row(
                   children: [
                     Text(
@@ -53,7 +54,6 @@ class _ServicesListTileState extends State<ServicesListTile> {
                     const Spacer(),
                   ],
                 ),
-// * service price:
                 Row(
                   children: [
                     Text(widget.services[widget.index].servicePrice.toString()),
@@ -63,13 +63,11 @@ class _ServicesListTileState extends State<ServicesListTile> {
               ],
             ),
           ),
-// * left side of the tile:
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-// * checkbox:
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -95,8 +93,6 @@ class _ServicesListTileState extends State<ServicesListTile> {
                     ),
                   ],
                 ),
-
-// * quantity:
                 CustomInputQuantityWidget(
                   service: widget.services[widget.index],
                 ),

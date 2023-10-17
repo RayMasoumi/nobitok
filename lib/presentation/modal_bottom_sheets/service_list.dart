@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/cast_invoice_item_to_service.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
@@ -23,7 +24,11 @@ class ServiceBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Service> selectedServices = [];
+    List<Service> selectedServices = castInvoiceItemToService(context
+        .read<AppointmentDetailCubit>()
+        .getAppointmentDetails()
+        .invoiceDetail
+        .invoiceItems);
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -64,8 +69,9 @@ class ServiceBottomSheet extends StatelessWidget {
                                 .read<ServiceCubit>()
                                 .getServices()[index]);
                           }
-                         print('on changed...');
+                          print('on changed...');
                         },
+                        alreadySelectedServices: selectedServices,
                       );
                     },
                     list: context.read<ServiceCubit>().getServices(),

@@ -27,7 +27,7 @@ class SeparatedListViewWidget extends StatelessWidget {
                     .invoiceDetail.invoiceItems[index].invoiceItemServiceName ??
                 'خدمت'),
             trailing: Text(
-                '${appointmentDetail.invoiceDetail.invoiceItems[index].invoiceItemPrice.toString().seRagham()} تومان'),
+                '${appointmentDetail.invoiceDetail.invoiceItems[index].invoiceItemPrice.toString().seRagham().toPersianDigit()} تومان'),
           );
         },
         separatorBuilder: (BuildContext context, int index) {

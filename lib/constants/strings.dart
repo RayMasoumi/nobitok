@@ -32,6 +32,7 @@ const kGetAllServicesException = 'get_all_Services_error';
 const kFetchPreAppointmentsDataException = 'fetch_pre_appointments_error';
 const kSendNewDocumentException = 'send_new_document_error';
 const kSendNewPreAppointmentException = 'send_new_pre_appointment_error';
+const kSendNewAppointmentException = 'send_new_appointment_error';
 const kSendNewCustomerException = 'send_new_customer_error';
 const kLoginException = 'login_error';
 const kEditInvoiceException = 'edit_invoice_error';

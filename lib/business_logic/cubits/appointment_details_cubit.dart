@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/data/models/appointment.dart';
 import 'package:nobitok/data/models/appointment_detail.dart';
+import 'package:nobitok/data/repositories/invoice_repository.dart';
 
 import '../../constants/enums/appointment_status.dart';
 import '../../constants/strings.dart';
@@ -15,9 +16,11 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
   final GetCustomerDetailsRepository getCustomerDetailsRepository;
   final GetInvoiceDetailsRepository getInvoiceDetailsRepository;
 
+  final InvoiceRepository invoiceRepository;
   final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
   AppointmentDetailCubit(
-      {required this.postNewPreAppointmentRepository,
+      {required this.invoiceRepository,
+      required this.postNewPreAppointmentRepository,
       required this.getInvoiceDetailsRepository,
       required this.getCustomerDetailsRepository})
       : super(AppointmentDetailInitial(appointmentDetail: null));
@@ -35,6 +38,24 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     } catch (e) {
       emit(AppointmentDetailError(
           error: 'Failed to fetch appointment detail: $e'));
+    }
+  }
+
+  // * new pre appointment
+  Future<void> createPreAppointment(String date, String time) async {
+    AppointmentDetail appointmentDetail = getAppointmentDetails();
+
+    try {
+      final sent = await sendNewPreAppointmentToRepository(
+          date, time, appointmentDetail);
+
+      sent
+          ? emit(AppointmentDetailSent())
+          : emit(AppointmentDetailError(
+              error: 'could not send the pre appointment'));
+    } catch (e) {
+      emit(AppointmentDetailError(
+          error: 'Failed to send pre appointment detail: $e'));
     }
   }
 
@@ -97,7 +118,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     }
   }
 
-  Future<int> sendNewPreAppointmentToRepository(
+  Future<bool> sendNewPreAppointmentToRepository(
       String date, String time, AppointmentDetail appointmentDetail) async {
     final int factorId;
     try {
@@ -106,9 +127,10 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
 
       final bool factorStatusCode;
       try {
-        // ? factorStatusCode = await
+        factorStatusCode = await invoiceRepository.editInvoice(
+            factorId, appointmentDetail.invoiceDetail.invoiceItems);
 
-        return 200;
+        return factorStatusCode;
       } catch (e) {
         // ! 'send_new_pre_appointment_error'
         throw Exception('$e:in AppointmentDetailsCubit');

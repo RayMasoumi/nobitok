@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/methods/calculate_date_method.dart';
@@ -183,14 +185,36 @@ class _SetPreAppointmentBottomSheetState
 // * bottom divider
             const PaddedDivider(topPadding: 0, bottomPadding: 32),
 // * submit button:
-            CustomButton(
-              height: 40,
-              width: 335,
-              fontSize: 15,
-              borderRadius: kBorderRadius12,
-              color: kGreenColor,
-              text: 'ثبت پیش نوبت',
-              onPressed: () {},
+            BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
+              listener: (context, state) {
+                if (state is AppointmentDetailLoading) {
+                  context.loaderOverlay.show();
+                } else if (state is AppointmentDetailSent) {
+                  context.loaderOverlay.hide();
+                  // todo show appropriate dialog
+                  Navigator.of(context).pop();
+                } else if (state is AppointmentDetailError) {
+                  context.loaderOverlay.hide();
+                  // todo show appropriate dialog
+                } else {
+                  context.loaderOverlay.hide();
+                  // todo show appropriate dialog.
+                }
+              },
+              child: CustomButton(
+                height: 40,
+                width: 335,
+                fontSize: 15,
+                borderRadius: kBorderRadius12,
+                color: kGreenColor,
+                text: 'ثبت پیش نوبت',
+                onPressed: () async {
+                  await appointmentDetails.createPreAppointment(
+                    selectedDate,
+                    selectedTime,
+                  );
+                },
+              ),
             ),
           ],
         ),

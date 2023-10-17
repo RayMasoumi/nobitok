@@ -49,7 +49,7 @@ class SearchbarWidget extends StatelessWidget {
             const Spacer(),
 
             InkWell(
-              onTap: () {},
+              onTap: () async {},
               child: CustomIcon(
                   iconPath: 'assets/icons/bell-outline.png', iconSize: 24.w),
             ),

@@ -10,9 +10,12 @@ class SetTimeWidget extends StatelessWidget {
     super.key,
     required this.disabled,
     required this.text,
+    required this.onPressed,
   });
   final bool disabled;
   final String text;
+
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,7 +31,7 @@ class SetTimeWidget extends StatelessWidget {
             ),
           ),
           child: TextButton(
-              onPressed: () {},
+              onPressed: disabled ? () {} : onPressed,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

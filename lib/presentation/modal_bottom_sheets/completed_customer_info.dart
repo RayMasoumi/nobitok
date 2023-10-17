@@ -106,9 +106,10 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                       text: 'date',
                       onPressed: () {},
                     ),
-                    const SetTimeWidget(
+                    SetTimeWidget(
                       disabled: true,
                       text: 'time',
+                      onPressed: () {},
                     ),
                   ],
                 ),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/jalali_years_to_list.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
+import 'package:nobitok/presentation/widgets/dropdown_for_year.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -24,12 +26,14 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
   int selectedYear = Jalali.now().year;
   int selectedMonth = Jalali.now().month;
   List<int> calender = [];
+  List<int> years = [];
 
   Jalali selectedDate = Jalali.now();
 
   @override
   Widget build(BuildContext context) {
     calender = calculateDateOfIndex(selectedYear, selectedMonth);
+    years = jalaliYearsToList();
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Colors.white,
@@ -61,26 +65,51 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
               ),
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
+                  Visibility(
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: selectedYear < Jalali.now().year + 99,
+                    child: IconButton(
+                      onPressed: () {
+                        if (selectedYear < Jalali.now().year + 99) {
+                          setState(() {
+                            selectedYear++;
+                          });
+                        }
+                      },
+                      icon: const Icon(Icons.navigate_before),
+                    ),
+                  ),
+                  DropdownForYear(
+                    years: years,
+                    selectedYear: selectedYear,
+                    onChanged: (value) {
                       setState(() {
-                        selectedYear++;
+                        selectedYear = value ?? Jalali.now().year;
                       });
                     },
-                    icon: const Icon(Icons.navigate_before),
+                    child: Text(
+                      selectedYear.toString().toPersianDigit(),
+                      style: kBold13TextStyle,
+                    ),
                   ),
-                  Text(
-                    selectedYear.toString().toPersianDigit(),
-                    style: kBold13TextStyle,
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedYear--;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.navigate_next,
+                  Visibility(
+                    maintainState: true,
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    visible: selectedYear > Jalali.now().year - 100,
+                    child: IconButton(
+                      onPressed: () {
+                        if (selectedYear > Jalali.now().year - 100) {
+                          setState(() {
+                            selectedYear--;
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.navigate_next,
+                      ),
                     ),
                   ),
                   const Spacer(),

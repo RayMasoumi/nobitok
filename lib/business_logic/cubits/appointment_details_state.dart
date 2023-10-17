@@ -20,6 +20,12 @@ class AppointmentDetailLoading extends AppointmentDetailsState {
   }
 }
 
+class AppointmentDetailSent extends AppointmentDetailsState {
+  AppointmentDetailSent() : super(appointmentDetail: null) {
+    debugPrint('AppointmentDetailSent');
+  }
+}
+
 class AppointmentDetailLoaded extends AppointmentDetailsState {
   AppointmentDetailLoaded({required super.appointmentDetail}) {
     debugPrint('AppointmentDetailLoaded');

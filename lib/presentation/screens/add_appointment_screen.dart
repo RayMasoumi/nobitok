@@ -76,9 +76,9 @@ class AddAppointmentScreen extends StatelessWidget {
                         },
                         // todo,
                       ),
-                      const SetTimeWidget(
+                      SetTimeWidget(
                         disabled: false,
-                        text: 'time',
+                        text: 'time', onPressed: () {},
                         // todo
                       ),
                     ],

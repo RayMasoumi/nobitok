@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
-import 'package:nobitok/methods/get_today_date.dart';
+import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -58,7 +59,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'کد ملی: ${appointmentDetails.getAppointmentDetails().customerDetail.customerIdCode}',
+                      'کد ملی: ${appointmentDetails.getAppointmentDetails().customerDetail.customerIdCode?.toPersianDigit()}',
                       style: kLight14TextStyle,
                     ),
                     Text(
@@ -94,7 +95,8 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                               appointmentDetails
                                   .getAppointmentDetails()
                                   .customerDetail
-                                  .customerPhoneNumber,
+                                  .customerPhoneNumber
+                                  .toPersianDigit(),
                               style: kBold13TextStyle.copyWith(
                                   color: Colors.white),
                             ),
@@ -108,7 +110,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       color: const Color(0xffC8C8C8),
                       child: Center(
                         child: Text(
-                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode}',
+                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode?.toPersianDigit()}',
                           style: kBold13TextStyle.copyWith(color: Colors.white),
                         ),
                       ),
@@ -136,13 +138,25 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: true,
-                      text: getTodayDate(),
+                      text: appointmentDetails
+                          .getAppointmentDetails()
+                          .appointmentDetail
+                          .appointmentDate
+                          .toPersianDate()
+                          .toPersianDigit(),
                       onPressed: () {},
                     ),
                     SetTimeWidget(
                       disabled: true,
                       text:
-                          ' ${DateTime.now().minute.toString()} : ${DateTime.now().hour.toString()}',
+                          // ' ${DateTime.now().minute.toString()} : ${DateTime.now().hour.toString()}',
+                          appointmentDetails
+                              .getAppointmentDetails()
+                              .appointmentDetail
+                              .appointmentTime
+                              .toString()
+                              .toPersianDigit(),
+                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -201,14 +215,34 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 // * submit appointment button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 14,
-                  borderRadius: kBorderRadius8,
-                  color: kGreenColor,
-                  text: 'ثبت به عنوان نوبت',
-                  onPressed: () {},
+                BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
+                  listener: (context, state) {
+                    if (state is AppointmentDetailLoading) {
+                      context.loaderOverlay.show();
+                    } else if (state is AppointmentDetailSent) {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog
+                      Navigator.of(context).pop();
+                    } else if (state is AppointmentDetailError) {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog
+                    } else {
+                      context.loaderOverlay.hide();
+                      // todo show appropriate dialog.
+                    }
+                  },
+                  child: CustomButton(
+                    height: 40,
+                    width: 160,
+                    fontSize: 14,
+                    borderRadius: kBorderRadius8,
+                    color: kGreenColor,
+                    text: 'ثبت به عنوان نوبت',
+                    onPressed: () async {
+                      await appointmentDetails
+                          .createAppointmentFromPreAppointment();
+                    },
+                  ),
                 ),
 // * edit button:
                 CustomButton(

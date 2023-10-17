@@ -26,14 +26,24 @@ class ServicesListTile extends StatefulWidget {
 }
 
 class _ServicesListTileState extends State<ServicesListTile> {
+  int quantity = 0; // Initialize quantity to 0
+
+  @override
+  void initState() {
+    super.initState();
+    // Calculate the initial quantity based on already selected items
+    for (Service service in widget.alreadySelectedServices) {
+      if (service.serviceId == widget.services[widget.index].serviceId) {
+        quantity++;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // for (Service service in widget.alreadySelectedServices) {
-    //   print(service);
-    // }
     bool isChecked =
         widget.alreadySelectedServices.contains(widget.services[widget.index]);
-    print(isChecked);
+
     return Card(
       elevation: 0,
       color: Colors.white,
@@ -80,8 +90,8 @@ class _ServicesListTileState extends State<ServicesListTile> {
                         onChanged: (value) {
                           setState(() {
                             isChecked = value!;
+                            widget.checkboxOnChanged(isChecked);
                           });
-                          widget.checkboxOnChanged(isChecked);
                         },
                         side: const BorderSide(
                           color: Color(0xff49454F),
@@ -94,7 +104,12 @@ class _ServicesListTileState extends State<ServicesListTile> {
                   ],
                 ),
                 CustomInputQuantityWidget(
-                  service: widget.services[widget.index],
+                  quantity: quantity,
+                  onQuantityChanged: (int newQuantity) {
+                    setState(() {
+                      quantity = newQuantity;
+                    });
+                  },
                 ),
               ],
             ),

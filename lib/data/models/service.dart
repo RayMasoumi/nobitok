@@ -4,9 +4,9 @@ class Service extends Equatable {
   final int serviceId;
   final String? serviceName;
   final double servicePrice;
-  final int serviceQuantity;
+  int serviceQuantity;
 
-  const Service(
+  Service(
       {required this.serviceId,
       this.serviceName,
       required this.servicePrice,

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/styles.dart';
-import 'package:nobitok/data/models/service.dart';
-import 'package:nobitok/methods/change_quantity_method.dart';
 import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
 
 import '../../constants/sizes.dart';
@@ -11,10 +9,12 @@ import '../../constants/sizes.dart';
 class CustomInputQuantityWidget extends StatefulWidget {
   const CustomInputQuantityWidget({
     super.key,
-    required this.service,
+    required this.quantity,
+    required this.onQuantityChanged,
   });
 
-  final Service service;
+  final int quantity;
+  final Function(int) onQuantityChanged;
 
   @override
   State<CustomInputQuantityWidget> createState() =>
@@ -40,13 +40,13 @@ class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
             child: const CustomImage(path: 'assets/icons/Add.png'),
             onTap: () {
               setState(() {
-                changeQuantity(true, widget.service);
+                widget.onQuantityChanged(widget.quantity + 1);
               });
             },
           ),
           Expanded(
             child: Text(
-              widget.service.serviceQuantity.toString(),
+              widget.quantity.toString(),
               textAlign: TextAlign.center,
               style: kBold13TextStyle,
             ),
@@ -55,7 +55,9 @@ class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
             child: const CustomImage(path: 'assets/icons/subtract.png'),
             onTap: () {
               setState(() {
-                changeQuantity(false, widget.service);
+                if (widget.quantity > 0) {
+                  widget.onQuantityChanged(widget.quantity - 1);
+                }
               });
             },
           ),

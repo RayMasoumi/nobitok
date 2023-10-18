@@ -223,7 +223,8 @@ class _SetPreAppointmentBottomSheetState
   }
 
   Future<void> updateSelectedDate() async {
-    String newSelectedDate = await customJalaliDatePicker(context);
+    String newSelectedDate =
+        await customJalaliDatePicker(context, 'تاریخ مورد نظر را انتخاب کنید:');
     setState(() {
       selectedDate = newSelectedDate;
     });

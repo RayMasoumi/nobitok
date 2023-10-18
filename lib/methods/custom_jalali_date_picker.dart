@@ -36,10 +36,13 @@ import 'package:nobitok/methods/calculate_date_method.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/date_picker_bottom_sheet.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-Future<String> customJalaliDatePicker(BuildContext context) async {
+Future<String> customJalaliDatePicker(
+    BuildContext context, String title) async {
   Jalali selectedDate = await showModalBottomSheet(
     context: context,
-    builder: (context) => const DatePickerBottomSheet(),
+    builder: (context) => DatePickerBottomSheet(
+      title: title,
+    ),
   );
   return formatDateJalali(selectedDate);
 }

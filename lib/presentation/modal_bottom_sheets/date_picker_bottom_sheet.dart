@@ -15,8 +15,9 @@ import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/padded_divider.dart';
 
 class DatePickerBottomSheet extends StatefulWidget {
-  const DatePickerBottomSheet({super.key});
+  const DatePickerBottomSheet({super.key, required this.title});
 
+  final String title;
   @override
   State<DatePickerBottomSheet> createState() => _DatePickerBottomSheetState();
 }
@@ -45,7 +46,7 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'تاریخ مورد نظر را انتخاب کنید :',
+                    widget.title,
                     style: kBold14TextStyle,
                   ),
                   IconButton(

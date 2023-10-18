@@ -91,7 +91,7 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
                   text: 'تایید',
                   onPressed: () async {
 // * make a new appointment detail:
-                  context.read<AppointmentDetailCubit>()
+                    context.read<AppointmentDetailCubit>();
 
 // * getting the invoice id:
                     int? invoiceId = context

@@ -24,6 +24,7 @@ class CustomInputQuantityWidget extends StatefulWidget {
 class _CustomInputQuantityWidgetState extends State<CustomInputQuantityWidget> {
   @override
   Widget build(BuildContext context) {
+    print(widget.quantity);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w),
       height: 40.h,

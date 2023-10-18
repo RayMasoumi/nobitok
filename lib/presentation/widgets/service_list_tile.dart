@@ -31,10 +31,10 @@ class _ServicesListTileState extends State<ServicesListTile> {
   @override
   void initState() {
     super.initState();
-    // Calculate the initial quantity based on already selected items
+    // * Calculate the initial quantity based on already selected items
     for (Service service in widget.alreadySelectedServices) {
       if (service.serviceId == widget.services[widget.index].serviceId) {
-        quantity++;
+        quantity = service.serviceQuantity;
       }
     }
   }
@@ -104,10 +104,15 @@ class _ServicesListTileState extends State<ServicesListTile> {
                   ],
                 ),
                 CustomInputQuantityWidget(
-                  quantity: quantity,
+                  quantity: !isChecked ? 0 : quantity,
                   onQuantityChanged: (int newQuantity) {
                     setState(() {
                       quantity = newQuantity;
+                      widget.services[widget.index].serviceQuantity = quantity;
+
+                      print('input quantity widget');
+                      print(quantity);
+                      print(widget.services[widget.index].serviceQuantity);
                     });
                   },
                 ),

@@ -4,6 +4,7 @@ import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/methods/cast_invoice_item_to_service.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
@@ -56,21 +57,30 @@ class ServiceBottomSheet extends StatelessWidget {
                     tileTopPadding: 8,
                     tileBottomPadding: 8,
                     listTileBuilder: (index) {
-                      return ServicesListTile(
-                        services: context.read<ServiceCubit>().getServices(),
-                        index: index,
-                        checkboxOnChanged: (bool? value) {
-                          if (value == true) {
-                            selectedServices.add(context
-                                .read<ServiceCubit>()
-                                .getServices()[index]);
-                          } else {
-                            selectedServices.remove(context
-                                .read<ServiceCubit>()
-                                .getServices()[index]);
-                          }
+                      return InkWell(
+                        onTap: () {
+                          print('get servic cubit');
+                          print(context
+                              .read<ServiceCubit>()
+                              .getServices()[index]
+                              .serviceQuantity);
                         },
-                        alreadySelectedServices: selectedServices,
+                        child: ServicesListTile(
+                          services: context.read<ServiceCubit>().getServices(),
+                          index: index,
+                          checkboxOnChanged: (bool? value) {
+                            if (value == true) {
+                              selectedServices.add(context
+                                  .read<ServiceCubit>()
+                                  .getServices()[index]);
+                            } else {
+                              selectedServices.remove(context
+                                  .read<ServiceCubit>()
+                                  .getServices()[index]);
+                            }
+                          },
+                          alreadySelectedServices: selectedServices,
+                        ),
                       );
                     },
                     itemCount:
@@ -95,34 +105,44 @@ class ServiceBottomSheet extends StatelessWidget {
                   text: 'تایید',
                   onPressed: () async {
                     for (Service service in selectedServices) {
-                      print(service.serviceName);
-                      print('services is not empty');
+                      print('###selected services quantity###');
+                      print(service.serviceQuantity);
                     }
+
+// * getting the invoice id:
                     int? invoiceId = context
                         .read<AppointmentDetailCubit>()
                         .getAppointmentDetails()
                         .invoiceDetail
                         .invoiceId;
+
+// * casting the selected services into invoice items:
                     List<InvoiceItem> invoiceItems =
                         castServicesToInvoiceItems(selectedServices);
-                    context
+                    // for (InvoiceItem item in invoiceItems) {
+                    //   print('****');
+                    //   print(item.invoiceItemQuantity);
+                    // }
+// * adding the new invoice items into invoice:
+                    await context
                         .read<InvoiceCubit>()
                         .addInvoiceItem(invoiceId, invoiceItems);
-                    await context
-                        .read<AppointmentDetailCubit>()
-                        .fetchAppointmentDetail(context
-                            .read<AppointmentDetailCubit>()
-                            .getAppointmentDetails()
-                            .appointmentDetail);
-
-                    for (InvoiceItem item in invoiceItems) {
-                      print(item.invoiceItemServiceName);
-                      print(item.invoiceItemQuantity);
+// * update appointment details(invoice changes):
+                    if (context.mounted) {
+                      await context
+                          .read<AppointmentDetailCubit>()
+                          .fetchAppointmentDetail(context
+                              .read<AppointmentDetailCubit>()
+                              .getAppointmentDetails()
+                              .appointmentDetail);
                     }
-                    Navigator.pop(context);
+
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   },
                 ),
-// * add service button:
+// * change service price button:
                 CustomButton(
                   height: 40,
                   width: 160,
@@ -130,7 +150,13 @@ class ServiceBottomSheet extends StatelessWidget {
                   borderRadius: kBorderRadius12,
                   color: kYellowColor,
                   text: 'تغییر قیمت',
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => const ChangePriceBottomSheet(),
+                      isScrollControlled: true,
+                    );
+                  },
                 ),
               ],
             ),

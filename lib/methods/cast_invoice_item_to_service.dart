@@ -5,6 +5,7 @@ List<Service> castInvoiceItemToService(List<InvoiceItem> existingInvoiceItems) {
   return existingInvoiceItems
       .map((item) => Service(
           serviceId: item.invoiceItemServiceId!,
-          servicePrice: item.invoiceItemPrice))
+          servicePrice: item.invoiceItemPrice,
+          serviceQuantity: item.invoiceItemQuantity))
       .toList();
 }

@@ -10,7 +10,7 @@ class Service extends Equatable {
       {required this.serviceId,
       this.serviceName,
       required this.servicePrice,
-      this.serviceQuantity = 1});
+      required this.serviceQuantity});
 
   @override
   List<Object?> get props => [serviceId];
@@ -19,7 +19,7 @@ class Service extends Equatable {
       serviceId: json['id'] ?? 0,
       servicePrice: json['price'] ?? 0.0,
       serviceName: json['name'] ?? '',
-      serviceQuantity: json['qty'] ?? 1,
+      serviceQuantity: json['qty'] ?? 0,
     );
   }
 }

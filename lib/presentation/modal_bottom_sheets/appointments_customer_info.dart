@@ -204,11 +204,13 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       await context
                           .read<ServiceCubit>()
                           .fetchServicesFromRepository();
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => const ServiceBottomSheet(),
-                        isScrollControlled: true,
-                      );
+                      if (context.mounted) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => const ServiceBottomSheet(),
+                          isScrollControlled: true,
+                        );
+                      }
                     }),
                 CustomButton(
                     height: 32,

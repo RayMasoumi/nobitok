@@ -15,6 +15,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../constants/styles.dart';
+import '../../data/models/invoice_item.dart';
 import '../modal_bottom_sheets/documents_service_list.dart';
 import '../modal_bottom_sheets/set_time_bottom_sheet.dart';
 import '../widgets/call_customer_widget.dart';
@@ -24,7 +25,7 @@ import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
 class AddAppointmentScreen extends StatelessWidget {
-  AddAppointmentScreen({
+  const AddAppointmentScreen({
     super.key,
   });
 
@@ -43,6 +44,10 @@ class AddAppointmentScreen extends StatelessWidget {
           date,
           context.read<DocumentDetailsCubit>().getDocumentDetails().customerId,
         );
+// * a list of services:
+    List<InvoiceItem> invoiceItems = [];
+// TODO
+
     return Scaffold(
       body: SafeArea(
         child: HorizontalPadding(
@@ -147,8 +152,9 @@ class AddAppointmentScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // todo ternary if a list is not empty then listview instead of button
-                  child: Center(
+// * empty invoice >> add service button:
+                  child: invoiceItems.isEmpty ?
+                  Center(
                     child: CustomButton(
                       height: 40,
                       width: 160,
@@ -164,7 +170,11 @@ class AddAppointmentScreen extends StatelessWidget {
                             isScrollControlled: true);
                       },
                     ),
-                  ),
+                  )
+                  :
+// * invoice is not empty >> show it:
+
+                  ,
                 ),
               ),
               const PaddedDivider(topPadding: 8, bottomPadding: 16),

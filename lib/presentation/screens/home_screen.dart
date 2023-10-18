@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
+import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/methods/custom_jalali_range_picker.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
@@ -54,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // * first fab
-                          TimeFAB(
+                          DateFAB(
                             onPressed: () {
                               setTimeInitialValue();
                               showModalBottomSheet(
@@ -101,15 +103,48 @@ class HomeScreen extends StatelessWidget {
               );
             } else {
               // * we're not on tab document so we only have this fab
-              return TimeFAB(
-                onPressed: () {
-                  setTimeInitialValue();
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => const SetTimeBottomSheet(),
-                    isScrollControlled: true,
-                  );
+              return BlocListener<AppointmentsCubit, AppointmentsState>(
+                listener: (context, state) {
+                  if (state is AppointmentsLoading) {
+                    context.loaderOverlay.show();
+                  } else if (state is AppointmentsLoadingCompleted) {
+                    context.loaderOverlay.hide();
+                    // todo show alert
+                  } else if (state is AppointmentsLoadingFailed) {
+                    context.loaderOverlay.hide();
+                    // todo show alert
+                  }
                 },
+                child: DateFAB(
+                  onPressed: () async {
+                    // setTimeInitialValue();
+                    // showModalBottomSheet(
+                    //   context: context,
+                    //   builder: (context) => const SetTimeBottomSheet(),
+                    //   isScrollControlled: true,
+                    // );
+                    String startDate;
+                    String endDate;
+                    List<String> dates;
+                    dates = await customJalaliRangePicker(
+                        context, 'بازه مورد نظر را انتخاب کنید :');
+                    startDate = dates[0];
+                    endDate = dates[1];
+                    if (state is AppointmentTabState) {
+                      if (context.mounted) {
+                        await context
+                            .read<AppointmentsCubit>()
+                            .fetchAppointmentsByRange(startDate, endDate);
+                      }
+                    } else if (state is PreAppointmentTabState) {
+                      if (context.mounted) {
+                        await context
+                            .read<AppointmentsCubit>()
+                            .fetchPreAppointmentsByRange(startDate, endDate);
+                      }
+                    }
+                  },
+                ),
               );
             }
           },
@@ -161,36 +196,41 @@ class HomeScreen extends StatelessWidget {
                       },
                       child: BlocBuilder<TabCubit, TabState>(
                         builder: (context, state) {
-                          return CustomListView(
-                            tileLeftPadding: 0,
-                            tileRightPadding: 0,
-                            tileTopPadding: 16,
-                            tileBottomPadding: 8,
-                            listTileBuilder: (index) {
-                              return CustomerListTile(
-                                isAppointment: true,
-                                appointments: context
-                                    .read<AppointmentsCubit>()
-                                    .getAppointments(kAppointmentsKey),
-                                index: index,
-                                onDetailsPressed: () async {
-                                  // * creating instances
-                                  final appointmentDetailCubit =
-                                      context.read<AppointmentDetailCubit>();
-                                  final appointmentsList =
-                                      context.read<AppointmentsCubit>();
-                                  // * giving this appointment as a parameter to fetch its data
-                                  await appointmentDetailCubit
-                                      .fetchAppointmentDetail(
-                                          appointmentsList.getAppointments(
-                                              kAppointmentsKey)[index]);
+                          return BlocBuilder<AppointmentsCubit,
+                              AppointmentsState>(
+                            builder: (context, state) {
+                              return CustomListView(
+                                tileLeftPadding: 0,
+                                tileRightPadding: 0,
+                                tileTopPadding: 16,
+                                tileBottomPadding: 8,
+                                listTileBuilder: (index) {
+                                  return CustomerListTile(
+                                    isAppointment: true,
+                                    appointments: context
+                                        .read<AppointmentsCubit>()
+                                        .getAppointments(kAppointmentsKey),
+                                    index: index,
+                                    onDetailsPressed: () async {
+                                      // * creating instances
+                                      final appointmentDetailCubit = context
+                                          .read<AppointmentDetailCubit>();
+                                      final appointmentsList =
+                                          context.read<AppointmentsCubit>();
+                                      // * giving this appointment as a parameter to fetch its data
+                                      await appointmentDetailCubit
+                                          .fetchAppointmentDetail(
+                                              appointmentsList.getAppointments(
+                                                  kAppointmentsKey)[index]);
+                                    },
+                                  );
                                 },
+                                itemCount: context
+                                    .read<AppointmentsCubit>()
+                                    .getAppointments(kAppointmentsKey)
+                                    .length,
                               );
                             },
-                            itemCount: context
-                                .read<AppointmentsCubit>()
-                                .getAppointments(kAppointmentsKey)
-                                .length,
                           );
                         },
                       ),
@@ -217,38 +257,42 @@ class HomeScreen extends StatelessWidget {
                           // todo show appropriate alert
                         }
                       },
-                      child: BlocBuilder<TabCubit, TabState>(
+                      child: BlocBuilder<AppointmentsCubit, AppointmentsState>(
                         builder: (context, state) {
-                          return CustomListView(
-                            tileLeftPadding: 0,
-                            tileRightPadding: 0,
-                            tileTopPadding: 16,
-                            tileBottomPadding: 8,
-                            listTileBuilder: (index) {
-                              return CustomerListTile(
-                                isAppointment: false,
-                                appointments: context
-                                    .read<AppointmentsCubit>()
-                                    .getAppointments(kPreAppointmentsKey),
-                                index: index,
-                                onDetailsPressed: () async {
-                                  // * creating instances
-                                  final appointmentDetailCubit =
-                                      context.read<AppointmentDetailCubit>();
-                                  final appointmentsList =
-                                      context.read<AppointmentsCubit>();
-                                  // * giving this appointment as a parameter to fetch its data
-                                  await appointmentDetailCubit
-                                      .fetchAppointmentDetail(
-                                          appointmentsList.getAppointments(
-                                              kPreAppointmentsKey)[index]);
+                          return BlocBuilder<TabCubit, TabState>(
+                            builder: (context, state) {
+                              return CustomListView(
+                                tileLeftPadding: 0,
+                                tileRightPadding: 0,
+                                tileTopPadding: 16,
+                                tileBottomPadding: 8,
+                                listTileBuilder: (index) {
+                                  return CustomerListTile(
+                                    isAppointment: false,
+                                    appointments: context
+                                        .read<AppointmentsCubit>()
+                                        .getAppointments(kPreAppointmentsKey),
+                                    index: index,
+                                    onDetailsPressed: () async {
+                                      // * creating instances
+                                      final appointmentDetailCubit = context
+                                          .read<AppointmentDetailCubit>();
+                                      final appointmentsList =
+                                          context.read<AppointmentsCubit>();
+                                      // * giving this appointment as a parameter to fetch its data
+                                      await appointmentDetailCubit
+                                          .fetchAppointmentDetail(
+                                              appointmentsList.getAppointments(
+                                                  kPreAppointmentsKey)[index]);
+                                    },
+                                  );
                                 },
+                                itemCount: context
+                                    .read<AppointmentsCubit>()
+                                    .getAppointments(kPreAppointmentsKey)
+                                    .length,
                               );
                             },
-                            itemCount: context
-                                .read<AppointmentsCubit>()
-                                .getAppointments(kPreAppointmentsKey)
-                                .length,
                           );
                         },
                       ),

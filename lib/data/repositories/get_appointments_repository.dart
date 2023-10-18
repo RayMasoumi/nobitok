@@ -28,4 +28,24 @@ class GetAppointmentsRepository {
           '$kFetchTodayAppointmentsDataException:${response.body}');
     }
   }
+
+  Future<List<Appointment>> fetchAppointmentsByRange(
+      String startDate, String endDate) async {
+    final response = await getAppointmentsService.fetchAppointmentsByRange(
+        startDate, endDate);
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      List<dynamic> dataList = jsonResponse['dataList'];
+      List<Appointment> appointments = dataList.map((data) {
+        return Appointment.fromJson(data);
+      }).toList();
+      return appointments;
+    } else {
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      throw Exception(
+//! fetch_appointments_by_date_error
+          '$kFetchAppointmentsByDateDataException:${response.body}');
+    }
+  }
 }

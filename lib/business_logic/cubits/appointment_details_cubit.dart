@@ -185,6 +185,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     }
   }
 
+  // * add appointment from pre-appointment:
   Future<bool> sendNewAppointmentToRepository(
       AppointmentDetail appointmentDetail) async {
     try {

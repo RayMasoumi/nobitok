@@ -21,7 +21,7 @@ class DocumentDetailLoading extends DocumentDetailsState {
 }
 
 class DocumentDetailLoaded extends DocumentDetailsState {
-  DocumentDetailLoaded({required super.customer}) {
+  DocumentDetailLoaded({super.customer}) {
     debugPrint('DocumentDetailLoaded');
   }
 }

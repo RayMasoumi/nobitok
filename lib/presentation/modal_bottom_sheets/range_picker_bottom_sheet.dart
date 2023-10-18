@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/calculate_date_method.dart';
 import 'package:nobitok/methods/jalali_years_to_list.dart';
+import 'package:nobitok/methods/selected_date_color.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/dropdown_for_year.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
@@ -11,33 +13,36 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import '../../constants/styles.dart';
 import '../../methods/calculate_date_of_index.dart';
 import '../../methods/number_to_month.dart';
-import '../../methods/today_date_index.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/padded_divider.dart';
 
-class DatePickerBottomSheet extends StatefulWidget {
-  const DatePickerBottomSheet({super.key, required this.title});
+class RangePickerBottomSheet extends StatefulWidget {
+  const RangePickerBottomSheet({super.key, required this.title});
 
   final String title;
   @override
-  State<DatePickerBottomSheet> createState() => _DatePickerBottomSheetState();
+  State<RangePickerBottomSheet> createState() => _RangePickerBottomSheetState();
 }
 
-class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
-  int selectedIndex = 0;
+class _RangePickerBottomSheetState extends State<RangePickerBottomSheet> {
+  // int selectedStartIndex = 0;
+  // int selectedEndIndex = 0;
   int selectedYear = Jalali.now().year;
   int selectedMonth = Jalali.now().month;
   List<int> calender = [];
   List<int> years = [];
 
-  Jalali selectedDate = Jalali.now();
+  Jalali selectedStartDate = Jalali.now();
+  Jalali selectedEndDate = Jalali.now();
 
   @override
   Widget build(BuildContext context) {
     calender = calculateDateOfIndex(selectedYear, selectedMonth);
     years = jalaliYearsToList();
-    if (selectedIndex == 0) {
-      selectedIndex = todayDateIndex(calender) + 7;
+    if (selectedStartDate.isAfter(selectedEndDate)) {
+      Jalali temp = selectedStartDate;
+      selectedStartDate = selectedEndDate;
+      selectedEndDate = temp;
     }
     return Scaffold(
       body: CustomBottomSheet(
@@ -175,6 +180,7 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                 ),
                 itemCount: 49,
                 itemBuilder: (context, index) {
+                  Jalali indexDate = Jalali(1300, 1, 1);
                   // * first row to show days of the week
                   switch (index) {
                     case 0:
@@ -227,6 +233,12 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                         ),
                       );
                     default:
+                      if ((calender[index - 7] == 0)) {
+                        indexDate = Jalali(1300, 1, 1);
+                      } else {
+                        indexDate = Jalali(
+                            selectedYear, selectedMonth, calender[index - 7]);
+                      }
                       // * days of the calender
                       return InkWell(
                         child: Center(
@@ -234,9 +246,13 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                             height: 50.r,
                             width: 50.r,
                             decoration: BoxDecoration(
-                              color: selectedIndex == index
-                                  ? kBlue300Color
-                                  : Colors.transparent,
+                              color: selectedDateColor(
+                                  selectedStartDate,
+                                  selectedEndDate,
+                                  indexDate,
+                                  calender,
+                                  selectedYear,
+                                  selectedMonth),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -247,7 +263,10 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                                         .toString()
                                         .toPersianDigit(),
                                 style: kBold16TextStyle.copyWith(
-                                  color: selectedIndex == index
+                                  color: (indexDate.isAtSameMomentAs(
+                                              selectedStartDate)) ||
+                                          (indexDate.isAtSameMomentAs(
+                                              selectedEndDate))
                                       ? Colors.white
                                       : Colors.black,
                                 ),
@@ -257,9 +276,9 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                         ),
                         onTap: () {
                           if (calender[index - 7] != 0) {
-                            setSelectedIndex(index);
-                            selectedDate = Jalali(selectedYear, selectedMonth,
-                                calender[index - 7]);
+                            setSelectedDate(indexDate);
+                            selectedStartDate = Jalali(selectedYear,
+                                selectedMonth, calender[index - 7]);
                           }
                         },
                       );
@@ -275,7 +294,10 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                 color: kGreenColor,
                 text: 'تأیید',
                 onPressed: () {
-                  Navigator.of(context).pop(selectedDate);
+                  Navigator.of(context).pop(<String>[
+                    formatDateJalali(selectedStartDate),
+                    formatDateJalali(selectedEndDate)
+                  ]);
                 },
               ),
             ],
@@ -285,9 +307,17 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
     );
   }
 
-  void setSelectedIndex(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+  void setSelectedDate(Jalali indexDate) {
+    // * checks if selected is after start to make it start or end
+    if (indexDate.isAfter(selectedStartDate)) {
+      setState(() {
+        selectedStartDate = indexDate;
+      });
+    } else {
+      setState(() {
+        selectedEndDate = selectedStartDate;
+        selectedStartDate = indexDate;
+      });
+    }
   }
 }

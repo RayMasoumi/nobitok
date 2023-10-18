@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
-import 'package:nobitok/methods/cast_invoice_item_to_service.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
@@ -20,16 +19,12 @@ import '../../methods/cast_services_to_invoice_items.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/service_list_tile.dart';
 
-class ServiceBottomSheet extends StatelessWidget {
-  const ServiceBottomSheet({super.key});
+class DocumentsServiceBottomSheet extends StatelessWidget {
+  const DocumentsServiceBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Service> selectedServices = castInvoiceItemToService(context
-        .read<AppointmentDetailCubit>()
-        .getAppointmentDetails()
-        .invoiceDetail
-        .invoiceItems);
+    List<Service> selectedServices = [];
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -39,7 +34,7 @@ class ServiceBottomSheet extends StatelessWidget {
 // * top bar:
             const CustomTopBar(
               iconPath: 'assets/icons/services.png',
-              title: 'خدمات',
+              title: 'خدمات (پرونده)',
             ),
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
@@ -58,6 +53,7 @@ class ServiceBottomSheet extends StatelessWidget {
                     tileBottomPadding: 8,
                     listTileBuilder: (index) {
                       return ServicesListTile(
+                        alreadySelectedServices: selectedServices,
                         services: context.read<ServiceCubit>().getServices(),
                         index: index,
                         checkboxOnChanged: (bool? value) {
@@ -71,7 +67,6 @@ class ServiceBottomSheet extends StatelessWidget {
                                 .getServices()[index]);
                           }
                         },
-                        alreadySelectedServices: selectedServices,
                       );
                     },
                     itemCount:
@@ -95,6 +90,9 @@ class ServiceBottomSheet extends StatelessWidget {
                   color: kGreenColor,
                   text: 'تایید',
                   onPressed: () async {
+// * make a new appointment detail:
+                  context.read<AppointmentDetailCubit>()
+
 // * getting the invoice id:
                     int? invoiceId = context
                         .read<AppointmentDetailCubit>()

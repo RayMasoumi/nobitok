@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
+import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
@@ -174,7 +175,7 @@ class DocumentInfoBottomSheet extends StatelessWidget {
               ),
             ),
             const PaddedDivider(topPadding: 8, bottomPadding: 16),
-
+// * set appointment button:
             CustomButton(
               height: 40,
               width: double.infinity,
@@ -182,7 +183,9 @@ class DocumentInfoBottomSheet extends StatelessWidget {
               borderRadius: kBorderRadius12,
               color: kGreenColor,
               text: 'ثبت نوبت',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, kAddAppointmentScreenRoute);
+              },
             )
           ],
         ),

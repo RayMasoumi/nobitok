@@ -11,9 +11,9 @@ class ServicesListTile extends StatefulWidget {
   const ServicesListTile({
     super.key,
     required this.services,
+    required this.alreadySelectedServices,
     required this.index,
     required this.checkboxOnChanged,
-    required this.alreadySelectedServices,
   });
 
   final List<Service> services;

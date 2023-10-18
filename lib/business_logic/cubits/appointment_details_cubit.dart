@@ -85,7 +85,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     }
   }
 
-  // complete appointment
+// * complete appointment
   Future<void> completeTheAppointment() async {
     AppointmentDetail appointmentDetail = getAppointmentDetails();
     emit(AppointmentDetailLoading());

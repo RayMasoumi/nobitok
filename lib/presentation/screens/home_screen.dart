@@ -292,7 +292,7 @@ class HomeScreen extends StatelessWidget {
                                   final customer = context
                                       .read<CustomerCubit>()
                                       .getCustomers()[index];
-                                  // * giving the customer id as a parameter to fetch its data
+                                  // * giving the customer its id as a parameter to fetch its data
                                   await documentDetailCubit
                                       .fetchDocumentDetail(customer.customerId);
                                 },

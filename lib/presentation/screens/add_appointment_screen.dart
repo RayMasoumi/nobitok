@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/custom_jalali_date_picker.dart';
+import 'package:nobitok/methods/get_today_date.dart';
+import 'package:nobitok/methods/set_time_initial_value_method.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_top_bar_w_padding.dart';
 import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../constants/styles.dart';
 import '../modal_bottom_sheets/documents_service_list.dart';
+import '../modal_bottom_sheets/set_time_bottom_sheet.dart';
 import '../widgets/call_customer_widget.dart';
 import '../widgets/customer_document_number_widget.dart';
 import '../widgets/customer_name_widget.dart';
@@ -17,10 +24,25 @@ import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
 class AddAppointmentScreen extends StatelessWidget {
-  const AddAppointmentScreen({super.key});
+  AddAppointmentScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    String date = getTodayDate().toPersianDigit();
+    String time = getTimeInitialValue().toPersianDigit();
+
+// * make a new appointment first as you open this screen:
+    context
+        .read<DocumentDetailsCubit>()
+        .postNewAppointmentRepository
+        .postNewAppointmentService
+        .postNewAppointment(
+          time,
+          date,
+          context.read<DocumentDetailsCubit>().getDocumentDetails().customerId,
+        );
     return Scaffold(
       body: SafeArea(
         child: HorizontalPadding(
@@ -31,21 +53,32 @@ class AddAppointmentScreen extends StatelessWidget {
                 icon: MdiIcons.clipboardTextPlayOutline,
                 title: 'ثبت نوبت',
               ),
-              const CustomerNameWidget(
-                name: 'رضا کیانی',
+              CustomerNameWidget(
+                name: context
+                    .read<DocumentDetailsCubit>()
+                    .getDocumentDetails()
+                    .customerName,
               ),
               SizedBox(
                 height: 16.h,
               ),
 // * call and doc number
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
 // * phone number card:
-                  CallCustomerWidget(phoneNumber: '+989125879338'),
+                  CallCustomerWidget(
+                      phoneNumber: context
+                          .read<DocumentDetailsCubit>()
+                          .getDocumentDetails()
+                          .customerPhoneNumber),
 // * file code card:
                   CustomerDocumentNumberWidget(
-                    docNumber: '87554',
+                    docNumber: context
+                        .read<DocumentDetailsCubit>()
+                        .getDocumentDetails()
+                        .customerDocumentCode!
+                        .toPersianDigit(),
                   ),
                 ],
               ),
@@ -67,20 +100,23 @@ class AddAppointmentScreen extends StatelessWidget {
                     children: [
                       SetDateWidget(
                         disabled: false,
-                        text: 'date',
+                        text: date,
                         onPressed: () async {
-                          // showModalBottomSheet(
-                          //   context: context,
-                          //   builder: (context) => const SetDateBottomSheet(),
-                          //   isScrollControlled: true,
-                          // );
+                          date = await customJalaliDatePicker(
+                              context, 'تاریخ نوبت را انتخاب کنید');
                         },
-                        // todo,
                       ),
                       SetTimeWidget(
                         disabled: false,
-                        text: 'time', onPressed: () {},
-                        // todo
+                        text: time,
+                        onPressed: () async {
+                          setTimeInitialValue();
+                          await showModalBottomSheet(
+                            context: context,
+                            builder: (context) => const SetTimeBottomSheet(),
+                            isScrollControlled: true,
+                          );
+                        },
                       ),
                     ],
                   ),

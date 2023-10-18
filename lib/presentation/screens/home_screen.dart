@@ -13,7 +13,6 @@ import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/methods/custom_jalali_range_picker.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
@@ -21,7 +20,6 @@ import '../../business_logic/cubits/appointment_details_state.dart';
 import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/styles.dart';
-import '../../methods/set_time_initial_value_method.dart';
 import '../modal_bottom_sheets/appointments_customer_info.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
@@ -43,61 +41,31 @@ class HomeScreen extends StatelessWidget {
         floatingActionButton: BlocBuilder<TabCubit, TabState>(
           builder: (context, state) {
             if (state is DocumentsTabState) {
-              return Padding(
-                padding: EdgeInsets.only(left: 28.w),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: kLightGreyColor,
+              return SizedBox(
+                width: 200.w,
+                child: FloatingActionButton(
+                  heroTag: 'AddDocumentFAB',
+                  backgroundColor: kGreenColor,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(19),
                   ),
-                  child: Padding(
-                    padding: EdgeInsets.all(4.r),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // * first fab
-                          DateFAB(
-                            onPressed: () {
-                              setTimeInitialValue();
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) =>
-                                    const SetTimeBottomSheet(),
-                                isScrollControlled: true,
-                              );
-                            },
-                          ),
-                          // * second fab
-                          SizedBox(
-                            width: 200.w,
-                            child: FloatingActionButton(
-                              heroTag: 'AddDocumentFAB',
-                              backgroundColor: kGreenColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(19),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(kCreateNewDocumentScreenRoute);
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    MdiIcons.fileDocumentEditOutline,
-                                    size: 24.r,
-                                    color: Colors.white,
-                                  ),
-                                  Text(
-                                    'ایجاد پرونده جدید',
-                                    style: kTitle15TextStyle.copyWith(
-                                        color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamed(kCreateNewDocumentScreenRoute);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        MdiIcons.fileDocumentEditOutline,
+                        size: 24.r,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        'ایجاد پرونده جدید',
+                        style: kTitle15TextStyle.copyWith(color: Colors.white),
+                      ),
+                    ],
                   ),
                 ),
               );

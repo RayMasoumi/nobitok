@@ -21,6 +21,7 @@ import '../modal_bottom_sheets/set_time_bottom_sheet.dart';
 import '../widgets/call_customer_widget.dart';
 import '../widgets/customer_document_number_widget.dart';
 import '../widgets/customer_name_widget.dart';
+import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
@@ -153,28 +154,55 @@ class AddAppointmentScreen extends StatelessWidget {
                     ],
                   ),
 // * empty invoice >> add service button:
-                  child: invoiceItems.isEmpty ?
-                  Center(
-                    child: CustomButton(
-                      height: 40,
-                      width: 160,
-                      fontSize: 13,
-                      borderRadius: kBorderRadius12,
-                      color: kBlue300Color,
-                      text: 'افزودن خدمت',
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                const DocumentsServiceBottomSheet(),
-                            isScrollControlled: true);
-                      },
-                    ),
-                  )
-                  :
+                  child: invoiceItems.isEmpty
+                      ? Center(
+                          child: CustomButton(
+                            height: 40,
+                            width: 160,
+                            fontSize: 13,
+                            borderRadius: kBorderRadius12,
+                            color: kBlue300Color,
+                            text: 'افزودن خدمت',
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (context) =>
+                                      const DocumentsServiceBottomSheet(),
+                                  isScrollControlled: true);
+                            },
+                          ),
+                        )
+                      :
 // * invoice is not empty >> show it:
-
-                  ,
+// * invoice list:
+                      Column(
+                          children: [
+// * title:
+                            Row(
+                              children: [
+                                Text(
+                                  'خدمات دریافتی',
+                                  style: kBold14TextStyle,
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'مبلغ',
+                                  style: kBold14TextStyle,
+                                ),
+                                SizedBox(
+                                  width: 44.w,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+// * listView
+                            SeparatedListViewWidget(
+                              invoiceItems: invoiceItems,
+                            ),
+                          ],
+                        ),
                 ),
               ),
               const PaddedDivider(topPadding: 8, bottomPadding: 16),

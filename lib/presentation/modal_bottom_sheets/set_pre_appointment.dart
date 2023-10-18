@@ -163,7 +163,10 @@ class _SetPreAppointmentBottomSheetState
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
+                  invoiceItems: appointmentDetails
+                      .getAppointmentDetails()
+                      .invoiceDetail
+                      .invoiceItems,
                 ),
               ],
             ),

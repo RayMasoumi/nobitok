@@ -142,28 +142,31 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
 // * listView
                 SeparatedListViewWidget(
                   // todo fixx thisss
-                  appointmentDetail: AppointmentDetail(
-                      invoiceDetail: Invoice(
-                          invoiceId: 0,
-                          invoiceDate: '',
-                          isPaid: true,
-                          customerId: 0,
-                          appointmentId: 0,
-                          invoiceTotal: 0,
-                          invoiceItems: []),
-                      customerDetail: Customer(
-                          customerId: 0,
-                          customerName: '',
-                          customerPhoneNumber: 'customerPhoneNumber',
-                          customerDateOfBirth: 'customerDateOfBirth',
-                          customerAppointments: [],
-                          customerInvoices: []),
-                      appointmentDetail: Appointment(
-                          appointmentId: 0,
-                          appointmentDate: 'appointmentDate',
-                          appointmentCustomerId: 0,
-                          appointmentStatus: AppointmentStatus.appointment,
-                          appointmentCustomerName: 'appointmentCustomerName')),
+                  invoiceItems: AppointmentDetail(
+                          invoiceDetail: Invoice(
+                              invoiceId: 0,
+                              invoiceDate: '',
+                              isPaid: true,
+                              customerId: 0,
+                              appointmentId: 0,
+                              invoiceTotal: 0,
+                              invoiceItems: []),
+                          customerDetail: Customer(
+                              customerId: 0,
+                              customerName: '',
+                              customerPhoneNumber: 'customerPhoneNumber',
+                              customerDateOfBirth: 'customerDateOfBirth',
+                              customerAppointments: [],
+                              customerInvoices: []),
+                          appointmentDetail: Appointment(
+                              appointmentId: 0,
+                              appointmentDate: 'appointmentDate',
+                              appointmentCustomerId: 0,
+                              appointmentStatus: AppointmentStatus.appointment,
+                              appointmentCustomerName:
+                                  'appointmentCustomerName'))
+                      .invoiceDetail
+                      .invoiceItems,
                 ),
               ],
             ),

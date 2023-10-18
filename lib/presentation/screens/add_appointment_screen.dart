@@ -14,6 +14,7 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/document_details_cubit.dart';
+import '../../business_logic/cubits/service_cubit.dart';
 import '../../constants/styles.dart';
 import '../../data/models/invoice_item.dart';
 import '../modal_bottom_sheets/documents_service_list.dart';
@@ -25,10 +26,18 @@ import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
-class AddAppointmentScreen extends StatelessWidget {
-  const AddAppointmentScreen({
+class AddAppointmentScreen extends StatefulWidget {
+  AddAppointmentScreen({
     super.key,
   });
+
+  @override
+  State<AddAppointmentScreen> createState() => _AddAppointmentScreenState();
+}
+
+class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
+  // * a list of services:
+  List<InvoiceItem> invoiceItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +54,6 @@ class AddAppointmentScreen extends StatelessWidget {
           date,
           context.read<DocumentDetailsCubit>().getDocumentDetails().customerId,
         );
-// * a list of services:
-    List<InvoiceItem> invoiceItems = [];
-// TODO
 
     return Scaffold(
       body: SafeArea(
@@ -163,12 +169,19 @@ class AddAppointmentScreen extends StatelessWidget {
                             borderRadius: kBorderRadius12,
                             color: kBlue300Color,
                             text: 'افزودن خدمت',
-                            onPressed: () {
-                              showModalBottomSheet(
+                            onPressed: () async {
+                              await context
+                                  .read<ServiceCubit>()
+                                  .fetchServicesFromRepository();
+                              if (context.mounted) {
+                                invoiceItems = await showModalBottomSheet(
                                   context: context,
                                   builder: (context) =>
                                       const DocumentsServiceBottomSheet(),
-                                  isScrollControlled: true);
+                                  isScrollControlled: true,
+                                );
+                                setState(() {});
+                              }
                             },
                           ),
                         )

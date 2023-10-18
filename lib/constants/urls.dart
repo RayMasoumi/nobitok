@@ -6,7 +6,7 @@ const kAuthUrl = '/Account/CreateTokenForUser';
 const kGetAllTodayAppointmentsUrl = '/Appointment/getAllTodayAppointments';
 
 // * get pre-appointments
-const kGetPreAppointmentsUrl = '/Appointment/getPreAppointmentsByDate';
+const kGetPreAppointmentsByRangeUrl = '/Appointment/getPreAppointmentsByDate';
 
 // * api get details service
 const kGetInvoiceDetailUrl = '/Factor/getFactorById';
@@ -42,3 +42,6 @@ const String kAddAppointmentFromPreAppointmentUrl =
 
 // * api complete appointment
 const String kCompleteAppointmentUrl = '/Appointment/editAppointment';
+
+// * api get appointments by range
+const String kGetAppointmentsByRange = '/Appointment/getAppointmentsByDate';

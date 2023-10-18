@@ -5,29 +5,31 @@ import '../../data/models/appointment.dart';
 class AppointmentsState {
   final Map<String, List<Appointment>>? allAppointments;
 
-  AppointmentsState({this.allAppointments});
+  AppointmentsState({required this.allAppointments});
 }
 
 class AppointmentsInitialState extends AppointmentsState {
-  AppointmentsInitialState() {
+  AppointmentsInitialState({required super.allAppointments}) {
     debugPrint('Appointments Initial state');
   }
 }
 
 class AppointmentsLoading extends AppointmentsState {
-  AppointmentsLoading() {
+  AppointmentsLoading({required super.allAppointments}) {
     debugPrint('appointments loading state');
   }
 }
 
 class AppointmentsLoadingCompleted extends AppointmentsState {
-  AppointmentsLoadingCompleted() {
+  AppointmentsLoadingCompleted({super.allAppointments}) {
     debugPrint('appointments loading completed state');
   }
 }
 
 class AppointmentsLoadingFailed extends AppointmentsState {
-  AppointmentsLoadingFailed() {
-    debugPrint('appointments loading failed state');
+  String error;
+  AppointmentsLoadingFailed(
+      {required this.error, required super.allAppointments}) {
+    debugPrint('appointments loading failed state : $error');
   }
 }

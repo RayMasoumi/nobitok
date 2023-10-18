@@ -246,7 +246,10 @@ class MyApp extends StatelessWidget {
                   create: (context) => UserCubit(),
                 ),
                 BlocProvider<AppointmentsCubit>(
-                  create: (context) => AppointmentsCubit(),
+                  create: (context) => AppointmentsCubit(
+                    getAppointmentsRepository: getAppointmentsRepository,
+                    preAppointmentRepository: preAppointmentRepository,
+                  ),
                 ),
                 BlocProvider<TabCubit>(
                   create: (context) => TabCubit(getAppointmentsRepository,

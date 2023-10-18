@@ -5,13 +5,13 @@ import 'package:nobitok/constants/urls.dart';
 import '../../constants/strings.dart';
 
 class GetPreAppointmentService {
-  Future<http.Response> getAllPreAppointments(
+  Future<http.Response> getPreAppointmentsByRange(
       String startDate, String endDate) async {
     final startDateEncoded = Uri.encodeComponent(startDate);
     final endDateEncoded = Uri.encodeComponent(endDate);
 
     final url = Uri.parse(
-        '$kBaseUrl$kGetPreAppointmentsUrl?StartDate=$startDateEncoded&EndDate=$endDateEncoded');
+        '$kBaseUrl$kGetPreAppointmentsByRangeUrl?StartDate=$startDateEncoded&EndDate=$endDateEncoded');
 
     final headers = {'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}'};
 

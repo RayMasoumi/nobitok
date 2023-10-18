@@ -34,8 +34,8 @@ class TabCubit extends Cubit<TabState> {
         emit(AppointmentTabState(appointments));
       } else if (newTabKey == kPreAppointmentsKey) {
         List<Appointment> preAppointments;
-        preAppointments = await preAppointmentRepository.fetchPreAppointments(
-            getTodayDate(), '1402/11/10');
+        preAppointments = await preAppointmentRepository
+            .fetchPreAppointmentsByRange(getTodayDate(), '1402/11/10');
         //TODO
         emit(TabLoadingCompleteState());
 

@@ -9,7 +9,6 @@ Color selectedDateColor(Jalali start, Jalali end, Jalali index,
   } else if (index.isAtSameMomentAs(end)) {
     return kBlue300Color;
   } else if (index.isAfter(start) && index.isBefore(end)) {
-    print(index);
     return kBlue300Color.withOpacity(0.5);
   } else {
     return Colors.transparent;

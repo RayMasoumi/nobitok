@@ -11,9 +11,10 @@ class PreAppointmentRepository {
 
   PreAppointmentRepository({required this.service});
 
-  Future<List<Appointment>> fetchPreAppointments(
+  Future<List<Appointment>> fetchPreAppointmentsByRange(
       String startDate, String endDate) async {
-    final response = await service.getAllPreAppointments(startDate, endDate);
+    final response =
+        await service.getPreAppointmentsByRange(startDate, endDate);
 // * successful:
     if (response.statusCode == 200) {
       // * get pre-appointments data
@@ -25,7 +26,7 @@ class PreAppointmentRepository {
       }).toList();
 
       debugPrint(
-          'success in fetchPreAppointments in get_pre_appointment_service.dart');
+          'success in fetchPreAppointmentsByRange in get_pre_appointment_service.dart');
       return preAppointments;
     } else if (response.statusCode == 401) {
       print(response.statusCode);

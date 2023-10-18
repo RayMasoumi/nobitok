@@ -14,6 +14,7 @@ import 'package:nobitok/presentation/widgets/custom_text_field_for_create_docume
 import '../../business_logic/cubits/new_document_state.dart';
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
+import '../../methods/custom_jalali_date_picker.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/padded_divider.dart';
 
@@ -30,11 +31,11 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
   final nationalIdController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final birthDateController = TextEditingController();
+
   final descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    birthDateController.text = '۱۳۶۰/۰۱/۰۱';
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -61,15 +62,15 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                   ),
                   const Spacer(),
 // * document number
-                  CustomButton(
-                    height: 40.h,
-                    width: 160.w,
-                    fontSize: 13.sp,
-                    borderRadius: BorderRadius.circular(12),
-                    color: kGreenColor,
-                    text: 'شماره پرونده: ۱۲۳۴۵۶۷۸',
-                    onPressed: () {},
-                  ),
+//                   CustomButton(
+//                     height: 40.h,
+//                     width: 160.w,
+//                     fontSize: 13.sp,
+//                     borderRadius: BorderRadius.circular(12),
+//                     color: kGreenColor,
+//                     text: 'شماره پرونده: ۱۲۳۴۵۶۷۸',
+//                     onPressed: () {},
+//                   ),
                 ],
               ),
               PaddedDivider(topPadding: 8.0.h, bottomPadding: 8.0.h),
@@ -102,14 +103,16 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
               ),
 // * birth date text field
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  updateSelectedDate();
+                },
                 child: CustomLabeledTextField(
                   icon: Icon(
                     MdiIcons.calendarSearch,
                   ),
                   keyboardType: TextInputType.none,
                   controller: birthDateController,
-                  hintText: '۱۳۶۰/۰۱/۰۱',
+                  hintText: birthDateController.text,
                   label: 'تاریخ تولد',
                   disabled: true,
                 ),
@@ -220,5 +223,13 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> updateSelectedDate() async {
+    String newSelectedDate =
+        await customJalaliDatePicker(context, 'تاریخ تولد را مشخص نمایید :');
+    setState(() {
+      birthDateController.text = newSelectedDate;
+    });
   }
 }

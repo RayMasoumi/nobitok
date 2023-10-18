@@ -18,6 +18,7 @@ import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/repositories/add_appointment_from_pre_appointment_repository.dart';
 import 'package:nobitok/data/repositories/auth_repository.dart';
+import 'package:nobitok/data/repositories/complete_appointment_repository.dart';
 import 'package:nobitok/data/repositories/document_repository.dart';
 import 'package:nobitok/data/repositories/get_appointments_repository.dart';
 import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
@@ -30,6 +31,7 @@ import 'package:nobitok/data/repositories/post_new_document_repository.dart';
 import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/add_appointment_from_pre_appointment_service.dart';
 import 'package:nobitok/data/services/auth_service.dart';
+import 'package:nobitok/data/services/complete_appointment_service.dart';
 import 'package:nobitok/data/services/edit_invoice_service.dart';
 import 'package:nobitok/data/services/get_all_customers_service.dart';
 import 'package:nobitok/data/services/get_all_documents_service.dart';
@@ -114,8 +116,8 @@ void main() {
   final PostNewPreAppointmentService postNewPreAppointmentService =
       PostNewPreAppointmentService();
   final PostNewPreAppointmentRepository postNewPreAppointmentRepository =
-      PostNewPreAppointmentRepository(
-          postNewPreAppointmentService); // * new appointment from pre appointment
+      PostNewPreAppointmentRepository(postNewPreAppointmentService);
+  // * new appointment from pre appointment
   final AddAppointmentFromPreAppointmentService
       addAppointmentFromPreAppointmentService =
       AddAppointmentFromPreAppointmentService();
@@ -123,6 +125,13 @@ void main() {
       addAppointmentFromPreAppointmentRepository =
       AddAppointmentFromPreAppointmentRepository(
           addAppointmentFromPreAppointmentService);
+
+  // * complete appointment
+
+  final CompleteAppointmentService completeAppointmentService =
+      CompleteAppointmentService();
+  final CompleteAppointmentRepository completeAppointmentRepository =
+      CompleteAppointmentRepository(completeAppointmentService);
   runApp(
     MyApp(
       authService: authService,
@@ -147,6 +156,7 @@ void main() {
       postNewPreAppointmentRepository: postNewPreAppointmentRepository,
       addAppointmentFromPreAppointmentRepository:
           addAppointmentFromPreAppointmentRepository,
+      completeAppointmentRepository: completeAppointmentRepository,
     ),
   );
 }
@@ -175,6 +185,7 @@ class MyApp extends StatelessWidget {
   final EditInvoiceService editInvoiceService;
   final AddAppointmentFromPreAppointmentRepository
       addAppointmentFromPreAppointmentRepository;
+  final CompleteAppointmentRepository completeAppointmentRepository;
   const MyApp({
     super.key,
     required this.authService,
@@ -198,6 +209,7 @@ class MyApp extends StatelessWidget {
     required this.invoiceRepository,
     required this.editInvoiceService,
     required this.addAppointmentFromPreAppointmentRepository,
+    required this.completeAppointmentRepository,
   });
 
   @override
@@ -242,14 +254,16 @@ class MyApp extends StatelessWidget {
                 ),
                 BlocProvider<AppointmentDetailCubit>(
                   create: (context) => AppointmentDetailCubit(
-                      invoiceRepository: invoiceRepository,
-                      getInvoiceDetailsRepository: getInvoiceDetailsRepository,
-                      getCustomerDetailsRepository:
-                          getCustomerDetailsRepository,
-                      postNewPreAppointmentRepository:
-                          postNewPreAppointmentRepository,
-                      addAppointmentFromPreAppointmentRepository:
-                          addAppointmentFromPreAppointmentRepository),
+                    invoiceRepository: invoiceRepository,
+                    getInvoiceDetailsRepository: getInvoiceDetailsRepository,
+                    getCustomerDetailsRepository: getCustomerDetailsRepository,
+                    postNewPreAppointmentRepository:
+                        postNewPreAppointmentRepository,
+                    addAppointmentFromPreAppointmentRepository:
+                        addAppointmentFromPreAppointmentRepository,
+                    completeAppointmentRepository:
+                        completeAppointmentRepository,
+                  ),
                 ),
                 BlocProvider<CustomerCubit>(
                     create: (context) => CustomerCubit()),

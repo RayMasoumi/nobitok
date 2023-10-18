@@ -32,17 +32,16 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:nobitok/methods/calculate_date_method.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/date_picker_bottom_sheet.dart';
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-Future<String> customJalaliDatePicker(
+import '../presentation/modal_bottom_sheets/range_picker_bottom_sheet.dart';
+
+Future<List<String>> customJalaliRangePicker(
     BuildContext context, String title) async {
-  Jalali selectedDate = await showModalBottomSheet(
+  List<String> selectedDates = await showModalBottomSheet(
     context: context,
-    builder: (context) => DatePickerBottomSheet(
+    builder: (context) => RangePickerBottomSheet(
       title: title,
     ),
   );
-  return formatDateJalali(selectedDate);
+  return selectedDates;
 }

@@ -104,10 +104,6 @@ class _ServicesListTileState extends State<ServicesListTile> {
                     setState(() {
                       quantity = newQuantity;
                       widget.services[widget.index].serviceQuantity = quantity;
-
-                      print('input quantity widget');
-                      print(quantity);
-                      print(widget.services[widget.index].serviceQuantity);
                     });
                   },
                 ),

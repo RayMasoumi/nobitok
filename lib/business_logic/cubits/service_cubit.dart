@@ -32,11 +32,6 @@ class ServiceCubit extends Cubit<ServiceState> {
     return state.allServices ?? [];
   }
 
-  // void setQuantity(int index, int quantity) {
-  //   state.allServices?[index].serviceQuantity = quantity;
-  //   emit(state);
-  // }
-
   void clearServices() {
     state.allServices = [];
     emit(state);

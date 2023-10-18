@@ -202,11 +202,11 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     color: kBlue300Color,
                     text: 'افزودن خدمت',
                     onPressed: () async {
-                      //?Navigator.of(context).pop(); //?? do we need this?
                       await context
                           .read<ServiceCubit>()
                           .fetchServicesFromRepository();
                       if (context.mounted) {
+                        Navigator.of(context).pop();
                         showModalBottomSheet(
                           context: context,
                           builder: (context) => const ServiceBottomSheet(),

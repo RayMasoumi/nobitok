@@ -25,7 +25,6 @@ class ServiceBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Service> allServices = context.read<ServiceCubit>().getServices();
     List<Service> selectedServices = castInvoiceItemToService(context
         .read<AppointmentDetailCubit>()
         .getAppointmentDetails()
@@ -58,39 +57,25 @@ class ServiceBottomSheet extends StatelessWidget {
                     tileTopPadding: 8,
                     tileBottomPadding: 8,
                     listTileBuilder: (index) {
-                      return InkWell(
-                        onTap: () {
-                          print('get servic cubit');
-                          // print(context
-                          //     .read<ServiceCubit>()
-                          //     .getServices()[index]
-                          //     .serviceQuantity);
-                          print(allServices[index].serviceQuantity);
+                      return ServicesListTile(
+                        services: context.read<ServiceCubit>().getServices(),
+                        index: index,
+                        checkboxOnChanged: (bool? value) {
+                          if (value == true) {
+                            selectedServices.add(context
+                                .read<ServiceCubit>()
+                                .getServices()[index]);
+                          } else {
+                            selectedServices.remove(context
+                                .read<ServiceCubit>()
+                                .getServices()[index]);
+                          }
                         },
-                        child: ServicesListTile(
-                          // services: context.read<ServiceCubit>().getServices(),
-                          services: allServices,
-                          index: index,
-                          checkboxOnChanged: (bool? value) {
-                            if (value == true) {
-                              // selectedServices.add(context
-                              //     .read<ServiceCubit>()
-                              //     .getServices()[index]);
-                              selectedServices.add(allServices[index]);
-                            } else {
-                              // selectedServices.remove(context
-                              //     .read<ServiceCubit>()
-                              //     .getServices()[index]);
-                              selectedServices.remove(allServices[index]);
-                            }
-                          },
-                          alreadySelectedServices: selectedServices,
-                        ),
+                        alreadySelectedServices: selectedServices,
                       );
                     },
                     itemCount:
-                        // context.read<ServiceCubit>().getServices().length,
-                        allServices.length,
+                        context.read<ServiceCubit>().getServices().length,
                   );
                 },
               ),
@@ -110,11 +95,6 @@ class ServiceBottomSheet extends StatelessWidget {
                   color: kGreenColor,
                   text: 'تایید',
                   onPressed: () async {
-                    for (Service service in selectedServices) {
-                      print('###selected services quantity###');
-                      print(service.serviceQuantity);
-                    }
-
 // * getting the invoice id:
                     int? invoiceId = context
                         .read<AppointmentDetailCubit>()
@@ -125,10 +105,7 @@ class ServiceBottomSheet extends StatelessWidget {
 // * casting the selected services into invoice items:
                     List<InvoiceItem> invoiceItems =
                         castServicesToInvoiceItems(selectedServices);
-                    // for (InvoiceItem item in invoiceItems) {
-                    //   print('****');
-                    //   print(item.invoiceItemQuantity);
-                    // }
+
 // * adding the new invoice items into invoice:
                     await context
                         .read<InvoiceCubit>()

@@ -29,18 +29,13 @@ class _ServicesListTileState extends State<ServicesListTile> {
   int quantity = 0; // Initialize quantity to 0
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     // * Calculate the initial quantity based on already selected items
     for (Service service in widget.alreadySelectedServices) {
       if (service.serviceId == widget.services[widget.index].serviceId) {
         quantity = service.serviceQuantity;
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     bool isChecked =
         widget.alreadySelectedServices.contains(widget.services[widget.index]);
 

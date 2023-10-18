@@ -25,6 +25,7 @@ class ServiceBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Service> allServices = context.read<ServiceCubit>().getServices();
     List<Service> selectedServices = castInvoiceItemToService(context
         .read<AppointmentDetailCubit>()
         .getAppointmentDetails()
@@ -60,23 +61,27 @@ class ServiceBottomSheet extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           print('get servic cubit');
-                          print(context
-                              .read<ServiceCubit>()
-                              .getServices()[index]
-                              .serviceQuantity);
+                          // print(context
+                          //     .read<ServiceCubit>()
+                          //     .getServices()[index]
+                          //     .serviceQuantity);
+                          print(allServices[index].serviceQuantity);
                         },
                         child: ServicesListTile(
-                          services: context.read<ServiceCubit>().getServices(),
+                          // services: context.read<ServiceCubit>().getServices(),
+                          services: allServices,
                           index: index,
                           checkboxOnChanged: (bool? value) {
                             if (value == true) {
-                              selectedServices.add(context
-                                  .read<ServiceCubit>()
-                                  .getServices()[index]);
+                              // selectedServices.add(context
+                              //     .read<ServiceCubit>()
+                              //     .getServices()[index]);
+                              selectedServices.add(allServices[index]);
                             } else {
-                              selectedServices.remove(context
-                                  .read<ServiceCubit>()
-                                  .getServices()[index]);
+                              // selectedServices.remove(context
+                              //     .read<ServiceCubit>()
+                              //     .getServices()[index]);
+                              selectedServices.remove(allServices[index]);
                             }
                           },
                           alreadySelectedServices: selectedServices,
@@ -84,7 +89,8 @@ class ServiceBottomSheet extends StatelessWidget {
                       );
                     },
                     itemCount:
-                        context.read<ServiceCubit>().getServices().length,
+                        // context.read<ServiceCubit>().getServices().length,
+                        allServices.length,
                   );
                 },
               ),

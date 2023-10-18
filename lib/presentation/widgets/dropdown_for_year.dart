@@ -2,12 +2,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 class DropdownForYear extends StatelessWidget {
-  const DropdownForYear(
-      {super.key,
-      required this.child,
-      required this.years,
-      required this.selectedYear,
-      required this.onChanged});
+  const DropdownForYear({
+    super.key,
+    required this.child,
+    required this.years,
+    required this.selectedYear,
+    required this.onChanged,
+  });
 
   final Widget child;
   final List<int> years;

@@ -170,7 +170,7 @@ class HomeScreen extends StatelessWidget {
                 topPadding: 12,
                 bottomPadding: 12,
               ), // * after divider:
-// * Tab content
+// * Tab 1 content
               Flexible(
                 child: TabBarView(
                   children: [

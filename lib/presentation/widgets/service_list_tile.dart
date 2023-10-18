@@ -11,9 +11,9 @@ class ServicesListTile extends StatefulWidget {
   const ServicesListTile({
     super.key,
     required this.services,
+    required this.alreadySelectedServices,
     required this.index,
     required this.checkboxOnChanged,
-    required this.alreadySelectedServices,
   });
 
   final List<Service> services;
@@ -29,18 +29,13 @@ class _ServicesListTileState extends State<ServicesListTile> {
   int quantity = 0; // Initialize quantity to 0
 
   @override
-  void initState() {
-    super.initState();
-    // Calculate the initial quantity based on already selected items
+  Widget build(BuildContext context) {
+    // * Calculate the initial quantity based on already selected items
     for (Service service in widget.alreadySelectedServices) {
       if (service.serviceId == widget.services[widget.index].serviceId) {
-        quantity++;
+        quantity = service.serviceQuantity;
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     bool isChecked =
         widget.alreadySelectedServices.contains(widget.services[widget.index]);
 
@@ -104,10 +99,11 @@ class _ServicesListTileState extends State<ServicesListTile> {
                   ],
                 ),
                 CustomInputQuantityWidget(
-                  quantity: quantity,
+                  quantity: !isChecked ? 0 : quantity,
                   onQuantityChanged: (int newQuantity) {
                     setState(() {
                       quantity = newQuantity;
+                      widget.services[widget.index].serviceQuantity = quantity;
                     });
                   },
                 ),

@@ -6,14 +6,31 @@ import '../../data/models/customer.dart';
 import '../../data/models/invoice.dart';
 import '../../data/repositories/get_customer_details_repository.dart';
 import '../../data/repositories/get_document_details_repository.dart';
+import '../../data/repositories/post_new_appointment_repository.dart';
 
 class DocumentDetailsCubit extends Cubit<DocumentDetailsState> {
   final GetCustomerDetailsRepository getCustomerDetailsRepository;
   final GetDocumentDetailsRepository getDocumentDetailsRepository;
+  final PostNewAppointmentRepository postNewAppointmentRepository;
+
   DocumentDetailsCubit(
-      {required this.getDocumentDetailsRepository,
+      {required this.postNewAppointmentRepository,
+      required this.getDocumentDetailsRepository,
       required this.getCustomerDetailsRepository})
       : super(DocumentDetailInitial());
+
+  // * add new appointment in customers document:
+  Future<void> addNewAppointment(
+      String time, String date, int customerId) async {
+    emit(DocumentDetailLoading());
+    try {
+      postNewAppointmentRepository.postNewAppointmentService
+          .postNewAppointment(time, date, customerId);
+      emit(DocumentDetailLoaded());
+    } catch (e) {
+      emit(DocumentDetailError(error: 'Failed to add new appointment: $e'));
+    }
+  }
 
   Future<void> fetchDocumentDetail(int customerId) async {
     emit(DocumentDetailLoading());

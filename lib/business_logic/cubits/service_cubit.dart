@@ -29,7 +29,6 @@ class ServiceCubit extends Cubit<ServiceState> {
   }
 
   List<Service> getServices() {
-    // print(state.allServices?.length);
     return state.allServices ?? [];
   }
 

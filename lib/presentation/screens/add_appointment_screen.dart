@@ -9,6 +9,7 @@ import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../constants/styles.dart';
+import '../modal_bottom_sheets/documents_service_list.dart';
 import '../widgets/call_customer_widget.dart';
 import '../widgets/customer_document_number_widget.dart';
 import '../widgets/customer_name_widget.dart';
@@ -119,7 +120,13 @@ class AddAppointmentScreen extends StatelessWidget {
                       borderRadius: kBorderRadius12,
                       color: kBlue300Color,
                       text: 'افزودن خدمت',
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                const DocumentsServiceBottomSheet(),
+                            isScrollControlled: true);
+                      },
                     ),
                   ),
                 ),

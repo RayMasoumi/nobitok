@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/service_list.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/appointments_service_list.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
@@ -202,15 +202,18 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     color: kBlue300Color,
                     text: 'افزودن خدمت',
                     onPressed: () async {
-                      //?Navigator.of(context).pop(); //?? do we need this?
                       await context
                           .read<ServiceCubit>()
                           .fetchServicesFromRepository();
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => const ServiceBottomSheet(),
-                        isScrollControlled: true,
-                      );
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) =>
+                              const AppointmentsServiceBottomSheet(),
+                          isScrollControlled: true,
+                        );
+                      }
                     }),
                 CustomButton(
                     height: 32,

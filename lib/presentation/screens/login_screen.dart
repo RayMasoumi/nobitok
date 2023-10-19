@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (usernameController.text.isEmpty ||
                                 passwordController.text.isEmpty) {
                               errorAlert(context,
-                                  'لطفاً فیلد‌های خواسته شده را پر کنید.');
+                                  'لطفاً اطلاعات خواسته شده را پر کنید.');
                             } else {
                               final username = usernameController.text;
                               final password = passwordController.text;

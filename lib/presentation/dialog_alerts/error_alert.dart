@@ -15,61 +15,59 @@ void errorAlert(BuildContext context, String title) {
           borderRadius: BorderRadius.circular(23),
         ),
         backgroundColor: Colors.white,
-        content: Expanded(
-          child: SizedBox(
-            width: 341.w,
-            height: 180.h,
-            child: ClipRect(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(
-                        Icons.cancel_outlined,
-                      ),
-                      iconSize: 24.r,
+        content: SizedBox(
+          width: 341.w,
+          height: 180.h,
+          child: ClipRect(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.cancel_outlined,
                     ),
+                    iconSize: 24.r,
                   ),
-                  Positioned(
-                    top: 30.h,
-                    left: 20.h,
-                    right: 20.h,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 80.h,
-                          width: 80.h,
-                          decoration: const BoxDecoration(
-                            color: kYellowColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            MdiIcons.exclamationThick,
-                            color: Colors.white,
-                            size: 50.r,
-                          ),
+                ),
+                Positioned(
+                  top: 30.h,
+                  left: 20.h,
+                  right: 20.h,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 80.h,
+                        width: 80.h,
+                        decoration: const BoxDecoration(
+                          color: kYellowColor,
+                          shape: BoxShape.circle,
                         ),
-                        SizedBox(
-                          height: 10.h,
+                        child: Icon(
+                          MdiIcons.exclamationThick,
+                          color: Colors.white,
+                          size: 50.r,
                         ),
-                        Text(
-                          title,
-                          style: kBold14TextStyle,
-                          textAlign: TextAlign.center,
-                          maxLines: 2,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Text(
+                        title,
+                        style: kBold14TextStyle,
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),

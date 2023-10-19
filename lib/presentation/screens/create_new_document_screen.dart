@@ -6,15 +6,20 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nobitok/business_logic/cubits/new_document_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/data/models/customer.dart';
+import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/medical_form_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_description_text_field.dart';
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
 import 'package:nobitok/presentation/widgets/custom_text_field_for_create_document.dart';
 
 import '../../business_logic/cubits/new_document_state.dart';
+import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/colors.dart';
+import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 import '../../methods/custom_jalali_date_picker.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/padded_divider.dart';
 
@@ -150,15 +155,15 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                   SizedBox(
                     width: 16.w,
                   ),
-                  CustomButton(
-                    height: 40.h,
-                    width: 115.w,
-                    fontSize: 14.sp,
-                    borderRadius: kBorderRadius8,
-                    color: kBlue300Color,
-                    text: 'عکس مشتری',
-                    onPressed: () {},
-                  ),
+                  // CustomButton(
+                  //   height: 40.h,
+                  //   width: 115.w,
+                  //   fontSize: 14.sp,
+                  //   borderRadius: kBorderRadius8,
+                  //   color: kBlue300Color,
+                  //   text: 'عکس مشتری',
+                  //   onPressed: () {},
+                  // ),
                 ],
               ),
               const Spacer(),
@@ -173,13 +178,33 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                         context.loaderOverlay.show();
                       } else if (state is NewDocumentSent) {
                         context.loaderOverlay.hide();
-                        // todo show something
                         Navigator.of(context).pop();
+                        successAlert(context, 'پرونده با موفقیت ایجاد شد');
+                        context.read<TabCubit>().changeTab(kDocumentsKey);
                       } else if (state is NewDocumentFailed) {
                         context.loaderOverlay.hide();
-                        // todo show something
+                        if (state.error.contains(kServerException)) {
+                          noInternetAlert(context);
+                          // print('server exception');
+                        } else if (state.error.contains('209')) {
+                          errorAlert(context,
+                              'اطلاعات داده شده معتبر نیستند، دوباره امتحان کنید');
+                          nationalIdController.clear();
+                          phoneNumberController.clear();
+                          // print('auth exception');
+                        } else if (state.error.contains('208')) {
+                          errorAlert(
+                              context, 'یک پرونده با این اطلاعات وجود دارد.');
+                          nameController.clear();
+                          nationalIdController.clear();
+                          phoneNumberController.clear();
+                          // print('auth exception');
+                        } else {
+                          errorAlert(context, 'خطا در بارگذاری اطلاعات');
+                        }
                       } else {
                         context.loaderOverlay.hide();
+                        errorAlert(context, 'خطا');
                       }
                     },
                     child: CustomButton(
@@ -190,18 +215,26 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                       color: kGreenColor,
                       text: 'ثبت پرونده',
                       onPressed: () async {
-                        Customer customer = Customer(
-                          customerId: 0,
-                          customerName: nameController.text,
-                          customerPhoneNumber: phoneNumberController.text,
-                          customerDateOfBirth: birthDateController.text,
-                          customerIdCode: nationalIdController.text,
-                          customerDescription: descriptionController.text,
-                        );
-                        NewDocumentCubit newDocumentCubit =
-                            context.read<NewDocumentCubit>();
-                        newDocumentCubit.setNewCustomer(customer);
-                        await newDocumentCubit.sendInfoToCreate(customer);
+                        if (nameController.text.isEmpty ||
+                            nationalIdController.text.isEmpty ||
+                            phoneNumberController.text.isEmpty ||
+                            birthDateController.text.isEmpty) {
+                          errorAlert(
+                              context, 'لطفا اطلاعات خواسته شده را پر کنید');
+                        } else {
+                          Customer customer = Customer(
+                            customerId: 0,
+                            customerName: nameController.text,
+                            customerPhoneNumber: phoneNumberController.text,
+                            customerDateOfBirth: birthDateController.text,
+                            customerIdCode: nationalIdController.text,
+                            customerDescription: descriptionController.text,
+                          );
+                          NewDocumentCubit newDocumentCubit =
+                              context.read<NewDocumentCubit>();
+                          newDocumentCubit.setNewCustomer(customer);
+                          await newDocumentCubit.sendInfoToCreate(customer);
+                        }
                       },
                     ),
                   ),

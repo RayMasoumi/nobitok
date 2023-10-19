@@ -3,15 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
-import '../../business_logic/cubits/appointment_details_cubit.dart';
-import '../../business_logic/cubits/invoice_cubit.dart';
 import '../../business_logic/cubits/service_state.dart';
 import '../../data/models/invoice_item.dart';
 import '../../data/models/service.dart';
@@ -34,7 +31,7 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
 // * top bar:
             const CustomTopBar(
               iconPath: 'assets/icons/services.png',
-              title: 'خدمات (پرونده)',
+              title: 'خدمات (پرونده جدید)',
             ),
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
@@ -90,55 +87,31 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
                   color: kGreenColor,
                   text: 'تایید',
                   onPressed: () async {
-// * make a new appointment detail:
-                    context.read<AppointmentDetailCubit>();
-
-// * getting the invoice id:
-                    int? invoiceId = context
-                        .read<AppointmentDetailCubit>()
-                        .getAppointmentDetails()
-                        .invoiceDetail
-                        .invoiceId;
+// * using the made appointment
 
 // * casting the selected services into invoice items:
                     List<InvoiceItem> invoiceItems =
                         castServicesToInvoiceItems(selectedServices);
-
-// * adding the new invoice items into invoice:
-                    await context
-                        .read<InvoiceCubit>()
-                        .addInvoiceItem(invoiceId, invoiceItems);
-// * update appointment details(invoice changes):
-                    if (context.mounted) {
-                      await context
-                          .read<AppointmentDetailCubit>()
-                          .fetchAppointmentDetail(context
-                              .read<AppointmentDetailCubit>()
-                              .getAppointmentDetails()
-                              .appointmentDetail);
-                    }
-
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
+// * pop and return invoice items to the document set appointment screen:
+                    Navigator.of(context).pop(invoiceItems);
                   },
                 ),
 // * change service price button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kYellowColor,
-                  text: 'تغییر قیمت',
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => const ChangePriceBottomSheet(),
-                      isScrollControlled: true,
-                    );
-                  },
-                ),
+//                 CustomButton(
+//                   height: 40,
+//                   width: 160,
+//                   fontSize: 13,
+//                   borderRadius: kBorderRadius12,
+//                   color: kYellowColor,
+//                   text: 'تغییر قیمت',
+//                   onPressed: () {
+//                     showModalBottomSheet(
+//                       context: context,
+//                       builder: (context) => const ChangePriceBottomSheet(),
+//                       isScrollControlled: true,
+//                     );
+//                   },
+//                 ),
               ],
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
@@ -31,7 +32,7 @@ class CallCustomerWidget extends StatelessWidget {
               width: 16,
             ),
             Text(
-              phoneNumber,
+              phoneNumber.toPersianDigit(),
               style: kBold13TextStyle.copyWith(color: Colors.white),
             ),
           ],

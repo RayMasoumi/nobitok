@@ -24,9 +24,9 @@ class DocumentDetailsCubit extends Cubit<DocumentDetailsState> {
       String time, String date, int customerId) async {
     emit(DocumentDetailLoading());
     try {
-      postNewAppointmentRepository.postNewAppointmentService
+      await postNewAppointmentRepository.postNewAppointmentService
           .postNewAppointment(time, date, customerId);
-      emit(DocumentDetailLoaded());
+      emit(DocumentDetailAppointmentAdded(customer: state.customer));
     } catch (e) {
       emit(DocumentDetailError(error: 'Failed to add new appointment: $e'));
     }

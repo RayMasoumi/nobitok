@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/methods/set_time_initial_value_method.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
@@ -121,7 +122,7 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                               .getAppointmentDetails()
                               .appointmentDetail
                               .appointmentTime ??
-                          '00:00',
+                          getTimeInitialValue(),
                       onPressed: () {},
                     ),
                   ],
@@ -154,7 +155,10 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
+                  invoiceItems: appointmentDetails
+                      .getAppointmentDetails()
+                      .invoiceDetail
+                      .invoiceItems,
                 ),
               ],
             ),

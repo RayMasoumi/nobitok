@@ -26,6 +26,12 @@ class DocumentDetailLoaded extends DocumentDetailsState {
   }
 }
 
+class DocumentDetailAppointmentAdded extends DocumentDetailsState {
+  DocumentDetailAppointmentAdded({required super.customer}) {
+    debugPrint('DocumentDetail Appointment Added state');
+  }
+}
+
 class DocumentDetailError extends DocumentDetailsState {
   final String error;
 

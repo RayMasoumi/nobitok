@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nobitok/business_logic/cubits/document_details_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/methods/custom_jalali_date_picker.dart';
@@ -17,6 +19,8 @@ import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../business_logic/cubits/service_cubit.dart';
 import '../../constants/styles.dart';
 import '../../data/models/invoice_item.dart';
+import '../../methods/calculate_time_method.dart';
+import '../dialog_alerts/success_alert.dart';
 import '../modal_bottom_sheets/documents_service_list.dart';
 import '../modal_bottom_sheets/set_time_bottom_sheet.dart';
 import '../widgets/call_customer_widget.dart';
@@ -27,7 +31,7 @@ import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
 class AddAppointmentScreen extends StatefulWidget {
-  AddAppointmentScreen({
+  const AddAppointmentScreen({
     super.key,
   });
 
@@ -36,14 +40,14 @@ class AddAppointmentScreen extends StatefulWidget {
 }
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
+  String date = getTodayDate().toPersianDigit();
+  String time = getTimeInitialValue().toPersianDigit();
+
   // * a list of services:
   List<InvoiceItem> invoiceItems = [];
 
   @override
   Widget build(BuildContext context) {
-    String date = getTodayDate().toPersianDigit();
-    String time = getTimeInitialValue().toPersianDigit();
-
 // * make a new appointment first as you open this screen:
     context
         .read<DocumentDetailsCubit>()
@@ -113,34 +117,45 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                       SetDateWidget(
                         disabled: false,
                         text: date,
-                        onPressed: () async {
-                          date = await customJalaliDatePicker(
-                              context, 'تاریخ نوبت را انتخاب کنید');
-                        },
+                        onPressed: updateSelectedDate,
                       ),
                       SetTimeWidget(
                         disabled: false,
                         text: time,
-                        onPressed: () async {
-                          setTimeInitialValue();
-                          await showModalBottomSheet(
-                            context: context,
-                            builder: (context) => const SetTimeBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        },
+                        onPressed: updateSelectedTime,
                       ),
                     ],
                   ),
                   const PaddedDivider(topPadding: 16, bottomPadding: 8),
                 ],
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'جهت ثبت نوبت خدمات را وارد کنید : ',
-                  style: kBold14TextStyle,
-                ),
+              Center(
+                // alignment: invoiceItems.isEmpty
+                //     ? Alignment.topRight
+                //     : Alignment.center,
+                child: invoiceItems.isEmpty
+                    ? Text(
+                        'جهت ثبت نوبت خدمات را وارد کنید : ',
+                        style: kBold14TextStyle,
+                      )
+                    :
+                    // * title:
+                    Row(
+                        children: [
+                          Text(
+                            'خدمات دریافتی',
+                            style: kBold14TextStyle,
+                          ),
+                          const Spacer(),
+                          Text(
+                            'مبلغ',
+                            style: kBold14TextStyle,
+                          ),
+                          SizedBox(
+                            width: 44.w,
+                          ),
+                        ],
+                      ),
               ),
               SizedBox(
                 height: 16.h,
@@ -190,26 +205,6 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
 // * invoice list:
                       Column(
                           children: [
-// * title:
-                            Row(
-                              children: [
-                                Text(
-                                  'خدمات دریافتی',
-                                  style: kBold14TextStyle,
-                                ),
-                                const Spacer(),
-                                Text(
-                                  'مبلغ',
-                                  style: kBold14TextStyle,
-                                ),
-                                SizedBox(
-                                  width: 44.w,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8.h,
-                            ),
 // * listView
                             SeparatedListViewWidget(
                               invoiceItems: invoiceItems,
@@ -222,16 +217,40 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomButton(
-                      height: 50,
-                      width: 203,
-                      fontSize: 14,
-                      borderRadius: kBorderRadius8,
-                      color: kGreenColor,
-                      text: 'ثبت نوبت',
-                      onPressed: () {
-//todo
-                      }),
+                  BlocListener<DocumentDetailsCubit, DocumentDetailsState>(
+                    listener: (context, state) {
+                      if (state is DocumentDetailLoading) {
+                        context.loaderOverlay.show();
+                      }
+                      if (state is DocumentDetailAppointmentAdded) {
+                        context.loaderOverlay.hide();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        successAlert(context, 'نوبت با موفقیت ثبت شد.');
+                      } else if (state is DocumentDetailError) {
+                        context.loaderOverlay.hide();
+                        //TODO errorAlert();
+                      }
+                    },
+                    child: CustomButton(
+                        height: 50,
+                        width: 203,
+                        fontSize: 14,
+                        borderRadius: kBorderRadius8,
+                        color: kGreenColor,
+                        text: 'تایید نوبت',
+                        onPressed: () async {
+                          await context
+                              .read<DocumentDetailsCubit>()
+                              .addNewAppointment(
+                                  time,
+                                  date,
+                                  context
+                                      .read<DocumentDetailsCubit>()
+                                      .getDocumentDetails()
+                                      .customerId);
+                        }),
+                  ),
                   CustomButton(
                       height: 50,
                       width: 120,
@@ -252,5 +271,25 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> updateSelectedDate() async {
+    String newSelectedDate =
+        await customJalaliDatePicker(context, 'تاریخ مورد نظر را انتخاب کنید:');
+    setState(() {
+      date = newSelectedDate;
+    });
+  }
+
+  Future<void> updateSelectedTime() async {
+    setTimeInitialValue();
+    String newSelectedTime = await showModalBottomSheet(
+      context: context,
+      builder: (context) => const SetTimeBottomSheet(),
+      isScrollControlled: true,
+    );
+    setState(() {
+      time = formatTimeString(newSelectedTime);
+    });
   }
 }

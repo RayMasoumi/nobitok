@@ -44,6 +44,7 @@ import 'package:nobitok/data/services/get_invoice_details_service.dart';
 import 'package:nobitok/data/services/post_new_appointment_service.dart';
 import 'package:nobitok/data/services/post_new_customer_service.dart';
 import 'package:nobitok/data/services/post_new_document_service.dart';
+import 'package:nobitok/methods/bouncing_scroll_behavior.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
@@ -53,7 +54,10 @@ import 'data/repositories/post_new_pre_appointment_repository.dart';
 import 'data/services/get_pre_appointment_service.dart';
 import 'data/services/post_new_pre_appointment_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(const Duration(milliseconds: 300));
+  WidgetsFlutterBinding.ensureInitialized();
 // *auth
   final AuthService authService = AuthService();
   final AuthRepository authRepository =
@@ -137,35 +141,37 @@ void main() {
       CompleteAppointmentService();
   final CompleteAppointmentRepository completeAppointmentRepository =
       CompleteAppointmentRepository(completeAppointmentService);
-  runApp(
-    MyApp(
-      authService: authService,
-      authRepository: authRepository,
-      getAppointmentsRepository: getAppointmentsRepository,
-      getAppointmentsService: getAppointmentsService,
-      preAppointmentService: getPreAppointmentService,
-      preAppointmentRepository: preAppointmentRepository,
-      getInvoiceDetailsRepository: getInvoiceDetailsRepository,
-      getCustomerDetailsRepository: getCustomerDetailsRepository,
-      getAllDocumentsService: getAllDocumentsService,
-      documentRepository: documentRepository,
-      getAllCustomersService: getAllCustomersService,
-      customerRepository: customerRepository,
-      getAllServicesService: getAllServicesService,
-      serviceRepository: serviceRepository,
-      getDocumentDetailsRepository: getDocumentDetailsRepository,
-      postNewDocumentRepository: postNewDocumentRepository,
-      postNewCustomerRepository: postNewCustomerRepository,
-      editInvoiceService: editInvoiceService,
-      invoiceRepository: invoiceRepository,
-      postNewPreAppointmentRepository: postNewPreAppointmentRepository,
-      addAppointmentFromPreAppointmentRepository:
-          addAppointmentFromPreAppointmentRepository,
-      completeAppointmentRepository: completeAppointmentRepository,
-      postNewAppointmentRepository: postNewAppointmentRepository,
-      postNewAppointmentService: postNewAppointmentService,
-    ),
-  );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((value) => runApp(
+        MyApp(
+          authService: authService,
+          authRepository: authRepository,
+          getAppointmentsRepository: getAppointmentsRepository,
+          getAppointmentsService: getAppointmentsService,
+          preAppointmentService: getPreAppointmentService,
+          preAppointmentRepository: preAppointmentRepository,
+          getInvoiceDetailsRepository: getInvoiceDetailsRepository,
+          getCustomerDetailsRepository: getCustomerDetailsRepository,
+          getAllDocumentsService: getAllDocumentsService,
+          documentRepository: documentRepository,
+          getAllCustomersService: getAllCustomersService,
+          customerRepository: customerRepository,
+          getAllServicesService: getAllServicesService,
+          serviceRepository: serviceRepository,
+          getDocumentDetailsRepository: getDocumentDetailsRepository,
+          postNewDocumentRepository: postNewDocumentRepository,
+          postNewCustomerRepository: postNewCustomerRepository,
+          editInvoiceService: editInvoiceService,
+          invoiceRepository: invoiceRepository,
+          postNewPreAppointmentRepository: postNewPreAppointmentRepository,
+          addAppointmentFromPreAppointmentRepository:
+              addAppointmentFromPreAppointmentRepository,
+          completeAppointmentRepository: completeAppointmentRepository,
+          postNewAppointmentRepository: postNewAppointmentRepository,
+          postNewAppointmentService: postNewAppointmentService,
+        ),
+      ));
 }
 
 class MyApp extends StatelessWidget {
@@ -302,6 +308,10 @@ class MyApp extends StatelessWidget {
                     create: (context) => InvoiceCubit(invoiceRepository))
               ],
               child: MaterialApp(
+                builder: (context, child) {
+                  return ScrollConfiguration(
+                      behavior: BouncingScrollBehavior(), child: child!);
+                },
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(
                   scaffoldBackgroundColor: Colors.white,

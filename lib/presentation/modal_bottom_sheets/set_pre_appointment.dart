@@ -8,6 +8,7 @@ import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/methods/calculate_date_method.dart';
 import 'package:nobitok/methods/calculate_time_method.dart';
 import 'package:nobitok/methods/custom_jalali_date_picker.dart';
+import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
@@ -19,8 +20,11 @@ import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
+import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 import '../../methods/set_time_initial_value_method.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/set_time_widget.dart';
@@ -194,14 +198,20 @@ class _SetPreAppointmentBottomSheetState
                   context.loaderOverlay.show();
                 } else if (state is AppointmentDetailSent) {
                   context.loaderOverlay.hide();
-                  // todo show appropriate dialog
                   Navigator.of(context).pop();
+                  successAlert(context, 'پیش‌نوبت با موفقیت ثبت شد');
                 } else if (state is AppointmentDetailError) {
                   context.loaderOverlay.hide();
-                  // todo show appropriate dialog
+                  if (state.error.contains(kServerException)) {
+                    noInternetAlert(context);
+                    // print('server exception');
+                  } else {
+                    errorAlert(context, 'خطا در بارگذاری اطلاعات');
+                    // print('an exception');
+                  }
                 } else {
                   context.loaderOverlay.hide();
-                  // todo show appropriate dialog.
+                  errorAlert(context, 'خطا');
                 }
               },
               child: CustomButton(

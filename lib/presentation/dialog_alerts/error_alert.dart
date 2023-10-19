@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nobitok/constants/colors.dart';
 
 import '../../constants/styles.dart';
 
-void successAlert(BuildContext context, String title) {
+void errorAlert(BuildContext context, String title) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -15,7 +17,7 @@ void successAlert(BuildContext context, String title) {
         backgroundColor: Colors.white,
         content: SizedBox(
           width: 341.w,
-          height: 147.h,
+          height: 180.h,
           child: ClipRect(
             child: Stack(
               children: [
@@ -32,15 +34,24 @@ void successAlert(BuildContext context, String title) {
                   ),
                 ),
                 Positioned(
-                  bottom: 20.h,
+                  top: 30.h,
                   left: 20.h,
                   right: 20.h,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/double_check.png',
-                        width: 65.w,
+                      Container(
+                        height: 80.h,
+                        width: 80.h,
+                        decoration: const BoxDecoration(
+                          color: kYellowColor,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          MdiIcons.exclamationThick,
+                          color: Colors.white,
+                          size: 50.r,
+                        ),
                       ),
                       SizedBox(
                         height: 10.h,

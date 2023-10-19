@@ -52,6 +52,7 @@ class AppointmentsServiceBottomSheet extends StatelessWidget {
               child: BlocBuilder<ServiceCubit, ServiceState>(
                 builder: (context, state) {
                   return CustomListView(
+                    onRefresh: () async {},
                     tileLeftPadding: 4,
                     tileRightPadding: 10,
                     tileTopPadding: 8,

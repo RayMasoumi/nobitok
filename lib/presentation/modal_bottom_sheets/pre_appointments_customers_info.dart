@@ -4,17 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
+import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
+import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
+import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
+import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
+import '../../constants/strings.dart';
 import '../../constants/styles.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/custom_image_widget.dart';
 import '../widgets/custom_topbar.dart';
-import '../widgets/info_card_widget.dart';
 import '../widgets/padded_divider.dart';
 import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
@@ -76,45 +81,18 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 // * phone number card:
-                    InkWell(
-                      onTap: () {
-                        //TODO call
-                      },
-                      child: InfoCardWidget(
-                        color: kBlue300Color,
-                        horizontalPadding: 14,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CustomImage(
-                              path: 'assets/icons/call.png',
-                              height: 16,
-                              width: 16,
-                            ),
-                            Text(
-                              appointmentDetails
-                                  .getAppointmentDetails()
-                                  .customerDetail
-                                  .customerPhoneNumber
-                                  .toPersianDigit(),
-                              style: kBold13TextStyle.copyWith(
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    CallCustomerWidget(
+                        phoneNumber: appointmentDetails
+                            .getAppointmentDetails()
+                            .customerDetail
+                            .customerPhoneNumber),
 // * file code card:
-                    InfoCardWidget(
-                      horizontalPadding: 14,
-                      color: const Color(0xffC8C8C8),
-                      child: Center(
-                        child: Text(
-                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode?.toPersianDigit()}',
-                          style: kBold13TextStyle.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    CustomerDocumentNumberWidget(
+                        docNumber: appointmentDetails
+                                .getAppointmentDetails()
+                                .customerDetail
+                                .customerDocumentCode ??
+                            ''),
                   ],
                 ),
               ],
@@ -213,51 +191,44 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
             const Spacer(),
 // * bottom divider:
             const PaddedDivider(topPadding: 0, bottomPadding: 16),
-// * bottom buttons:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-// * submit appointment button:
-                BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
-                  listener: (context, state) {
-                    if (state is AppointmentDetailLoading) {
-                      context.loaderOverlay.show();
-                    } else if (state is AppointmentDetailSent) {
-                      context.loaderOverlay.hide();
-                      // todo show appropriate dialog
-                      Navigator.of(context).pop();
-                    } else if (state is AppointmentDetailError) {
-                      context.loaderOverlay.hide();
-                      // todo show appropriate dialog
-                    } else {
-                      context.loaderOverlay.hide();
-                      // todo show appropriate dialog.
-                    }
-                  },
-                  child: CustomButton(
-                    height: 40,
-                    width: 160,
-                    fontSize: 14,
-                    borderRadius: kBorderRadius8,
-                    color: kGreenColor,
-                    text: 'ثبت به عنوان نوبت',
-                    onPressed: () async {
-                      await appointmentDetails
-                          .createAppointmentFromPreAppointment();
-                    },
-                  ),
-                ),
-// * edit button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 14,
-                  borderRadius: kBorderRadius8,
-                  color: kYellowColor,
-                  text: 'ویرایش',
-                  onPressed: () {},
-                ),
-              ],
+// * submit as appointment button:
+            BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
+              listener: (context, state) {
+                if (state is AppointmentDetailLoading) {
+                  context.loaderOverlay.show();
+                } else if (state is AppointmentDetailSent) {
+                  context.loaderOverlay.hide();
+                  Navigator.of(context).pop();
+                  successAlert(context, 'نوبت با موفقیت ثبت شد');
+                } else if (state is AppointmentDetailError) {
+                  context.loaderOverlay.hide();
+                  if (state.error.contains(kServerException)) {
+                    noInternetAlert(context);
+                    // print('server exception');
+                  } else {
+                    errorAlert(context, 'خطا در بارگیری اطلاعات');
+                    // print('an exception');
+                  }
+                } else {
+                  context.loaderOverlay.hide();
+                  errorAlert(context, 'خطا');
+                }
+              },
+              child: CustomButton(
+                height: 40,
+                width: double.infinity,
+                fontSize: 14,
+                borderRadius: kBorderRadius8,
+                color: kGreenColor,
+                text: 'ثبت به عنوان نوبت',
+                onPressed: () async {
+                  await appointmentDetails
+                      .createAppointmentFromPreAppointment();
+                  if (context.mounted) {
+                    context.read<TabCubit>().changeTab(kPreAppointmentsKey);
+                  }
+                },
+              ),
             ),
           ],
         ),

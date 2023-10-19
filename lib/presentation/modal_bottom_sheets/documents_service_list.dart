@@ -17,11 +17,16 @@ import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/service_list_tile.dart';
 
 class DocumentsServiceBottomSheet extends StatelessWidget {
-  const DocumentsServiceBottomSheet({super.key});
+  DocumentsServiceBottomSheet({super.key, this.serviceList = const []});
+
+  List<Service> serviceList;
 
   @override
   Widget build(BuildContext context) {
     List<Service> selectedServices = [];
+    for (Service item in serviceList) {
+      selectedServices.add(item);
+    }
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -36,7 +41,7 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
 // * search bar:
-            const SearchbarWidget(), //TODO change later
+            const SearchbarWidget(),
 // * divider:
             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:
@@ -76,44 +81,22 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
 // * bottom divider:
             const PaddedDivider(topPadding: 4, bottomPadding: 16),
 // * bottom buttons:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-// * submit button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kGreenColor,
-                  text: 'تایید',
-                  onPressed: () async {
+            CustomButton(
+              height: 40,
+              width: double.infinity,
+              fontSize: 13,
+              borderRadius: kBorderRadius12,
+              color: kGreenColor,
+              text: 'تایید',
+              onPressed: () async {
 // * using the made appointment
 
 // * casting the selected services into invoice items:
-                    List<InvoiceItem> invoiceItems =
-                        castServicesToInvoiceItems(selectedServices);
+                List<InvoiceItem> invoiceItems =
+                    castServicesToInvoiceItems(selectedServices);
 // * pop and return invoice items to the document set appointment screen:
-                    Navigator.of(context).pop(invoiceItems);
-                  },
-                ),
-// * change service price button:
-//                 CustomButton(
-//                   height: 40,
-//                   width: 160,
-//                   fontSize: 13,
-//                   borderRadius: kBorderRadius12,
-//                   color: kYellowColor,
-//                   text: 'تغییر قیمت',
-//                   onPressed: () {
-//                     showModalBottomSheet(
-//                       context: context,
-//                       builder: (context) => const ChangePriceBottomSheet(),
-//                       isScrollControlled: true,
-//                     );
-//                   },
-//                 ),
-              ],
+                Navigator.of(context).pop(invoiceItems);
+              },
             ),
           ],
         ),

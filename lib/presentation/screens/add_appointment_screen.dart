@@ -6,6 +6,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nobitok/business_logic/cubits/document_details_state.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/methods/cast_invoice_item_to_service.dart';
 import 'package:nobitok/methods/custom_jalali_date_picker.dart';
 import 'package:nobitok/methods/get_today_date.dart';
 import 'package:nobitok/methods/set_time_initial_value_method.dart';
@@ -144,22 +145,22 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 height: 16.h,
               ),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x1E000000),
-                        blurRadius: 8,
-                        offset: Offset(0, 0),
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
+                child: invoiceItems.isEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x1E000000),
+                              blurRadius: 8,
+                              offset: Offset(0, 0),
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
 // * empty invoice >> add service button:
-                  child: invoiceItems.isEmpty
-                      ? Center(
+                        child: Center(
                           child: CustomButton(
                             height: 40,
                             width: 160,
@@ -173,27 +174,58 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                                   .fetchServicesFromRepository();
                               if (context.mounted) {
                                 invoiceItems = await showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) =>
-                                      const DocumentsServiceBottomSheet(),
-                                  isScrollControlled: true,
-                                );
+                                      context: context,
+                                      builder: (context) =>
+                                          DocumentsServiceBottomSheet(),
+                                      isScrollControlled: true,
+                                    ) ??
+                                    [];
                                 setState(() {});
                               }
                             },
                           ),
-                        )
-                      :
+                        ))
+                    :
 // * invoice is not empty >> show it:
 // * invoice list:
-                      Column(
-                          children: [
+                    Column(
+                        children: [
 // * listView
-                            SeparatedListViewWidget(
-                              invoiceItems: invoiceItems,
-                            ),
-                          ],
-                        ),
+                          SeparatedListViewWidget(
+                            invoiceItems: invoiceItems,
+                          ),
+                        ],
+                      ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Visibility(
+                  visible: invoiceItems.isNotEmpty,
+                  child: CustomButton(
+                    height: 40,
+                    width: 160,
+                    fontSize: 13,
+                    borderRadius: kBorderRadius12,
+                    color: kBlue300Color,
+                    text: 'افزودن خدمت',
+                    onPressed: () async {
+                      await context
+                          .read<ServiceCubit>()
+                          .fetchServicesFromRepository();
+                      if (context.mounted) {
+                        invoiceItems = await showModalBottomSheet(
+                              context: context,
+                              builder: (context) => DocumentsServiceBottomSheet(
+                                serviceList:
+                                    castInvoiceItemToService(invoiceItems),
+                              ),
+                              isScrollControlled: true,
+                            ) ??
+                            [];
+                        setState(() {});
+                      }
+                    },
+                  ),
                 ),
               ),
               const PaddedDivider(topPadding: 8, bottomPadding: 16),

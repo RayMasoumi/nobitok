@@ -3,8 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
+import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
+import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/appointments_service_list.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/set_pre_appointment.dart';
+import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
+import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
@@ -13,11 +18,11 @@ import '../../business_logic/cubits/service_cubit.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/custom_image_widget.dart';
 import '../widgets/custom_topbar.dart';
-import '../widgets/info_card_widget.dart';
 import '../widgets/padded_divider.dart';
 import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
@@ -78,44 +83,18 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 // * phone number card:
-                    InkWell(
-                      onTap: () {
-                        //TODO call
-                      },
-                      child: InfoCardWidget(
-                        color: kBlue300Color,
-                        horizontalPadding: 14,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const CustomImage(
-                              path: 'assets/icons/call.png',
-                              height: 16,
-                              width: 16,
-                            ),
-                            Text(
-                              appointmentDetails
-                                  .getAppointmentDetails()
-                                  .customerDetail
-                                  .customerPhoneNumber,
-                              style: kBold13TextStyle.copyWith(
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    CallCustomerWidget(
+                        phoneNumber: appointmentDetails
+                            .getAppointmentDetails()
+                            .customerDetail
+                            .customerPhoneNumber),
 // * file code card:
-                    InfoCardWidget(
-                      horizontalPadding: 14,
-                      color: const Color(0xffC8C8C8),
-                      child: Center(
-                        child: Text(
-                          'شماره پرونده : ${appointmentDetails.getAppointmentDetails().customerDetail.customerDocumentCode}',
-                          style: kBold13TextStyle.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    CustomerDocumentNumberWidget(
+                        docNumber: appointmentDetails
+                                .getAppointmentDetails()
+                                .customerDetail
+                                .customerDocumentCode ??
+                            ''),
                   ],
                 ),
               ],
@@ -242,14 +221,20 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                       context.loaderOverlay.show();
                     } else if (state is AppointmentDetailSent) {
                       context.loaderOverlay.hide();
-                      // todo show appropriate dialog
                       Navigator.of(context).pop();
+                      successAlert(context, 'نوبت با موفقیت تکمیل شد');
                     } else if (state is AppointmentDetailError) {
                       context.loaderOverlay.hide();
-                      // todo show appropriate dialog
+                      if (state.error.contains(kServerException)) {
+                        noInternetAlert(context);
+                        // print('server exception');
+                      } else {
+                        errorAlert(context, 'خطا در بارگذاری اطلاعات');
+                        // print('an exception');
+                      }
                     } else {
                       context.loaderOverlay.hide();
-                      // todo show appropriate dialog.
+                      errorAlert(context, 'خطا');
                     }
                   },
                   child: CustomButton(
@@ -261,6 +246,9 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                     text: 'تکمیل نوبت',
                     onPressed: () async {
                       await appointmentDetails.completeTheAppointment();
+                      if (context.mounted) {
+                        context.read<TabCubit>().changeTab(kAppointmentsKey);
+                      }
                     },
                   ),
                 ),

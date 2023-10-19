@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nobitok/presentation/dialog_alerts/error_alert.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
@@ -17,8 +19,16 @@ class CallCustomerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        //TODO call
+      onTap: () async {
+        try {
+          final Uri launchUri = Uri(
+            scheme: 'tel',
+            path: phoneNumber,
+          );
+          await launchUrl(launchUri);
+        } catch (e) {
+          errorAlert(context, 'خطا در تماس با شماره مورد نظر');
+        }
       },
       child: InfoCardWidget(
         color: kBlue300Color,

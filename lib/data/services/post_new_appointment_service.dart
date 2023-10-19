@@ -17,6 +17,8 @@ class PostNewAppointmentService {
       'Content-Type': 'application/json',
     };
 
+    print('$date,$time,$customerId');
+
     final body = {
       "date": date,
       "time": time,

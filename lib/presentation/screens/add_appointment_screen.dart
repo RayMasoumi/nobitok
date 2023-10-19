@@ -40,25 +40,14 @@ class AddAppointmentScreen extends StatefulWidget {
 }
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
-  String date = getTodayDate().toPersianDigit();
-  String time = getTimeInitialValue().toPersianDigit();
+  String date = getTodayDate();
+  String time = getTimeInitialValue();
 
   // * a list of services:
   List<InvoiceItem> invoiceItems = [];
 
   @override
   Widget build(BuildContext context) {
-// * make a new appointment first as you open this screen:
-    context
-        .read<DocumentDetailsCubit>()
-        .postNewAppointmentRepository
-        .postNewAppointmentService
-        .postNewAppointment(
-          time,
-          date,
-          context.read<DocumentDetailsCubit>().getDocumentDetails().customerId,
-        );
-
     return Scaffold(
       body: SafeArea(
         child: HorizontalPadding(

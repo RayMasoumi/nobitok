@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_state.dart';
+import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/constants/styles.dart';
@@ -52,7 +53,7 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
               backgroundColor: const Color(0xffC2C8FF),
               radius: 30,
               child: Text(
-                'A',
+                context.read<UserCubit>().state!.username[0].toUpperCase(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.w,

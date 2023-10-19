@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_state.dart';
-import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/methods/custom_jalali_range_picker.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
@@ -19,8 +17,10 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import '../../business_logic/cubits/appointment_details_state.dart';
 import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
-import '../../constants/styles.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../modal_bottom_sheets/appointments_customer_info.dart';
+import '../widgets/add_document_f_a_b.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
 import '../widgets/document_list_tile.dart';
@@ -40,47 +40,30 @@ class HomeScreen extends StatelessWidget {
 // * floating action button:
         floatingActionButton: BlocBuilder<TabCubit, TabState>(
           builder: (context, state) {
+// * add document fab
             if (state is DocumentsTabState) {
               return SizedBox(
                 width: 200.w,
-                child: FloatingActionButton(
-                  heroTag: 'AddDocumentFAB',
-                  backgroundColor: kGreenColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(19),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushNamed(kCreateNewDocumentScreenRoute);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        MdiIcons.fileDocumentEditOutline,
-                        size: 24.r,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        'ایجاد پرونده جدید',
-                        style: kTitle15TextStyle.copyWith(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
+                child: const AddDocumentFAB(),
               );
             } else {
-              // * we're not on tab document so we only have this fab
+// * we're not on tab document so we only have this fab
               return BlocListener<AppointmentsCubit, AppointmentsState>(
                 listener: (context, state) {
                   if (state is AppointmentsLoading) {
                     context.loaderOverlay.show();
                   } else if (state is AppointmentsLoadingCompleted) {
                     context.loaderOverlay.hide();
-                    // todo show alert
+                    // todo? should I show alert?
                   } else if (state is AppointmentsLoadingFailed) {
                     context.loaderOverlay.hide();
-                    // todo show alert
+                    if (state.error.contains(kServerException)) {
+                      noInternetAlert(context);
+                      // print('server exception');
+                    } else {
+                      errorAlert(context, 'خطا در بارگیری اطلاعات');
+                      // print('an exception');
+                    }
                   }
                 },
                 child: DateFAB(
@@ -98,6 +81,7 @@ class HomeScreen extends StatelessWidget {
                         context, 'بازه مورد نظر را انتخاب کنید :');
                     startDate = dates[0];
                     endDate = dates[1];
+                    // * load for appointments
                     if (state is AppointmentTabState) {
                       if (context.mounted) {
                         await context
@@ -105,6 +89,7 @@ class HomeScreen extends StatelessWidget {
                             .fetchAppointmentsByRange(startDate, endDate);
                       }
                     } else if (state is PreAppointmentTabState) {
+                      // * load for pre appointments
                       if (context.mounted) {
                         await context
                             .read<AppointmentsCubit>()
@@ -161,7 +146,13 @@ class HomeScreen extends StatelessWidget {
                           context.loaderOverlay.show();
                         } else if (state is AppointmentDetailError) {
                           context.loaderOverlay.hide();
-                          // todo show appropriate alert
+                          if (state.error.contains(kServerException)) {
+                            noInternetAlert(context);
+                            // print('server exception');
+                          } else {
+                            errorAlert(context, 'خطا در بارگیری اطلاعات');
+                            // print('an exception');
+                          }
                         }
                       },
                       child: BlocBuilder<TabCubit, TabState>(
@@ -170,6 +161,13 @@ class HomeScreen extends StatelessWidget {
                               AppointmentsState>(
                             builder: (context, state) {
                               return CustomListView(
+                                onRefresh: () async {
+                                  // * store the fetched data
+// * add appointments to user's appointment list:
+                                  context
+                                      .read<TabCubit>()
+                                      .changeTab(kAppointmentsKey);
+                                },
                                 tileLeftPadding: 0,
                                 tileRightPadding: 0,
                                 tileTopPadding: 16,
@@ -224,7 +222,13 @@ class HomeScreen extends StatelessWidget {
                           context.loaderOverlay.show();
                         } else if (state is AppointmentDetailError) {
                           context.loaderOverlay.hide();
-                          // todo show appropriate alert
+                          if (state.error.contains(kServerException)) {
+                            noInternetAlert(context);
+                            // print('server exception');
+                          } else {
+                            errorAlert(context, 'خطا در بارگیری اطلاعات');
+                            // print('an exception');
+                          }
                         }
                       },
                       child: BlocBuilder<AppointmentsCubit, AppointmentsState>(
@@ -232,6 +236,13 @@ class HomeScreen extends StatelessWidget {
                           return BlocBuilder<TabCubit, TabState>(
                             builder: (context, state) {
                               return CustomListView(
+                                onRefresh: () async {
+                                  // * store the fetched data
+// * add appointments to user's appointment list:
+                                  context
+                                      .read<TabCubit>()
+                                      .changeTab(kPreAppointmentsKey);
+                                },
                                 tileLeftPadding: 0,
                                 tileRightPadding: 0,
                                 tileTopPadding: 16,
@@ -285,12 +296,23 @@ class HomeScreen extends StatelessWidget {
                           context.loaderOverlay.show();
                         } else if (state is DocumentDetailError) {
                           context.loaderOverlay.hide();
-                          // todo show appropriate alert
+                          if (state.error.contains(kServerException)) {
+                            noInternetAlert(context);
+                            // print('server exception');
+                          } else {
+                            errorAlert(context, 'خطا در بارگیری اطلاعات');
+                            // print('an exception');
+                          }
                         }
                       },
                       child: BlocBuilder<TabCubit, TabState>(
                         builder: (context, state) {
                           return CustomListView(
+                            onRefresh: () async {
+                              // * store the fetched data
+// * add appointments to user's appointment list:
+                              context.read<TabCubit>().changeTab(kDocumentsKey);
+                            },
                             tileLeftPadding: 0,
                             tileRightPadding: 0,
                             tileTopPadding: 16,

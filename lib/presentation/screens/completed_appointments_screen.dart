@@ -12,6 +12,8 @@ import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/appointments_state.dart';
 import '../../constants/strings.dart';
 import '../../methods/custom_jalali_range_picker.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
 import '../widgets/padded_divider.dart';
@@ -29,10 +31,15 @@ class CompletedAppointmentsScreen extends StatelessWidget {
             context.loaderOverlay.show();
           } else if (state is AppointmentsLoadingCompleted) {
             context.loaderOverlay.hide();
-            // todo show alert
           } else if (state is AppointmentsLoadingFailed) {
             context.loaderOverlay.hide();
-            // todo show alert
+            if (state.error.contains(kServerException)) {
+              noInternetAlert(context);
+              // print('server exception');
+            } else {
+              errorAlert(context, 'خطا در بارگیری اطلاعات');
+              // print('an exception');
+            }
           }
         },
         child: DateFAB(
@@ -91,12 +98,25 @@ class CompletedAppointmentsScreen extends StatelessWidget {
                     context.loaderOverlay.show();
                   } else if (state is AppointmentDetailError) {
                     context.loaderOverlay.hide();
-                    // todo show appropriate alert
+                    if (state.error.contains(kServerException)) {
+                      noInternetAlert(context);
+                      // print('server exception');
+                    } else {
+                      errorAlert(context, 'خطا در بارگیری اطلاعات');
+                      // print('an exception');
+                    }
                   }
                 },
                 child: BlocBuilder<AppointmentsCubit, AppointmentsState>(
                   builder: (context, state) {
                     return CustomListView(
+                      onRefresh: () async {
+                        // * store the fetched data
+// * add appointments to user's appointment list:
+                        await context
+                            .read<AppointmentsCubit>()
+                            .fetchTodayCompletedAppointments();
+                      },
                       tileLeftPadding: 0,
                       tileRightPadding: 0,
                       tileTopPadding: 16,

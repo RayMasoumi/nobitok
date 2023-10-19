@@ -46,6 +46,7 @@ class ChangePriceBottomSheet extends StatelessWidget {
 // * listView:
             Expanded(
               child: CustomListView(
+                onRefresh: () async {},
                 height: 58,
                 tileLeftPadding: 12,
                 tileRightPadding: 12,

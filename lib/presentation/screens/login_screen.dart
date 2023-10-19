@@ -8,6 +8,8 @@ import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/data/models/user.dart';
+import 'package:nobitok/presentation/dialog_alerts/error_alert.dart';
+import 'package:nobitok/presentation/dialog_alerts/no_internet_alert.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
 import 'package:nobitok/presentation/widgets/middle_texted_divider.dart';
@@ -94,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CustomLabeledTextField(
                         keyboardType: TextInputType.text,
                         controller: usernameController,
-                        hintText: 'نام و نام خانوادگی',
+                        hintText: 'نام کاربری',
                         label: 'نام کاربری را وارد کنید',
                       ),
                       SizedBox(
@@ -162,19 +164,21 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           } else if (state is AuthFailure) {
                             if (state.error.contains(kServerException)) {
-                              // todo show internet alert
-                              print('server exception');
+                              noInternetAlert(context);
+                              // print('server exception');
                             } else if (state.error
                                 .contains('$kAuthException:401')) {
-                              // todo show wrong username or password alert
-                              print('auth exception');
+                              errorAlert(context,
+                                  'نام کاربری یا رمز عبور اشتباه است، دوباره امتحان کنید');
+                              usernameController.clear();
+                              passwordController.clear();
+                              // print('auth exception');
                             } else if (state.error.contains(
                                 kFetchTodayAppointmentsDataException)) {
-                              // todo
-                              print('fetch today appointment');
+                              errorAlert(context, 'خطا در بارگیری اطلاعات');
                             } else {
-                              // todo default alert
-                              print('an exception');
+                              errorAlert(context, 'خطا');
+                              // print('an exception');
                             }
                           }
                         },
@@ -183,11 +187,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 191,
                           fontSize: 20,
                           onPressed: () async {
-                            final username = usernameController.text;
-                            final password = passwordController.text;
-                            final authCubit = context.read<AuthCubit>();
-                            // * authorize + get appointments
-                            await authCubit.auth(username, password);
+                            if (usernameController.text.isEmpty ||
+                                passwordController.text.isEmpty) {
+                              errorAlert(context,
+                                  'لطفاً فیلد‌های خواسته شده را پر کنید.');
+                            } else {
+                              final username = usernameController.text;
+                              final password = passwordController.text;
+                              final authCubit = context.read<AuthCubit>();
+                              // * authorize + get appointments
+                              await authCubit.auth(username, password);
+                            }
                           },
                           borderRadius: kBorderRadius8,
                           color: kGreenColor,

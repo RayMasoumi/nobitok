@@ -1,5 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/constants/styles.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class DropdownForYear extends StatelessWidget {
   const DropdownForYear({
@@ -23,24 +26,22 @@ class DropdownForYear extends StatelessWidget {
             .map((item) => DropdownMenuItem(
                   value: item,
                   child: Text(
-                    item.toString(),
-                    style: const TextStyle(
-                      fontSize: 14,
-                    ),
+                    item.toString().toPersianDigit(),
+                    style: kBold14TextStyle,
                   ),
                 ))
             .toList(),
         value: selectedYear,
         onChanged: onChanged,
-        buttonStyleData: const ButtonStyleData(
-          width: 60,
+        buttonStyleData: ButtonStyleData(
+          width: 60.w,
         ),
-        dropdownStyleData: const DropdownStyleData(
-          maxHeight: 200,
-          width: 100,
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 200.h,
+          width: 100.w,
         ),
-        menuItemStyleData: const MenuItemStyleData(
-          height: 40,
+        menuItemStyleData: MenuItemStyleData(
+          height: 40.h,
         ),
       ),
     );

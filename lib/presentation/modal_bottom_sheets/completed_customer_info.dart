@@ -154,7 +154,10 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
+                  invoiceItems: appointmentDetails
+                      .getAppointmentDetails()
+                      .invoiceDetail
+                      .invoiceItems,
                 ),
               ],
             ),

@@ -44,4 +44,10 @@ const String kAddAppointmentFromPreAppointmentUrl =
 const String kCompleteAppointmentUrl = '/Appointment/editAppointment';
 
 // * api get appointments by range
-const String kGetAppointmentsByRange = '/Appointment/getAppointmentsByDate';
+const String kGetAppointmentsByRangeUrl = '/Appointment/getAppointmentsByDate';
+// * api get appointments by range
+const String kGetCompletedAppointmentsByRangeUrl = '/Appointment/getCompletedAppointmentsByDate';
+
+// * api get today completed appointments
+const String kGetTodayCompletedAppointmentsUrl =
+    '/Appointment/getTodayCompletedAppointments';

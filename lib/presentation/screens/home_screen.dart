@@ -125,7 +125,9 @@ class HomeScreen extends StatelessWidget {
                 height: 8.h,
               ),
 // * searchbar:
-              const SearchbarWidget(),
+              const SearchbarWidget(
+                isHomeScreen: true,
+              ),
 // * first divider:
               const PaddedDivider(
                 topPadding: 12,

@@ -32,6 +32,12 @@ class AppointmentDetailLoaded extends AppointmentDetailsState {
   }
 }
 
+class CompletedAppointmentDetailLoaded extends AppointmentDetailsState {
+  CompletedAppointmentDetailLoaded({required super.appointmentDetail}) {
+    debugPrint('CompletedAppointmentDetailLoaded');
+  }
+}
+
 class AppointmentDetailError extends AppointmentDetailsState {
   final String error;
 

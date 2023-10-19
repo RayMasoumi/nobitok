@@ -25,6 +25,26 @@ class GetAppointmentsService {
     }
   }
 
+  Future<http.Response> fetchTodayCompletedAppointments() async {
+    // * Implement API request to fetch appointments using the token here
+    final url = Uri.parse('$kBaseUrl$kGetTodayCompletedAppointmentsUrl');
+
+    final headers = {
+      'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      return response;
+    } catch (error) {
+      throw Exception('$kServerException:$error');
+    }
+  }
+
   Future<http.Response> fetchAppointmentsByRange(
       String startDate, String endDate) async {
     final startDateEncoded = Uri.encodeComponent(startDate);
@@ -32,7 +52,32 @@ class GetAppointmentsService {
 
     // * Implement API request to fetch appointments using the token here
     final url = Uri.parse(
-        '$kBaseUrl$kGetAppointmentsByRange?StartDate=$startDateEncoded&EndDate=$endDateEncoded');
+        '$kBaseUrl$kGetAppointmentsByRangeUrl?StartDate=$startDateEncoded&EndDate=$endDateEncoded');
+
+    final headers = {
+      'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
+      'Content-Type': 'application/json',
+    };
+
+    try {
+      final response = await http.get(
+        url,
+        headers: headers,
+      );
+      return response;
+    } catch (error) {
+      throw Exception('$kServerException:$error');
+    }
+  }
+
+  Future<http.Response> fetchCompletedAppointmentsByRange(
+      String startDate, String endDate) async {
+    final startDateEncoded = Uri.encodeComponent(startDate);
+    final endDateEncoded = Uri.encodeComponent(endDate);
+
+    // * Implement API request to fetch appointments using the token here
+    final url = Uri.parse(
+        '$kBaseUrl$kGetAppointmentsByRangeUrl?StartDate=$startDateEncoded&EndDate=$endDateEncoded');
 
     final headers = {
       'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',

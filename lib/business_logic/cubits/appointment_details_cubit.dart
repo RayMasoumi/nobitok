@@ -48,6 +48,23 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     }
   }
 
+  Future<void> fetchCompletedAppointmentDetail(Appointment appointment) async {
+    emit(AppointmentDetailLoading());
+
+    try {
+      final appointmentDetail = await fetchAppointmentDetailFromRepositories(
+          appointment.appointmentCustomerId,
+          appointment.appointmentInvoiceId!,
+          appointment);
+
+      emit(CompletedAppointmentDetailLoaded(
+          appointmentDetail: appointmentDetail));
+    } catch (e) {
+      emit(AppointmentDetailError(
+          error: 'Failed to fetch completed appointment detail: $e'));
+    }
+  }
+
   // * new pre appointment
   Future<void> createPreAppointment(String date, String time) async {
     AppointmentDetail appointmentDetail = getAppointmentDetails();

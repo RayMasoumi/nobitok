@@ -36,6 +36,28 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
+  Future<void> fetchCompletedAppointmentsByRange(
+      String startDate, String endDate) async {
+    List<Appointment> newCompletedAppointments;
+
+    Map<String, List<Appointment>>? allAppointments = state.allAppointments;
+    emit(AppointmentsLoading(allAppointments: allAppointments));
+
+    try {
+      newCompletedAppointments =
+          await _fetchCompletedAppointmentsByDateFromRepository(
+              startDate, endDate);
+
+      addAppointments(kCompletedAppointmentsKey, newCompletedAppointments);
+
+      emit(
+          AppointmentsLoadingCompleted(allAppointments: state.allAppointments));
+    } catch (e) {
+      emit(AppointmentsLoadingFailed(
+          error: '$e in appointments cubit', allAppointments: allAppointments));
+    }
+  }
+
   Future<void> fetchPreAppointmentsByRange(
       String startDate, String endDate) async {
     List<Appointment> newPreAppointments;
@@ -48,6 +70,26 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
           await _fetchPreAppointmentsByDateFromRepository(startDate, endDate);
 
       addAppointments(kPreAppointmentsKey, newPreAppointments);
+
+      emit(
+          AppointmentsLoadingCompleted(allAppointments: state.allAppointments));
+    } catch (e) {
+      emit(AppointmentsLoadingFailed(
+          error: '$e in appointments cubit', allAppointments: allAppointments));
+    }
+  }
+
+  Future<void> fetchTodayCompletedAppointments() async {
+    List<Appointment> newCompletedAppointments;
+
+    Map<String, List<Appointment>>? allAppointments = state.allAppointments;
+    emit(AppointmentsLoading(allAppointments: allAppointments));
+
+    try {
+      newCompletedAppointments =
+          await _fetchTodayCompletedAppointmentsFromRepository();
+
+      addAppointments(kCompletedAppointmentsKey, newCompletedAppointments);
 
       emit(
           AppointmentsLoadingCompleted(allAppointments: state.allAppointments));
@@ -88,12 +130,36 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
+  Future<List<Appointment>> _fetchCompletedAppointmentsByDateFromRepository(
+      String startDate, String endDate) async {
+    List<Appointment> appointments;
+    try {
+      appointments = await getAppointmentsRepository
+          .fetchCompletedAppointmentsByRange(startDate, endDate);
+      return appointments;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   Future<List<Appointment>> _fetchPreAppointmentsByDateFromRepository(
       String startDate, String endDate) async {
     List<Appointment> appointments;
     try {
       appointments = await preAppointmentRepository.fetchPreAppointmentsByRange(
           startDate, endDate);
+      return appointments;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Appointment>>
+      _fetchTodayCompletedAppointmentsFromRepository() async {
+    List<Appointment> appointments;
+    try {
+      appointments =
+          await getAppointmentsRepository.fetchTodayCompletedAppointments();
       return appointments;
     } catch (e) {
       throw Exception(e);

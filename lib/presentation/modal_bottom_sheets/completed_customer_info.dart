@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
+import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
-import '../../constants/enums/appointment_status.dart';
+import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
-import '../../data/models/appointment.dart';
-import '../../data/models/appointment_detail.dart';
-import '../../data/models/customer.dart';
-import '../../data/models/invoice.dart';
 import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_topbar.dart';
@@ -23,6 +22,7 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appointmentDetails = context.read<AppointmentDetailCubit>();
     return Scaffold(
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -41,14 +41,11 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
             Column(
               children: [
 // * name and last name:
-                Row(
-                  children: [
-                    Text('نام و نام خانوادگی :', style: kBold16TextStyle),
-                    SizedBox(
-                      width: 11.w,
-                    ),
-                    Text('رضا کیانی', style: kBold16TextStyle),
-                  ],
+                CustomerNameWidget(
+                  name: appointmentDetails
+                      .getAppointmentDetails()
+                      .customerDetail
+                      .customerName,
                 ),
                 SizedBox(
                   height: 16.h,
@@ -58,11 +55,11 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'کد ملی: 1748596587',
+                      'کد ملی: ${appointmentDetails.getAppointmentDetails().customerDetail.customerIdCode?.toPersianDigit()}',
                       style: kLight14TextStyle,
                     ),
                     Text(
-                      'تاریخ تولد: 1350/08/10',
+                      'تاریخ تولد: ${appointmentDetails.getAppointmentDetails().customerDetail.customerDateOfBirth.toPersianDate()}',
                       style: kLight14TextStyle,
                     ),
                   ],
@@ -71,14 +68,22 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                   height: 24.h,
                 ),
 // * file code & number:
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
 // * phone number card:
-                    CallCustomerWidget(phoneNumber: '+989125879338'),
+                    CallCustomerWidget(
+                        phoneNumber: appointmentDetails
+                            .getAppointmentDetails()
+                            .customerDetail
+                            .customerPhoneNumber),
 // * file code card:
                     CustomerDocumentNumberWidget(
-                      docNumber: '87554',
+                      docNumber: appointmentDetails
+                              .getAppointmentDetails()
+                              .customerDetail
+                              .customerDocumentCode ??
+                          '',
                     ),
                   ],
                 ),
@@ -103,12 +108,20 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                   children: [
                     SetDateWidget(
                       disabled: true,
-                      text: 'date',
+                      text: appointmentDetails
+                          .getAppointmentDetails()
+                          .appointmentDetail
+                          .appointmentDate
+                          .toPersianDate(),
                       onPressed: () {},
                     ),
                     SetTimeWidget(
                       disabled: true,
-                      text: 'time',
+                      text: appointmentDetails
+                              .getAppointmentDetails()
+                              .appointmentDetail
+                              .appointmentTime ??
+                          '00:00',
                       onPressed: () {},
                     ),
                   ],
@@ -141,29 +154,7 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
                 ),
 // * listView
                 SeparatedListViewWidget(
-                  // todo fixx thisss
-                  appointmentDetail: AppointmentDetail(
-                      invoiceDetail: Invoice(
-                          invoiceId: 0,
-                          invoiceDate: '',
-                          isPaid: true,
-                          customerId: 0,
-                          appointmentId: 0,
-                          invoiceTotal: 0,
-                          invoiceItems: []),
-                      customerDetail: Customer(
-                          customerId: 0,
-                          customerName: '',
-                          customerPhoneNumber: 'customerPhoneNumber',
-                          customerDateOfBirth: 'customerDateOfBirth',
-                          customerAppointments: [],
-                          customerInvoices: []),
-                      appointmentDetail: Appointment(
-                          appointmentId: 0,
-                          appointmentDate: 'appointmentDate',
-                          appointmentCustomerId: 0,
-                          appointmentStatus: AppointmentStatus.appointment,
-                          appointmentCustomerName: 'appointmentCustomerName')),
+                  appointmentDetail: appointmentDetails.getAppointmentDetails(),
                 ),
               ],
             ),

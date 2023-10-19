@@ -302,6 +302,7 @@ class MyApp extends StatelessWidget {
                     postNewAppointmentRepository: postNewAppointmentRepository,
                     getCustomerDetailsRepository: getCustomerDetailsRepository,
                     getDocumentDetailsRepository: getDocumentDetailsRepository,
+                    invoiceRepository: invoiceRepository,
                   ),
                 ),
                 BlocProvider<InvoiceCubit>(

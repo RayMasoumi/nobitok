@@ -18,6 +18,7 @@ import 'package:persian_number_utility/persian_number_utility.dart';
 import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../business_logic/cubits/service_cubit.dart';
 import '../../constants/styles.dart';
+import '../../data/models/customer.dart';
 import '../../data/models/invoice_item.dart';
 import '../../methods/calculate_time_method.dart';
 import '../dialog_alerts/success_alert.dart';
@@ -41,13 +42,15 @@ class AddAppointmentScreen extends StatefulWidget {
 
 class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
   String date = getTodayDate();
-  String time = getTimeInitialValue();
+  String time = formatTimeString(getTimeInitialValue());
 
   // * a list of services:
   List<InvoiceItem> invoiceItems = [];
 
   @override
   Widget build(BuildContext context) {
+    final Customer customerDetail =
+        context.read<DocumentDetailsCubit>().getDocumentDetails();
     return Scaffold(
       body: SafeArea(
         child: HorizontalPadding(
@@ -59,10 +62,7 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 title: 'ثبت نوبت',
               ),
               CustomerNameWidget(
-                name: context
-                    .read<DocumentDetailsCubit>()
-                    .getDocumentDetails()
-                    .customerName,
+                name: customerDetail.customerName,
               ),
               SizedBox(
                 height: 16.h,
@@ -73,17 +73,11 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                 children: [
 // * phone number card:
                   CallCustomerWidget(
-                      phoneNumber: context
-                          .read<DocumentDetailsCubit>()
-                          .getDocumentDetails()
-                          .customerPhoneNumber),
+                      phoneNumber: customerDetail.customerPhoneNumber),
 // * file code card:
                   CustomerDocumentNumberWidget(
-                    docNumber: context
-                        .read<DocumentDetailsCubit>()
-                        .getDocumentDetails()
-                        .customerDocumentCode!
-                        .toPersianDigit(),
+                    docNumber:
+                        customerDetail.customerDocumentCode!.toPersianDigit(),
                   ),
                 ],
               ),
@@ -231,13 +225,8 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                         onPressed: () async {
                           await context
                               .read<DocumentDetailsCubit>()
-                              .addNewAppointment(
-                                  time,
-                                  date,
-                                  context
-                                      .read<DocumentDetailsCubit>()
-                                      .getDocumentDetails()
-                                      .customerId);
+                              .addNewAppointment(time, date,
+                                  customerDetail.customerId, invoiceItems);
                         }),
                   ),
                   CustomButton(

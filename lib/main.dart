@@ -13,6 +13,7 @@ import 'package:nobitok/business_logic/cubits/document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/invoice_cubit.dart';
 import 'package:nobitok/business_logic/cubits/new_document_cubit.dart';
+import 'package:nobitok/business_logic/cubits/search_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
@@ -306,7 +307,9 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 BlocProvider<InvoiceCubit>(
-                    create: (context) => InvoiceCubit(invoiceRepository))
+                  create: (context) => InvoiceCubit(invoiceRepository),
+                ),
+                BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
               ],
               child: MaterialApp(
                 builder: (context, child) {

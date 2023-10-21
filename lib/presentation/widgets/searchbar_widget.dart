@@ -29,6 +29,22 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
   ];
 
   String? dropdownSelectedValue;
+  TextEditingController searchController = TextEditingController();
+
+  void onSearchTextChanged(String query) {
+    // * Listen for changes in the search bar text input
+    // * When text changes, navigate to the SearchResultsScreen
+    query = query.trim();
+    if (query.isNotEmpty) {
+      Navigator.of(context).pushNamed(kSearchResultScreenRoute);
+    }
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,27 +78,40 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
             ),
             const CustomIcon(
                 iconPath: 'assets/icons/magnifier.png', iconSize: 24),
-            // const TextField(
-            //   textDirection: TextDirection.rtl,
-            //   textAlign: TextAlign.start,
-            //   decoration: InputDecoration(
-            //       hintText: 'جستجو',
-            //       hintStyle: TextStyle(color: Color(0xff5D5D5D))),
-            // ),
+            Expanded(
+              child: TextField(
+                onChanged: (query) {
+                  onSearchTextChanged(query);
+                },
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.start,
+                decoration: const InputDecoration(
+                  errorMaxLines: 1,
+                  border: InputBorder.none,
+                  hintText: 'جستجو',
+                  hintStyle: TextStyle(
+                    color: Color(0xff5D5D5D),
+                  ),
+                ),
+                controller: searchController,
+              ),
+            ),
             const Spacer(),
-
             widget.isHomeScreen
                 ? Row(
                     children: [
-                      InkWell(
-                        onTap: () async {},
-                        child: CustomIcon(
-                            iconPath: 'assets/icons/bell-outline.png',
-                            iconSize: 24.w),
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
+                      // InkWell(
+                      //   onTap: () async {
+                      //     Navigator.of(context)
+                      //         .pushNamed(kSearchResultScreenRoute);
+                      //   },
+                      //   child: CustomIcon(
+                      //       iconPath: 'assets/icons/bell-outline.png',
+                      //       iconSize: 24.w),
+                      // ),
+                      // SizedBox(
+                      //   width: 8.w,
+                      // ),
                       BlocListener<AppointmentsCubit, AppointmentsState>(
                         listener: (context, state) {
                           if (state is AppointmentsLoading) {

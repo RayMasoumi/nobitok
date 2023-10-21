@@ -6,6 +6,7 @@ import 'package:nobitok/presentation/screens/completed_appointments_screen.dart'
 import 'package:nobitok/presentation/screens/create_new_document_screen.dart';
 import 'package:nobitok/presentation/screens/home_screen.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
+import 'package:nobitok/presentation/screens/search_result_screen.dart';
 
 import '../../constants/strings.dart';
 
@@ -26,6 +27,8 @@ class AppRouter {
       case kCompletedAppointmentsScreenRoute:
         return MaterialPageRoute(
             builder: (_) => const CompletedAppointmentsScreen());
+      case kSearchResultScreenRoute:
+        return MaterialPageRoute(builder: (_) => const SearchResultScreen());
 
       default:
         return null;

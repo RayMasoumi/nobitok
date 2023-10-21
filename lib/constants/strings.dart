@@ -10,7 +10,7 @@ const kCurrency = 'تومان';
 // * box names
 const kTokenBox = 'tokenBox';
 const kRefreshTokenBox = 'refreshTokenBox';
-
+const String kUsernameBox = 'usernameBox';
 // * appointments map keys
 const kAppointmentsKey = 'appointment';
 const kPreAppointmentsKey = 'preAppointment';
@@ -21,6 +21,7 @@ const kDocumentsKey = 'documents';
 // * exception strings
 const kServerException = 'server_error';
 const kAuthException = 'auth_error';
+const kRefreshTokenException = 'refresh_token_error';
 const kFetchTodayAppointmentsDataException = 'fetch_today_appointments_error';
 const kFetchTodayCompletedAppointmentsDataException =
     'fetch_today_completed_appointments_error';

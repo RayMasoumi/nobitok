@@ -55,3 +55,6 @@ const String kGetTodayCompletedAppointmentsUrl =
 
 // * api delete appointment
 const String kDeleteAppointmentUrl = '/Appointment/deleteAppointment';
+
+// * api refresh token
+const String kRefreshTokenUrl = '/Account/RefreshTokenForUser';

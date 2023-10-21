@@ -10,6 +10,7 @@ import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../business_logic/cubits/appointment_details_state.dart';
 import '../../business_logic/cubits/appointments_cubit.dart';
 import '../../business_logic/cubits/appointments_state.dart';
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../constants/strings.dart';
 import '../../methods/custom_jalali_range_picker.dart';
 import '../dialog_alerts/error_alert.dart';
@@ -36,6 +37,8 @@ class CompletedAppointmentsScreen extends StatelessWidget {
             if (state.error.contains(kServerException)) {
               noInternetAlert(context);
               // print('server exception');
+            } else if (state.error.contains('401')) {
+              context.read<AuthCubit>().refreshToken();
             } else {
               errorAlert(context, 'خطا در بارگیری اطلاعات');
               // print('an exception');
@@ -101,6 +104,8 @@ class CompletedAppointmentsScreen extends StatelessWidget {
                     if (state.error.contains(kServerException)) {
                       noInternetAlert(context);
                       // print('server exception');
+                    } else if (state.error.contains('401')) {
+                      context.read<AuthCubit>().refreshToken();
                     } else {
                       errorAlert(context, 'خطا در بارگیری اطلاعات');
                       // print('an exception');

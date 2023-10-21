@@ -2,16 +2,19 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_state.dart';
-import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/widgets/custom_icon_widget.dart';
 
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 
 class SearchbarWidget extends StatefulWidget {
   const SearchbarWidget({
@@ -50,6 +53,7 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String name = GetStorage().read(kUsernameBox) ?? 'U';
     return Container(
       width: 335,
       height: 40,
@@ -71,7 +75,7 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
               backgroundColor: const Color(0xffC2C8FF),
               radius: 30,
               child: Text(
-                context.read<UserCubit>().state!.username[0].toUpperCase(),
+                name[0].toUpperCase(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16.w,
@@ -124,10 +128,17 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                             context.loaderOverlay.show();
                           } else if (state is AppointmentsLoadingCompleted) {
                             context.loaderOverlay.hide();
-                            // todo show alert
                           } else if (state is AppointmentsLoadingFailed) {
                             context.loaderOverlay.hide();
-                            // todo show alert
+                            if (state.error.contains(kServerException)) {
+                              noInternetAlert(context);
+                              // print('server exception');
+                            } else if (state.error.contains('401')) {
+                              context.read<AuthCubit>().refreshToken();
+                            } else {
+                              errorAlert(context, 'خطا در بارگیری اطلاعات');
+                              // print('an exception');
+                            }
                           }
                         },
                         child: DropdownButton2<String>(

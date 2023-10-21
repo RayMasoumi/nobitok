@@ -11,6 +11,7 @@ import 'package:nobitok/presentation/widgets/customer_document_number_widget.dar
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/strings.dart';
@@ -205,6 +206,8 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   if (state.error.contains(kServerException)) {
                     noInternetAlert(context);
                     // print('server exception');
+                  } else if (state.error.contains('401')) {
+                    context.read<AuthCubit>().refreshToken();
                   } else {
                     errorAlert(context, 'خطا در بارگیری اطلاعات');
                     // print('an exception');

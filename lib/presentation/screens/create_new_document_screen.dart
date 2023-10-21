@@ -12,6 +12,7 @@ import 'package:nobitok/presentation/widgets/custom_description_text_field.dart'
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
 import 'package:nobitok/presentation/widgets/custom_text_field_for_create_document.dart';
 
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../business_logic/cubits/new_document_state.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/colors.dart';
@@ -186,6 +187,8 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                         if (state.error.contains(kServerException)) {
                           noInternetAlert(context);
                           // print('server exception');
+                        } else if (state.error.contains('401')) {
+                          context.read<AuthCubit>().refreshToken();
                         } else if (state.error.contains('209')) {
                           errorAlert(context,
                               'اطلاعات داده شده معتبر نیستند، دوباره امتحان کنید');

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
@@ -148,13 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     username: usernameController.text,
                                     userEmail: 'userEmail',
                                     userPhoneNumber: 'userPhoneNumber',
-                                    appointments: state.appointments,
+                                    appointments: [],
                                     preAppointments: [],
                                   ),
                                 );
-// * add appointments to user's appointment list:
-                            context.read<AppointmentsCubit>().addAppointments(
-                                kAppointmentsKey, state.appointments);
 
 // * navigate to home screen:
                             Navigator.of(context).pushNamedAndRemoveUntil(

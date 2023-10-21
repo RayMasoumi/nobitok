@@ -134,12 +134,11 @@ class _MedicalFormBottomSheetState extends State<MedicalFormBottomSheet> {
                       },
                     ),
                     MedicalFormItemsWidget(
-                      title: 'بیماری های عصبی - عضلانی :',
+                      title: 'بیماری های عصبی :',
                       isChecked: document.neuropsychiatricDiseases,
                       onChanged: (value) {
                         setState(() {
                           document.neuropsychiatricDiseases = value!;
-                          // todo check this
                         });
                       },
                     ),

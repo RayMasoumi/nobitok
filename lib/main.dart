@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:nobitok/business_logic/cubits/user_cubit.dart';
 import 'package:nobitok/data/repositories/add_appointment_from_pre_appointment_repository.dart';
 import 'package:nobitok/data/repositories/auth_repository.dart';
 import 'package:nobitok/data/repositories/complete_appointment_repository.dart';
+import 'package:nobitok/data/repositories/delete_appointment_repository.dart';
 import 'package:nobitok/data/repositories/document_repository.dart';
 import 'package:nobitok/data/repositories/get_appointments_repository.dart';
 import 'package:nobitok/data/repositories/get_customer_details_repository.dart';
@@ -34,6 +36,7 @@ import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/add_appointment_from_pre_appointment_service.dart';
 import 'package:nobitok/data/services/auth_service.dart';
 import 'package:nobitok/data/services/complete_appointment_service.dart';
+import 'package:nobitok/data/services/delete_appointment_service.dart';
 import 'package:nobitok/data/services/edit_invoice_service.dart';
 import 'package:nobitok/data/services/get_all_customers_service.dart';
 import 'package:nobitok/data/services/get_all_documents_service.dart';
@@ -59,6 +62,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.delayed(const Duration(milliseconds: 300));
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+
 // *auth
   final AuthService authService = AuthService();
   final AuthRepository authRepository =
@@ -142,6 +147,13 @@ void main() async {
       CompleteAppointmentService();
   final CompleteAppointmentRepository completeAppointmentRepository =
       CompleteAppointmentRepository(completeAppointmentService);
+  // * delete appointment
+  final DeleteAppointmentService deleteAppointmentService =
+      DeleteAppointmentService();
+  final DeleteAppointmentRepository deleteAppointmentRepository =
+      DeleteAppointmentRepository(
+          deleteAppointmentService: deleteAppointmentService);
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(
@@ -171,6 +183,7 @@ void main() async {
           completeAppointmentRepository: completeAppointmentRepository,
           postNewAppointmentRepository: postNewAppointmentRepository,
           postNewAppointmentService: postNewAppointmentService,
+          deleteAppointmentRepository: deleteAppointmentRepository,
         ),
       ));
 }
@@ -202,6 +215,7 @@ class MyApp extends StatelessWidget {
   final CompleteAppointmentRepository completeAppointmentRepository;
   final PostNewAppointmentService postNewAppointmentService;
   final PostNewAppointmentRepository postNewAppointmentRepository;
+  final DeleteAppointmentRepository deleteAppointmentRepository;
   const MyApp({
     super.key,
     required this.authService,
@@ -228,6 +242,7 @@ class MyApp extends StatelessWidget {
     required this.completeAppointmentRepository,
     required this.postNewAppointmentService,
     required this.postNewAppointmentRepository,
+    required this.deleteAppointmentRepository,
   });
 
   @override
@@ -266,7 +281,7 @@ class MyApp extends StatelessWidget {
                 BlocProvider<AppointmentsCubit>(
                   create: (context) => AppointmentsCubit(
                     getAppointmentsRepository: getAppointmentsRepository,
-                    preAppointmentRepository: preAppointmentRepository,
+                    preAppointmentRepository: preAppointmentRepository, deleteAppointmentRepository: deleteAppointmentRepository,
                   ),
                 ),
                 BlocProvider<TabCubit>(

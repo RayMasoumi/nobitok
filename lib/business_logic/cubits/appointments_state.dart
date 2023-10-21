@@ -26,6 +26,12 @@ class AppointmentsLoadingCompleted extends AppointmentsState {
   }
 }
 
+class AppointmentDeleted extends AppointmentsState {
+  AppointmentDeleted({super.allAppointments}) {
+    debugPrint('appointments deleted state');
+  }
+}
+
 class AppointmentsLoadingFailed extends AppointmentsState {
   String error;
   AppointmentsLoadingFailed(

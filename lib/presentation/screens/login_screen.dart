@@ -9,13 +9,13 @@ import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/data/models/user.dart';
 import 'package:nobitok/presentation/dialog_alerts/error_alert.dart';
-import 'package:nobitok/presentation/dialog_alerts/no_internet_alert.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
 import 'package:nobitok/presentation/widgets/middle_texted_divider.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_image_widget.dart';
 import '../widgets/horizontal_padding.dart';
 

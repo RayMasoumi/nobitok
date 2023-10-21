@@ -9,6 +9,8 @@ import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_state.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/methods/custom_jalali_range_picker.dart';
+import 'package:nobitok/presentation/dialog_alerts/question_alert.dart';
+import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/document_info.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/pre_appointments_customers_info.dart';
 import 'package:nobitok/presentation/widgets/custom_tabbar.dart';
@@ -54,7 +56,9 @@ class HomeScreen extends StatelessWidget {
                     context.loaderOverlay.show();
                   } else if (state is AppointmentsLoadingCompleted) {
                     context.loaderOverlay.hide();
-                    // todo? should I show alert?
+                  } else if (state is AppointmentDeleted) {
+                    context.loaderOverlay.hide();
+                    successAlert(context, 'نوبت با موفقیت حذف شد');
                   } else if (state is AppointmentsLoadingFailed) {
                     context.loaderOverlay.hide();
                     if (state.error.contains(kServerException)) {
@@ -172,6 +176,35 @@ class HomeScreen extends StatelessWidget {
                                 tileRightPadding: 0,
                                 tileTopPadding: 16,
                                 tileBottomPadding: 8,
+                                dismissibleKey: (index) {
+                                  return context
+                                      .read<AppointmentsCubit>()
+                                      .getAppointments(kAppointmentsKey)[index]
+                                      .appointmentId
+                                      .toString();
+                                },
+                                confirmDismissed: (index) async {
+                                  questionAlert(context,
+                                      'آیا از حذف این نوبت مطمئن هستید؟',
+                                      () async {
+                                    await context
+                                        .read<AppointmentsCubit>()
+                                        .deleteAppointment(context
+                                            .read<AppointmentsCubit>()
+                                            .getAppointments(
+                                                kAppointmentsKey)[index]
+                                            .appointmentId);
+                                    if (context.mounted) {
+                                      context
+                                          .read<TabCubit>()
+                                          .changeTab(kAppointmentsKey);
+                                    }
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  });
+                                  return null;
+                                },
                                 listTileBuilder: (index) {
                                   return CustomerListTile(
                                     isAppointment: true,
@@ -247,6 +280,36 @@ class HomeScreen extends StatelessWidget {
                                 tileRightPadding: 0,
                                 tileTopPadding: 16,
                                 tileBottomPadding: 8,
+                                dismissibleKey: (index) {
+                                  return context
+                                      .read<AppointmentsCubit>()
+                                      .getAppointments(
+                                          kPreAppointmentsKey)[index]
+                                      .appointmentId
+                                      .toString();
+                                },
+                                confirmDismissed: (index) async {
+                                  questionAlert(context,
+                                      'آیا از حذف این نوبت مطمئن هستید؟',
+                                      () async {
+                                    await context
+                                        .read<AppointmentsCubit>()
+                                        .deleteAppointment(context
+                                            .read<AppointmentsCubit>()
+                                            .getAppointments(
+                                                kPreAppointmentsKey)[index]
+                                            .appointmentId);
+                                    if (context.mounted) {
+                                      context
+                                          .read<TabCubit>()
+                                          .changeTab(kPreAppointmentsKey);
+                                    }
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  });
+                                  return null;
+                                },
                                 listTileBuilder: (index) {
                                   return CustomerListTile(
                                     isAppointment: false,

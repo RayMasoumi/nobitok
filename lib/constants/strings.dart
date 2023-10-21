@@ -42,6 +42,7 @@ const kSendNewAppointmentException = 'send_new_appointment_error';
 const kSendNewCustomerException = 'send_new_customer_error';
 const kLoginException = 'login_error';
 const kEditInvoiceException = 'edit_invoice_error';
+const kDeleteAppointmentException = 'delete_appointment_error';
 
 // * routes names
 const kLoginScreenRoute = '/login_screen';

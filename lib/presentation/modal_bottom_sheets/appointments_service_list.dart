@@ -43,7 +43,7 @@ class AppointmentsServiceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
 // * search bar:
-            const SearchbarWidget(), //TODO change later
+            const SearchbarWidget(),
 // * divider:
             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:

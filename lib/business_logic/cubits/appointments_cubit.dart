@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nobitok/constants/strings.dart';
+import 'package:nobitok/data/repositories/delete_appointment_repository.dart';
 
 import '../../data/models/appointment.dart';
 import '../../data/repositories/get_appointments_repository.dart';
@@ -9,11 +10,13 @@ import 'appointments_state.dart';
 class AppointmentsCubit extends Cubit<AppointmentsState> {
   GetAppointmentsRepository getAppointmentsRepository;
   PreAppointmentRepository preAppointmentRepository;
+  DeleteAppointmentRepository deleteAppointmentRepository;
 
-  AppointmentsCubit(
-      {required this.preAppointmentRepository,
-      required this.getAppointmentsRepository})
-      : super(AppointmentsState(allAppointments: {}));
+  AppointmentsCubit({
+    required this.preAppointmentRepository,
+    required this.deleteAppointmentRepository,
+    required this.getAppointmentsRepository,
+  }) : super(AppointmentsState(allAppointments: {}));
 
   Future<void> fetchAppointmentsByRange(
       String startDate, String endDate) async {
@@ -99,6 +102,27 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     }
   }
 
+  Future<void> deleteAppointment(int appointmentId) async {
+    Map<String, List<Appointment>>? allAppointments = state.allAppointments;
+    emit(AppointmentsLoading(allAppointments: allAppointments));
+
+    bool status;
+    try {
+      status = await _deleteAppointmentFromRepository(appointmentId);
+
+      if (status) {
+        emit(AppointmentDeleted(allAppointments: state.allAppointments));
+      } else {
+        emit(AppointmentsLoadingFailed(
+            error: 'could not delete in appointments cubit',
+            allAppointments: allAppointments));
+      }
+    } catch (e) {
+      emit(AppointmentsLoadingFailed(
+          error: '$e in appointments cubit', allAppointments: allAppointments));
+    }
+  }
+
   // * Add a list of appointments with a given key
   // * the keys are stored in strings under the name of appointment keys
   void addAppointments(String key, List<Appointment> appointments) {
@@ -161,6 +185,17 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
       appointments =
           await getAppointmentsRepository.fetchTodayCompletedAppointments();
       return appointments;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> _deleteAppointmentFromRepository(int appointmentId) async {
+    final bool status;
+    try {
+      status =
+          await deleteAppointmentRepository.deleteAppointment(appointmentId);
+      return status;
     } catch (e) {
       throw Exception(e);
     }

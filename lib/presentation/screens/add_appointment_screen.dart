@@ -16,12 +16,16 @@ import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../business_logic/cubits/service_cubit.dart';
+import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 import '../../data/models/customer.dart';
 import '../../data/models/invoice_item.dart';
 import '../../methods/calculate_time_method.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 import '../dialog_alerts/success_alert.dart';
 import '../modal_bottom_sheets/documents_service_list.dart';
 import '../modal_bottom_sheets/set_time_bottom_sheet.dart';
@@ -244,7 +248,15 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
                         successAlert(context, 'نوبت با موفقیت ثبت شد.');
                       } else if (state is DocumentDetailError) {
                         context.loaderOverlay.hide();
-                        //TODO errorAlert();
+                        if (state.error.contains(kServerException)) {
+                          noInternetAlert(context);
+                          // print('server exception');
+                        } else if (state.error.contains('401')) {
+                          context.read<AuthCubit>().refreshToken();
+                        } else {
+                          errorAlert(context, 'خطا در بارگذاری اطلاعات');
+                          // print('an exception');
+                        }
                       }
                     },
                     child: CustomButton(

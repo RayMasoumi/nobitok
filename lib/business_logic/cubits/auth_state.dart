@@ -22,10 +22,8 @@ class AuthLoadingComplete extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  final List<Appointment> appointments;
-
-  AuthSuccess(this.appointments) {
-    debugPrint('authSuccess: $appointments');
+  AuthSuccess() {
+    debugPrint('authSuccess');
   }
 }
 
@@ -34,5 +32,19 @@ class AuthFailure extends AuthState {
 
   AuthFailure(this.error) {
     debugPrint('authFailure: $error');
+  }
+}
+
+class RefreshTokenFailure extends AuthState {
+  final String error;
+
+  RefreshTokenFailure(this.error) {
+    debugPrint('RefreshTokenFailure: $error');
+  }
+}
+
+class RefreshTokenSuccess extends AuthState {
+  RefreshTokenSuccess() {
+    debugPrint('RefreshTokenSuccess');
   }
 }

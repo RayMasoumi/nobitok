@@ -20,6 +20,7 @@ import 'package:nobitok/presentation/widgets/set_date_widget.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 import '../../methods/set_time_initial_value_method.dart';
@@ -205,6 +206,8 @@ class _SetPreAppointmentBottomSheetState
                   if (state.error.contains(kServerException)) {
                     noInternetAlert(context);
                     // print('server exception');
+                  } else if (state.error.contains('401')) {
+                    context.read<AuthCubit>().refreshToken();
                   } else {
                     errorAlert(context, 'خطا در بارگذاری اطلاعات');
                     // print('an exception');

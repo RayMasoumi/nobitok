@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointments_state.dart';
+import 'package:nobitok/business_logic/cubits/auth_cubit.dart';
 import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_state.dart';
@@ -31,390 +32,424 @@ import '../widgets/searchbar_widget.dart';
 import '../widgets/time_f_a_b.dart';
 
 class HomeScreen extends StatelessWidget {
-  String? hintText;
-
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // * add appointments to user's appointment list:
+    context.read<TabCubit>().changeTab(kAppointmentsKey);
+
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        backgroundColor: Colors.white,
+      child: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthLoading) {
+            context.loaderOverlay.show();
+          } else if (state is AuthLoadingComplete) {
+            context.loaderOverlay.hide();
+// * logged in successfully:
+          } else if (state is RefreshTokenSuccess) {
+            errorAlert(context, 'لطفا دوباره امتحان کنید');
+          } else if (state is RefreshTokenFailure) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              kLoginScreenRoute,
+              (route) => false,
+            );
+          }
+        },
+        child: Scaffold(
+          backgroundColor: Colors.white,
 // * floating action button:
-        floatingActionButton: BlocBuilder<TabCubit, TabState>(
-          builder: (context, state) {
+          floatingActionButton: BlocBuilder<TabCubit, TabState>(
+            builder: (context, state) {
 // * add document fab
-            if (state is DocumentsTabState) {
-              return SizedBox(
-                width: 200.w,
-                child: const AddDocumentFAB(),
-              );
-            } else {
+              if (state is DocumentsTabState) {
+                return SizedBox(
+                  width: 200.w,
+                  child: const AddDocumentFAB(),
+                );
+              } else {
 // * we're not on tab document so we only have this fab
-              return BlocListener<AppointmentsCubit, AppointmentsState>(
-                listener: (context, state) {
-                  if (state is AppointmentsLoading) {
-                    context.loaderOverlay.show();
-                  } else if (state is AppointmentsLoadingCompleted) {
-                    context.loaderOverlay.hide();
-                  } else if (state is AppointmentDeleted) {
-                    context.loaderOverlay.hide();
-                    successAlert(context, 'نوبت با موفقیت حذف شد');
-                  } else if (state is AppointmentsLoadingFailed) {
-                    context.loaderOverlay.hide();
-                    if (state.error.contains(kServerException)) {
-                      noInternetAlert(context);
-                      // print('server exception');
-                    } else {
-                      errorAlert(context, 'خطا در بارگیری اطلاعات');
-                      // print('an exception');
-                    }
-                  }
-                },
-                child: DateFAB(
-                  onPressed: () async {
-                    // setTimeInitialValue();
-                    // showModalBottomSheet(
-                    //   context: context,
-                    //   builder: (context) => const SetTimeBottomSheet(),
-                    //   isScrollControlled: true,
-                    // );
-                    String startDate;
-                    String endDate;
-                    List<String> dates;
-                    dates = await customJalaliRangePicker(
-                        context, 'بازه مورد نظر را انتخاب کنید :');
-                    startDate = dates[0];
-                    endDate = dates[1];
-                    // * load for appointments
-                    if (state is AppointmentTabState) {
-                      if (context.mounted) {
-                        await context
-                            .read<AppointmentsCubit>()
-                            .fetchAppointmentsByRange(startDate, endDate);
-                      }
-                    } else if (state is PreAppointmentTabState) {
-                      // * load for pre appointments
-                      if (context.mounted) {
-                        await context
-                            .read<AppointmentsCubit>()
-                            .fetchPreAppointmentsByRange(startDate, endDate);
+                return BlocListener<AppointmentsCubit, AppointmentsState>(
+                  listener: (context, state) {
+                    if (state is AppointmentsLoading) {
+                      context.loaderOverlay.show();
+                    } else if (state is AppointmentsLoadingCompleted) {
+                      context.loaderOverlay.hide();
+                    } else if (state is AppointmentDeleted) {
+                      context.loaderOverlay.hide();
+                      successAlert(context, 'نوبت با موفقیت حذف شد');
+                    } else if (state is AppointmentsLoadingFailed) {
+                      context.loaderOverlay.hide();
+                      if (state.error.contains(kServerException)) {
+                        noInternetAlert(context);
+                        // print('server exception');
+                      } else if (state.error.contains('401')) {
+                        context.read<AuthCubit>().refreshToken();
+                      } else {
+                        errorAlert(context, 'خطا در بارگیری اطلاعات');
+                        // print('an exception');
                       }
                     }
                   },
-                ),
-              );
-            }
-          },
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-        body: HorizontalPadding(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 8.h,
-              ),
-// * searchbar:
-              const SearchbarWidget(
-                isHomeScreen: true,
-              ),
-// * first divider:
-              const PaddedDivider(
-                topPadding: 12,
-                bottomPadding: 12,
-              ), // * end of first divider
-// * tab bar:
-              const CustomTabBar(),
-// * second divider:
-              const PaddedDivider(
-                topPadding: 12,
-                bottomPadding: 12,
-              ), // * after divider:
-// * Tab 1 content
-              Flexible(
-                child: TabBarView(
-                  children: [
-                    // * appointments list view:
-                    BlocListener<AppointmentDetailCubit,
-                        AppointmentDetailsState>(
-                      listener: (context, state) {
-// * states of fetching appointment details are being handled here
-                        if (state is AppointmentDetailLoaded) {
-                          context.loaderOverlay.hide();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                const AppointmentsCustomerInfoBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        } else if (state is AppointmentDetailLoading) {
-                          context.loaderOverlay.show();
-                        } else if (state is AppointmentDetailError) {
-                          context.loaderOverlay.hide();
-                          if (state.error.contains(kServerException)) {
-                            noInternetAlert(context);
-                            // print('server exception');
-                          } else {
-                            errorAlert(context, 'خطا در بارگیری اطلاعات');
-                            // print('an exception');
-                          }
+                  child: DateFAB(
+                    onPressed: () async {
+                      // setTimeInitialValue();
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   builder: (context) => const SetTimeBottomSheet(),
+                      //   isScrollControlled: true,
+                      // );
+                      String startDate;
+                      String endDate;
+                      List<String> dates;
+                      dates = await customJalaliRangePicker(
+                          context, 'بازه مورد نظر را انتخاب کنید :');
+                      startDate = dates[0];
+                      endDate = dates[1];
+                      // * load for appointments
+                      if (state is AppointmentTabState) {
+                        if (context.mounted) {
+                          await context
+                              .read<AppointmentsCubit>()
+                              .fetchAppointmentsByRange(startDate, endDate);
                         }
-                      },
-                      child: BlocBuilder<TabCubit, TabState>(
-                        builder: (context, state) {
-                          return BlocBuilder<AppointmentsCubit,
-                              AppointmentsState>(
-                            builder: (context, state) {
-                              return CustomListView(
-                                onRefresh: () async {
-                                  // * store the fetched data
-// * add appointments to user's appointment list:
-                                  context
-                                      .read<TabCubit>()
-                                      .changeTab(kAppointmentsKey);
-                                },
-                                tileLeftPadding: 0,
-                                tileRightPadding: 0,
-                                tileTopPadding: 16,
-                                tileBottomPadding: 8,
-                                dismissibleKey: (index) {
-                                  return context
-                                      .read<AppointmentsCubit>()
-                                      .getAppointments(kAppointmentsKey)[index]
-                                      .appointmentId
-                                      .toString();
-                                },
-                                confirmDismissed: (index) async {
-                                  questionAlert(context,
-                                      'آیا از حذف این نوبت مطمئن هستید؟',
-                                      () async {
-                                    await context
-                                        .read<AppointmentsCubit>()
-                                        .deleteAppointment(context
-                                            .read<AppointmentsCubit>()
-                                            .getAppointments(
-                                                kAppointmentsKey)[index]
-                                            .appointmentId);
-                                    if (context.mounted) {
-                                      context
-                                          .read<TabCubit>()
-                                          .changeTab(kAppointmentsKey);
-                                    }
-                                    if (context.mounted) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  });
-                                  return null;
-                                },
-                                listTileBuilder: (index) {
-                                  return CustomerListTile(
-                                    isAppointment: true,
-                                    appointments: context
-                                        .read<AppointmentsCubit>()
-                                        .getAppointments(kAppointmentsKey),
-                                    index: index,
-                                    onDetailsPressed: () async {
-                                      // * creating instances
-                                      final appointmentDetailCubit = context
-                                          .read<AppointmentDetailCubit>();
-                                      final appointmentsList =
-                                          context.read<AppointmentsCubit>();
-                                      // * giving this appointment as a parameter to fetch its data
-                                      await appointmentDetailCubit
-                                          .fetchAppointmentDetail(
-                                              appointmentsList.getAppointments(
-                                                  kAppointmentsKey)[index]);
-                                    },
-                                  );
-                                },
-                                itemCount: context
-                                    .read<AppointmentsCubit>()
-                                    .getAppointments(kAppointmentsKey)
-                                    .length,
-                              );
-                            },
-                          );
+                      } else if (state is PreAppointmentTabState) {
+                        // * load for pre appointments
+                        if (context.mounted) {
+                          await context
+                              .read<AppointmentsCubit>()
+                              .fetchPreAppointmentsByRange(startDate, endDate);
+                        }
+                      }
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          body: HorizontalPadding(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 8.h,
+                ),
+// * searchbar:
+                const SearchbarWidget(
+                  isHomeScreen: true,
+                ),
+// * first divider:
+                const PaddedDivider(
+                  topPadding: 12,
+                  bottomPadding: 12,
+                ), // * end of first divider
+// * tab bar:
+                const CustomTabBar(),
+// * second divider:
+                const PaddedDivider(
+                  topPadding: 12,
+                  bottomPadding: 12,
+                ), // * after divider:
+// * Tab 1 content
+                Flexible(
+                  child: TabBarView(
+                    children: [
+                      // * appointments list view:
+                      BlocListener<AppointmentDetailCubit,
+                          AppointmentDetailsState>(
+                        listener: (context, state) {
+// * states of fetching appointment details are being handled here
+                          if (state is AppointmentDetailLoaded) {
+                            context.loaderOverlay.hide();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  const AppointmentsCustomerInfoBottomSheet(),
+                              isScrollControlled: true,
+                            );
+                          } else if (state is AppointmentDetailLoading) {
+                            context.loaderOverlay.show();
+                          } else if (state is AppointmentDetailError) {
+                            context.loaderOverlay.hide();
+                            if (state.error.contains(kServerException)) {
+                              noInternetAlert(context);
+                              // print('server exception');
+                            } else if (state.error.contains('401')) {
+                              context.read<AuthCubit>().refreshToken();
+                            } else {
+                              errorAlert(context, 'خطا در بارگیری اطلاعات');
+                              // print('an exception');
+                            }
+                          }
                         },
+                        child: BlocBuilder<TabCubit, TabState>(
+                          builder: (context, state) {
+                            return BlocBuilder<AppointmentsCubit,
+                                AppointmentsState>(
+                              builder: (context, state) {
+                                return CustomListView(
+                                  onRefresh: () async {
+                                    // * store the fetched data
+// * add appointments to user's appointment list:
+                                    context
+                                        .read<TabCubit>()
+                                        .changeTab(kAppointmentsKey);
+                                  },
+                                  tileLeftPadding: 0,
+                                  tileRightPadding: 0,
+                                  tileTopPadding: 16,
+                                  tileBottomPadding: 8,
+                                  dismissibleKey: (index) {
+                                    return context
+                                        .read<AppointmentsCubit>()
+                                        .getAppointments(
+                                            kAppointmentsKey)[index]
+                                        .appointmentId
+                                        .toString();
+                                  },
+                                  confirmDismissed: (index) async {
+                                    questionAlert(context,
+                                        'آیا از حذف این نوبت مطمئن هستید؟',
+                                        () async {
+                                      await context
+                                          .read<AppointmentsCubit>()
+                                          .deleteAppointment(context
+                                              .read<AppointmentsCubit>()
+                                              .getAppointments(
+                                                  kAppointmentsKey)[index]
+                                              .appointmentId);
+                                      if (context.mounted) {
+                                        context
+                                            .read<TabCubit>()
+                                            .changeTab(kAppointmentsKey);
+                                      }
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    });
+                                    return null;
+                                  },
+                                  listTileBuilder: (index) {
+                                    return CustomerListTile(
+                                      isAppointment: true,
+                                      appointments: context
+                                          .read<AppointmentsCubit>()
+                                          .getAppointments(kAppointmentsKey),
+                                      index: index,
+                                      onDetailsPressed: () async {
+                                        // * creating instances
+                                        final appointmentDetailCubit = context
+                                            .read<AppointmentDetailCubit>();
+                                        final appointmentsList =
+                                            context.read<AppointmentsCubit>();
+                                        // * giving this appointment as a parameter to fetch its data
+                                        await appointmentDetailCubit
+                                            .fetchAppointmentDetail(
+                                                appointmentsList
+                                                        .getAppointments(
+                                                            kAppointmentsKey)[
+                                                    index]);
+                                      },
+                                    );
+                                  },
+                                  itemCount: context
+                                      .read<AppointmentsCubit>()
+                                      .getAppointments(kAppointmentsKey)
+                                      .length,
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
 
 // *Tab 2 content
-                    // * pre-appointments list view:
-                    BlocListener<AppointmentDetailCubit,
-                        AppointmentDetailsState>(
-                      listener: (context, state) {
+                      // * pre-appointments list view:
+                      BlocListener<AppointmentDetailCubit,
+                          AppointmentDetailsState>(
+                        listener: (context, state) {
 // * states of fetching pre-appointment details are being handled here
-                        if (state is AppointmentDetailLoaded) {
-                          context.loaderOverlay.hide();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                const PreAppointmentsCustomerInfoBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        } else if (state is AppointmentDetailLoading) {
-                          context.loaderOverlay.show();
-                        } else if (state is AppointmentDetailError) {
-                          context.loaderOverlay.hide();
-                          if (state.error.contains(kServerException)) {
-                            noInternetAlert(context);
-                            // print('server exception');
-                          } else {
-                            errorAlert(context, 'خطا در بارگیری اطلاعات');
-                            // print('an exception');
+                          if (state is AppointmentDetailLoaded) {
+                            context.loaderOverlay.hide();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  const PreAppointmentsCustomerInfoBottomSheet(),
+                              isScrollControlled: true,
+                            );
+                          } else if (state is AppointmentDetailLoading) {
+                            context.loaderOverlay.show();
+                          } else if (state is AppointmentDetailError) {
+                            context.loaderOverlay.hide();
+                            if (state.error.contains(kServerException)) {
+                              noInternetAlert(context);
+                              // print('server exception');
+                            } else if (state.error.contains('401')) {
+                              context.read<AuthCubit>().refreshToken();
+                            } else {
+                              errorAlert(context, 'خطا در بارگیری اطلاعات');
+                              // print('an exception');
+                            }
                           }
-                        }
-                      },
-                      child: BlocBuilder<AppointmentsCubit, AppointmentsState>(
-                        builder: (context, state) {
-                          return BlocBuilder<TabCubit, TabState>(
-                            builder: (context, state) {
-                              return CustomListView(
-                                onRefresh: () async {
-                                  // * store the fetched data
-// * add appointments to user's appointment list:
-                                  context
-                                      .read<TabCubit>()
-                                      .changeTab(kPreAppointmentsKey);
-                                },
-                                tileLeftPadding: 0,
-                                tileRightPadding: 0,
-                                tileTopPadding: 16,
-                                tileBottomPadding: 8,
-                                dismissibleKey: (index) {
-                                  return context
-                                      .read<AppointmentsCubit>()
-                                      .getAppointments(
-                                          kPreAppointmentsKey)[index]
-                                      .appointmentId
-                                      .toString();
-                                },
-                                confirmDismissed: (index) async {
-                                  questionAlert(context,
-                                      'آیا از حذف این نوبت مطمئن هستید؟',
-                                      () async {
-                                    await context
-                                        .read<AppointmentsCubit>()
-                                        .deleteAppointment(context
-                                            .read<AppointmentsCubit>()
-                                            .getAppointments(
-                                                kPreAppointmentsKey)[index]
-                                            .appointmentId);
-                                    if (context.mounted) {
-                                      context
-                                          .read<TabCubit>()
-                                          .changeTab(kPreAppointmentsKey);
-                                    }
-                                    if (context.mounted) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  });
-                                  return null;
-                                },
-                                listTileBuilder: (index) {
-                                  return CustomerListTile(
-                                    isAppointment: false,
-                                    appointments: context
-                                        .read<AppointmentsCubit>()
-                                        .getAppointments(kPreAppointmentsKey),
-                                    index: index,
-                                    onDetailsPressed: () async {
-                                      // * creating instances
-                                      final appointmentDetailCubit = context
-                                          .read<AppointmentDetailCubit>();
-                                      final appointmentsList =
-                                          context.read<AppointmentsCubit>();
-                                      // * giving this appointment as a parameter to fetch its data
-                                      await appointmentDetailCubit
-                                          .fetchAppointmentDetail(
-                                              appointmentsList.getAppointments(
-                                                  kPreAppointmentsKey)[index]);
-                                    },
-                                  );
-                                },
-                                itemCount: context
-                                    .read<AppointmentsCubit>()
-                                    .getAppointments(kPreAppointmentsKey)
-                                    .length,
-                              );
-                            },
-                          );
                         },
+                        child:
+                            BlocBuilder<AppointmentsCubit, AppointmentsState>(
+                          builder: (context, state) {
+                            return BlocBuilder<TabCubit, TabState>(
+                              builder: (context, state) {
+                                return CustomListView(
+                                  onRefresh: () async {
+                                    // * store the fetched data
+// * add appointments to user's appointment list:
+                                    context
+                                        .read<TabCubit>()
+                                        .changeTab(kPreAppointmentsKey);
+                                  },
+                                  tileLeftPadding: 0,
+                                  tileRightPadding: 0,
+                                  tileTopPadding: 16,
+                                  tileBottomPadding: 8,
+                                  dismissibleKey: (index) {
+                                    return context
+                                        .read<AppointmentsCubit>()
+                                        .getAppointments(
+                                            kPreAppointmentsKey)[index]
+                                        .appointmentId
+                                        .toString();
+                                  },
+                                  confirmDismissed: (index) async {
+                                    questionAlert(context,
+                                        'آیا از حذف این نوبت مطمئن هستید؟',
+                                        () async {
+                                      await context
+                                          .read<AppointmentsCubit>()
+                                          .deleteAppointment(context
+                                              .read<AppointmentsCubit>()
+                                              .getAppointments(
+                                                  kPreAppointmentsKey)[index]
+                                              .appointmentId);
+                                      if (context.mounted) {
+                                        context
+                                            .read<TabCubit>()
+                                            .changeTab(kPreAppointmentsKey);
+                                      }
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    });
+                                    return null;
+                                  },
+                                  listTileBuilder: (index) {
+                                    return CustomerListTile(
+                                      isAppointment: false,
+                                      appointments: context
+                                          .read<AppointmentsCubit>()
+                                          .getAppointments(kPreAppointmentsKey),
+                                      index: index,
+                                      onDetailsPressed: () async {
+                                        // * creating instances
+                                        final appointmentDetailCubit = context
+                                            .read<AppointmentDetailCubit>();
+                                        final appointmentsList =
+                                            context.read<AppointmentsCubit>();
+                                        // * giving this appointment as a parameter to fetch its data
+                                        await appointmentDetailCubit
+                                            .fetchAppointmentDetail(
+                                                appointmentsList.getAppointments(
+                                                        kPreAppointmentsKey)[
+                                                    index]);
+                                      },
+                                    );
+                                  },
+                                  itemCount: context
+                                      .read<AppointmentsCubit>()
+                                      .getAppointments(kPreAppointmentsKey)
+                                      .length,
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
 
 // *Tab 3 content
-                    // * documents list view:
-                    BlocListener<DocumentDetailsCubit, DocumentDetailsState>(
-                      listener: (context, state) {
+                      // * documents list view:
+                      BlocListener<DocumentDetailsCubit, DocumentDetailsState>(
+                        listener: (context, state) {
 // * states of fetching documents details are being handled here
-                        if (state is DocumentDetailLoaded) {
-                          context.loaderOverlay.hide();
-                          showModalBottomSheet(
-                            context: context,
-                            builder: (context) =>
-                                const DocumentInfoBottomSheet(),
-                            isScrollControlled: true,
-                          );
-                        } else if (state is DocumentDetailLoading) {
-                          context.loaderOverlay.show();
-                        } else if (state is DocumentDetailError) {
-                          context.loaderOverlay.hide();
-                          if (state.error.contains(kServerException)) {
-                            noInternetAlert(context);
-                            // print('server exception');
-                          } else {
-                            errorAlert(context, 'خطا در بارگیری اطلاعات');
-                            // print('an exception');
+                          if (state is DocumentDetailLoaded) {
+                            context.loaderOverlay.hide();
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  const DocumentInfoBottomSheet(),
+                              isScrollControlled: true,
+                            );
+                          } else if (state is DocumentDetailLoading) {
+                            context.loaderOverlay.show();
+                          } else if (state is DocumentDetailError) {
+                            context.loaderOverlay.hide();
+                            if (state.error.contains(kServerException)) {
+                              noInternetAlert(context);
+                              // print('server exception');
+                            } else if (state.error.contains('401')) {
+                              context.read<AuthCubit>().refreshToken();
+                            } else {
+                              errorAlert(context, 'خطا در بارگیری اطلاعات');
+                              // print('an exception');
+                            }
                           }
-                        }
-                      },
-                      child: BlocBuilder<TabCubit, TabState>(
-                        builder: (context, state) {
-                          return CustomListView(
-                            onRefresh: () async {
-                              // * store the fetched data
-// * add appointments to user's appointment list:
-                              context.read<TabCubit>().changeTab(kDocumentsKey);
-                            },
-                            tileLeftPadding: 0,
-                            tileRightPadding: 0,
-                            tileTopPadding: 16,
-                            tileBottomPadding: 8,
-                            isDocument: true,
-                            listTileBuilder: (index) {
-                              return DocumentListTile(
-                                index: index,
-                                onDetailsPressed: () async {
-                                  // * creating instances
-                                  final documentDetailCubit =
-                                      context.read<DocumentDetailsCubit>();
-                                  final customer = context
-                                      .read<CustomerCubit>()
-                                      .getCustomers()[index];
-                                  // * giving the customer its id as a parameter to fetch its data
-                                  await documentDetailCubit
-                                      .fetchDocumentDetail(customer.customerId);
-                                },
-                                customers: context
-                                    .read<CustomerCubit>()
-                                    .getCustomers(),
-                              );
-                            },
-                            itemCount: context
-                                    .read<CustomerCubit>()
-                                    .getCustomers()
-                                    .length +
-                                1,
-                          );
                         },
+                        child: BlocBuilder<TabCubit, TabState>(
+                          builder: (context, state) {
+                            return CustomListView(
+                              onRefresh: () async {
+                                // * store the fetched data
+// * add appointments to user's appointment list:
+                                context
+                                    .read<TabCubit>()
+                                    .changeTab(kDocumentsKey);
+                              },
+                              tileLeftPadding: 0,
+                              tileRightPadding: 0,
+                              tileTopPadding: 16,
+                              tileBottomPadding: 8,
+                              isDocument: true,
+                              listTileBuilder: (index) {
+                                return DocumentListTile(
+                                  index: index,
+                                  onDetailsPressed: () async {
+                                    // * creating instances
+                                    final documentDetailCubit =
+                                        context.read<DocumentDetailsCubit>();
+                                    final customer = context
+                                        .read<CustomerCubit>()
+                                        .getCustomers()[index];
+                                    // * giving the customer its id as a parameter to fetch its data
+                                    await documentDetailCubit
+                                        .fetchDocumentDetail(
+                                            customer.customerId);
+                                  },
+                                  customers: context
+                                      .read<CustomerCubit>()
+                                      .getCustomers(),
+                                );
+                              },
+                              itemCount: context
+                                      .read<CustomerCubit>()
+                                      .getCustomers()
+                                      .length +
+                                  1,
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

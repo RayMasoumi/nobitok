@@ -18,6 +18,7 @@ import 'package:nobitok/business_logic/cubits/search_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/business_logic/cubits/user_cubit.dart';
+import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/data/repositories/add_appointment_from_pre_appointment_repository.dart';
 import 'package:nobitok/data/repositories/auth_repository.dart';
 import 'package:nobitok/data/repositories/complete_appointment_repository.dart';
@@ -32,6 +33,7 @@ import 'package:nobitok/data/repositories/invoice_repository.dart';
 import 'package:nobitok/data/repositories/post_new_appointment_repository.dart';
 import 'package:nobitok/data/repositories/post_new_customer_repository.dart';
 import 'package:nobitok/data/repositories/post_new_document_repository.dart';
+import 'package:nobitok/data/repositories/refresh_token_repository.dart';
 import 'package:nobitok/data/repositories/service_repository.dart';
 import 'package:nobitok/data/services/add_appointment_from_pre_appointment_service.dart';
 import 'package:nobitok/data/services/auth_service.dart';
@@ -48,8 +50,10 @@ import 'package:nobitok/data/services/get_invoice_details_service.dart';
 import 'package:nobitok/data/services/post_new_appointment_service.dart';
 import 'package:nobitok/data/services/post_new_customer_service.dart';
 import 'package:nobitok/data/services/post_new_document_service.dart';
+import 'package:nobitok/data/services/refresh_token_service.dart';
 import 'package:nobitok/methods/bouncing_scroll_behavior.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
+import 'package:nobitok/presentation/screens/home_screen.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
@@ -154,6 +158,11 @@ void main() async {
       DeleteAppointmentRepository(
           deleteAppointmentService: deleteAppointmentService);
 
+  // * refresh token
+  final RefreshTokenService refreshTokenService = RefreshTokenService();
+  final RefreshTokenRepository refreshTokenRepository =
+      RefreshTokenRepository(refreshTokenService: refreshTokenService);
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(
@@ -184,6 +193,7 @@ void main() async {
           postNewAppointmentRepository: postNewAppointmentRepository,
           postNewAppointmentService: postNewAppointmentService,
           deleteAppointmentRepository: deleteAppointmentRepository,
+          refreshTokenRepository: refreshTokenRepository,
         ),
       ));
 }
@@ -216,6 +226,7 @@ class MyApp extends StatelessWidget {
   final PostNewAppointmentService postNewAppointmentService;
   final PostNewAppointmentRepository postNewAppointmentRepository;
   final DeleteAppointmentRepository deleteAppointmentRepository;
+  final RefreshTokenRepository refreshTokenRepository;
   const MyApp({
     super.key,
     required this.authService,
@@ -243,6 +254,7 @@ class MyApp extends StatelessWidget {
     required this.postNewAppointmentService,
     required this.postNewAppointmentRepository,
     required this.deleteAppointmentRepository,
+    required this.refreshTokenRepository,
   });
 
   @override
@@ -272,8 +284,9 @@ class MyApp extends StatelessWidget {
             return MultiBlocProvider(
               providers: [
                 BlocProvider<AuthCubit>(
-                  create: (context) =>
-                      AuthCubit(authRepository, getAppointmentsRepository),
+                  create: (context) => AuthCubit(
+                      authRepository, getAppointmentsRepository,
+                      refreshTokenRepository: refreshTokenRepository),
                 ),
                 BlocProvider<UserCubit>(
                   create: (context) => UserCubit(),
@@ -281,7 +294,8 @@ class MyApp extends StatelessWidget {
                 BlocProvider<AppointmentsCubit>(
                   create: (context) => AppointmentsCubit(
                     getAppointmentsRepository: getAppointmentsRepository,
-                    preAppointmentRepository: preAppointmentRepository, deleteAppointmentRepository: deleteAppointmentRepository,
+                    preAppointmentRepository: preAppointmentRepository,
+                    deleteAppointmentRepository: deleteAppointmentRepository,
                   ),
                 ),
                 BlocProvider<TabCubit>(
@@ -338,10 +352,12 @@ class MyApp extends StatelessWidget {
                       ColorScheme.fromSeed(seedColor: Colors.deepPurple),
                   useMaterial3: true,
                 ),
-                home: const Directionality(
+                home: Directionality(
                   textDirection: TextDirection.rtl,
                   // child: AddAppointmentScreen(),
-                  child: LoginScreen(),
+                  child: GetStorage().read(kTokenBox) == null
+                      ? const LoginScreen()
+                      : const HomeScreen(),
                 ),
                 onGenerateRoute: AppRouter().onGenerateRoute,
                 localizationsDelegates: const [

@@ -22,14 +22,14 @@ class TabCubit extends Cubit<TabState> {
   final CustomerRepository customerRepository;
 
   void changeTab(String newTabKey) async {
-    emit(TabLoadingState(null));
+    emit(TabLoadingState(state.hintText));
 
     try {
       // * Depending on the tab index, you can fetch and update data here
       if (newTabKey == kAppointmentsKey) {
         List<Appointment> appointments;
         appointments = await appointmentsRepository.fetchTodayAppointments();
-        emit(TabLoadingCompleteState(null));
+        emit(TabLoadingCompleteState(state.hintText));
 
         emit(AppointmentTabState(appointments, 'جستجو نوبت ها'));
       } else if (newTabKey == kPreAppointmentsKey) {
@@ -37,16 +37,16 @@ class TabCubit extends Cubit<TabState> {
         preAppointments = await preAppointmentRepository
             .fetchPreAppointmentsByRange(getTodayDate(), '1402/11/10');
         //TODO get all pre appointments
-        emit(TabLoadingCompleteState(null));
+        emit(TabLoadingCompleteState(state.hintText));
 
         emit(PreAppointmentTabState(preAppointments, 'جستجو پسش نوبت ها'));
       } else if (newTabKey == kDocumentsKey) {
         List<Customer> customers = await customerRepository.fetchAllCustomers();
-        emit(TabLoadingCompleteState(null));
+        emit(TabLoadingCompleteState(state.hintText));
         emit(DocumentsTabState(customers, 'جستجو پرونده ها'));
       }
     } catch (error) {
-      emit(TabLoadingCompleteState(null));
+      emit(TabLoadingCompleteState(state.hintText));
       emit(TabErrorState('$error'));
     }
   }

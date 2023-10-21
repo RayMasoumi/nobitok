@@ -43,6 +43,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: HorizontalPadding(
         child: Column(
@@ -78,12 +79,15 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ), // * end of first divider
 
 // * Display search results
-            SizedBox(
-              height: kHeight - 100,
+            Container(
+              color: Colors.red,
+              height: kHeight - 200,
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
                   if (state is SearchResults) {
+                    print('in search result screen');
                     final searchResults = state.results;
+                    print(searchResults.length);
                     return CustomListView(
                       onRefresh: () async {},
                       tileLeftPadding: 0,
@@ -92,7 +96,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       tileBottomPadding: 8,
                       listTileBuilder: (index) {
                         return CustomerListTile(
-                          isAppointment: false,
+                          isAppointment: true,
                           appointments: searchResults,
                           index: index,
                           onDetailsPressed: () async {

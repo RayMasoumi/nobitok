@@ -11,6 +11,8 @@ class SearchInitialState extends SearchState {}
 
 class SearchLoading extends SearchState {}
 
-class SearchResults extends SearchState {}
+class SearchResults extends SearchState {
+  SearchResults({super.results});
+}
 
 class SearchEmpty extends SearchState {}

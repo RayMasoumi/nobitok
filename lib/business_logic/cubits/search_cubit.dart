@@ -10,11 +10,11 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   final TabCubit tabCubit;
   final AppointmentsCubit appointmentsCubit;
-  List<dynamic> searchResult = [];
+  List<Appointment> searchResult = [];
   SearchCubit(this.tabCubit, this.appointmentsCubit)
       : super(SearchInitialState());
 
-  List<dynamic> getList() {
+  List<Appointment> getList() {
     if (tabCubit.state is AppointmentTabState) {
       return appointmentsCubit.getAppointments(kAppointmentsKey);
     } else if (tabCubit.state is PreAppointmentTabState) {
@@ -24,7 +24,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  List<dynamic> onSearchTextChanged(String query) {
+  List<Appointment> onSearchTextChanged(String query) {
     // * Clear the previous search results.
     searchResult.clear();
 
@@ -36,8 +36,12 @@ class SearchCubit extends Cubit<SearchState> {
       final customerName = item.customerName.toLowerCase();
       return customerName.contains(lowerCaseQuery);
     }).toList();
-    emit(SearchResults());
-    print(searchResult[0]);
+    emit(SearchResults(results: searchResult));
+    print('*************');
+    print(searchResult.length);
+    for (Appointment item in searchResult) {
+      print(item.customerName);
+    }
     return searchResult;
   }
 }

@@ -15,7 +15,6 @@ class ServiceCubit extends Cubit<ServiceState> {
     try {
       services = await serviceRepository.fetchAllServices();
 
-      print(services.length);
       emit(ServiceLoadingCompleted(allServices: services));
     } catch (error) {
       emit(ServiceLoadingFailed());

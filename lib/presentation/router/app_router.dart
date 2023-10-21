@@ -18,7 +18,7 @@ class AppRouter {
       case kLoginScreenRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case kHomeScreenRoute:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       case kAddAppointmentScreenRoute:
         return MaterialPageRoute(builder: (_) => const AddAppointmentScreen());
       case kCreateNewDocumentScreenRoute:

@@ -11,6 +11,8 @@ import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/widgets/custom_icon_widget.dart';
 
+import '../../business_logic/cubits/tab_cubit.dart';
+
 class SearchbarWidget extends StatefulWidget {
   const SearchbarWidget({
     super.key,
@@ -79,21 +81,25 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
             const CustomIcon(
                 iconPath: 'assets/icons/magnifier.png', iconSize: 24),
             Expanded(
-              child: TextField(
-                onChanged: (query) {
-                  onSearchTextChanged(query);
+              child: BlocBuilder<TabCubit, TabState>(
+                builder: (context, state) {
+                  return TextField(
+                    onChanged: (query) {
+                      onSearchTextChanged(query);
+                    },
+                    textDirection: TextDirection.rtl,
+                    textAlign: TextAlign.start,
+                    decoration: InputDecoration(
+                      errorMaxLines: 1,
+                      border: InputBorder.none,
+                      hintText: context.read<TabCubit>().state.hintText!,
+                      hintStyle: const TextStyle(
+                        color: Color(0xff5D5D5D),
+                      ),
+                    ),
+                    controller: searchController,
+                  );
                 },
-                textDirection: TextDirection.rtl,
-                textAlign: TextAlign.start,
-                decoration: const InputDecoration(
-                  errorMaxLines: 1,
-                  border: InputBorder.none,
-                  hintText: 'جستجو',
-                  hintStyle: TextStyle(
-                    color: Color(0xff5D5D5D),
-                  ),
-                ),
-                controller: searchController,
               ),
             ),
             const Spacer(),

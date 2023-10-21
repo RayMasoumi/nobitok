@@ -16,37 +16,37 @@ class TabCubit extends Cubit<TabState> {
     this.appointmentsRepository,
     this.preAppointmentRepository,
     this.customerRepository,
-  ) : super(AppointmentTabState(const []));
+  ) : super(AppointmentTabState(const [], 'جستجو نوبت ها'));
   final GetAppointmentsRepository appointmentsRepository;
   final PreAppointmentRepository preAppointmentRepository;
   final CustomerRepository customerRepository;
 
   void changeTab(String newTabKey) async {
-    emit(TabLoadingState());
+    emit(TabLoadingState(null));
 
     try {
       // * Depending on the tab index, you can fetch and update data here
       if (newTabKey == kAppointmentsKey) {
         List<Appointment> appointments;
         appointments = await appointmentsRepository.fetchTodayAppointments();
-        emit(TabLoadingCompleteState());
+        emit(TabLoadingCompleteState(null));
 
-        emit(AppointmentTabState(appointments));
+        emit(AppointmentTabState(appointments, 'جستجو نوبت ها'));
       } else if (newTabKey == kPreAppointmentsKey) {
         List<Appointment> preAppointments;
         preAppointments = await preAppointmentRepository
             .fetchPreAppointmentsByRange(getTodayDate(), '1402/11/10');
         //TODO get all pre appointments
-        emit(TabLoadingCompleteState());
+        emit(TabLoadingCompleteState(null));
 
-        emit(PreAppointmentTabState(preAppointments));
+        emit(PreAppointmentTabState(preAppointments, 'جستجو پسش نوبت ها'));
       } else if (newTabKey == kDocumentsKey) {
         List<Customer> customers = await customerRepository.fetchAllCustomers();
-        emit(TabLoadingCompleteState());
-        emit(DocumentsTabState(customers));
+        emit(TabLoadingCompleteState(null));
+        emit(DocumentsTabState(customers, 'جستجو پرونده ها'));
       }
     } catch (error) {
-      emit(TabLoadingCompleteState());
+      emit(TabLoadingCompleteState(null));
       emit(TabErrorState('$error'));
     }
   }

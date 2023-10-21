@@ -31,7 +31,9 @@ import '../widgets/searchbar_widget.dart';
 import '../widgets/time_f_a_b.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  String? hintText;
+
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

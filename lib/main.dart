@@ -338,7 +338,9 @@ class MyApp extends StatelessWidget {
                 BlocProvider<InvoiceCubit>(
                   create: (context) => InvoiceCubit(invoiceRepository),
                 ),
-                BlocProvider<SearchCubit>(create: (context) => SearchCubit()),
+                BlocProvider<SearchCubit>(
+                    create: (context) => SearchCubit(context.read<TabCubit>(),
+                        context.read<AppointmentsCubit>())),
               ],
               child: MaterialApp(
                 builder: (context, child) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/styles.dart';
 
@@ -42,7 +43,7 @@ class SetDateWidget extends StatelessWidget {
                     color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
-                    text,
+                    text.toPersianDigit(),
                     style: kBold13TextStyle.copyWith(
                         color: const Color(0xff838383)),
                   ),

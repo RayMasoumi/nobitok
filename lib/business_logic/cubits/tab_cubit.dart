@@ -39,7 +39,7 @@ class TabCubit extends Cubit<TabState> {
         //TODO get all pre appointments
         emit(TabLoadingCompleteState(state.hintText));
 
-        emit(PreAppointmentTabState(preAppointments, 'جستجو پسش نوبت ها'));
+        emit(PreAppointmentTabState(preAppointments, 'جستجو پیش نوبت ها'));
       } else if (newTabKey == kDocumentsKey) {
         List<Customer> customers = await customerRepository.fetchAllCustomers();
         emit(TabLoadingCompleteState(state.hintText));

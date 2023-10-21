@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
@@ -40,7 +41,7 @@ class SetTimeWidget extends StatelessWidget {
                     color: disabled ? const Color(0xff838383) : kBlue300Color,
                   ),
                   Text(
-                    text,
+                    text.toPersianDigit(),
                     style: kBold13TextStyle.copyWith(
                         color: const Color(0xff838383)),
                   ),

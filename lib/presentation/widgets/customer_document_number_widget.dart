@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/styles.dart';
 import 'info_card_widget.dart';
@@ -17,7 +18,7 @@ class CustomerDocumentNumberWidget extends StatelessWidget {
       color: const Color(0xffC8C8C8),
       child: Center(
         child: Text(
-          'شماره پرونده : $docNumber',
+          'شماره پرونده : ${docNumber.toPersianDigit()}',
           style: kBold13TextStyle.copyWith(color: Colors.white),
         ),
       ),

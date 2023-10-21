@@ -84,7 +84,8 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
             ),
             const CustomIcon(
                 iconPath: 'assets/icons/magnifier.png', iconSize: 24),
-            Expanded(
+            SizedBox(
+              width: 150.w,
               child: BlocBuilder<TabCubit, TabState>(
                 builder: (context, state) {
                   return TextField(
@@ -97,8 +98,8 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                       errorMaxLines: 1,
                       border: InputBorder.none,
                       hintText: context.read<TabCubit>().state.hintText!,
-                      hintStyle: const TextStyle(
-                        color: Color(0xff5D5D5D),
+                      hintStyle: kBold14TextStyle.copyWith(
+                        color: const Color(0xff5D5D5D),
                       ),
                     ),
                     controller: searchController,

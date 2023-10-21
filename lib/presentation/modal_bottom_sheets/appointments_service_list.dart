@@ -4,7 +4,6 @@ import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/constants/colors.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/methods/cast_invoice_item_to_service.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/change_price.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
@@ -126,22 +125,22 @@ class AppointmentsServiceBottomSheet extends StatelessWidget {
                     }
                   },
                 ),
-// * change service price button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kYellowColor,
-                  text: 'تغییر قیمت',
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => const ChangePriceBottomSheet(),
-                      isScrollControlled: true,
-                    );
-                  },
-                ),
+// // * change service price button:
+//                 CustomButton(
+//                   height: 40,
+//                   width: 160,
+//                   fontSize: 13,
+//                   borderRadius: kBorderRadius12,
+//                   color: kYellowColor,
+//                   text: 'تغییر قیمت',
+//                   onPressed: () {
+//                     showModalBottomSheet(
+//                       context: context,
+//                       builder: (context) => const ChangePriceBottomSheet(),
+//                       isScrollControlled: true,
+//                     );
+//                   },
+//                 ),
               ],
             ),
           ],

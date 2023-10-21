@@ -197,14 +197,14 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                         );
                       }
                     }),
-                CustomButton(
-                    height: 32,
-                    width: 88,
-                    fontSize: 12,
-                    borderRadius: kBorderRadius8,
-                    color: kTextFieldBorderColor,
-                    text: 'فاکتور',
-                    onPressed: () {}),
+                // CustomButton(
+                //     height: 32,
+                //     width: 88,
+                //     fontSize: 12,
+                //     borderRadius: kBorderRadius8,
+                //     color: kTextFieldBorderColor,
+                //     text: 'فاکتور',
+                //     onPressed: () {}),
               ],
             ),
             const Spacer(),

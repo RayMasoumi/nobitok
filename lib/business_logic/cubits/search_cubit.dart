@@ -1,6 +1,4 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:nobitok/business_logic/cubits/appointments_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/constants/strings.dart';
@@ -29,12 +27,17 @@ class SearchCubit extends Cubit<SearchState> {
   List<dynamic> onSearchTextChanged(String query) {
     // * Clear the previous search results.
     searchResult.clear();
-    // * initialize the original list to search through:
+
+    // * Convert the query to lowercase for case-insensitive search.
+    final lowerCaseQuery = query.toLowerCase();
 
     // * Apply search logic based on the current tab state.
-    searchResult =
-        getList().where((element) => element.contains(query)).toList();
+    searchResult = getList().where((item) {
+      final customerName = item.customerName.toLowerCase();
+      return customerName.contains(lowerCaseQuery);
+    }).toList();
     emit(SearchResults());
+    print(searchResult[0]);
     return searchResult;
   }
 }

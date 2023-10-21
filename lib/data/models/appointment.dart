@@ -8,7 +8,7 @@ class Appointment {
   String? appointmentTime;
   String? appointmentDescription;
   int appointmentCustomerId;
-  String appointmentCustomerName;
+  String customerName;
   AppointmentStatus appointmentStatus;
   int? appointmentInvoiceId;
   String? appointmentCustomerPhoneNumber;
@@ -22,7 +22,7 @@ class Appointment {
     this.appointmentCustomerPhoneNumber,
     required this.appointmentCustomerId,
     required this.appointmentStatus,
-    required this.appointmentCustomerName,
+    required this.customerName,
   });
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
@@ -34,7 +34,7 @@ class Appointment {
       appointmentTime: json['time'] ?? '',
       appointmentStatus:
           getAppointmentStatusFromInt(json['appointmentStatus'] ?? 3),
-      appointmentCustomerName: json['customerName'] ?? '',
+      customerName: json['customerName'] ?? '',
       appointmentInvoiceId: json['factorId'] ?? 0,
       appointmentCustomerPhoneNumber: json['phoneNumber'] ?? '',
     );

@@ -1,7 +1,6 @@
 part of 'search_cubit.dart';
 
-@immutable
-class SearchState {
+abstract class SearchState {
   final String query;
   final List<Appointment> results;
 

@@ -39,7 +39,7 @@ class CustomerListTile extends StatelessWidget {
                   width: 7.w,
                 ),
                 Text(
-                  appointments[index].appointmentCustomerName,
+                  appointments[index].customerName,
                   style: kBold14TextStyle,
                 ),
               ],

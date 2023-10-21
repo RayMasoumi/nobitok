@@ -34,22 +34,6 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
   ];
 
   String? dropdownSelectedValue;
-  TextEditingController searchController = TextEditingController();
-
-  void onSearchTextChanged(String query) {
-    // * Listen for changes in the search bar text input
-    // * When text changes, navigate to the SearchResultsScreen
-    query = query.trim();
-    if (query.isNotEmpty) {
-      Navigator.of(context).pushNamed(kSearchResultScreenRoute);
-    }
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,43 +70,33 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                 iconPath: 'assets/icons/magnifier.png', iconSize: 24),
             SizedBox(
               width: 150.w,
-              child: BlocBuilder<TabCubit, TabState>(
-                builder: (context, state) {
-                  return TextField(
-                    onChanged: (query) {
-                      onSearchTextChanged(query);
-                    },
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.start,
-                    decoration: InputDecoration(
-                      errorMaxLines: 1,
-                      border: InputBorder.none,
-                      hintText: context.read<TabCubit>().state.hintText!,
-                      hintStyle: kBold14TextStyle.copyWith(
-                        color: const Color(0xff5D5D5D),
-                      ),
-                    ),
-                    controller: searchController,
-                  );
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(kSearchResultScreenRoute);
                 },
+                child: BlocBuilder<TabCubit, TabState>(
+                  builder: (context, state) {
+                    return TextField(
+                      textDirection: TextDirection.rtl,
+                      textAlign: TextAlign.start,
+                      decoration: InputDecoration(
+                        enabled: false,
+                        errorMaxLines: 1,
+                        border: InputBorder.none,
+                        hintText: context.read<TabCubit>().state.hintText!,
+                        hintStyle: kBold14TextStyle.copyWith(
+                          color: const Color(0xff5D5D5D),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             const Spacer(),
             widget.isHomeScreen
                 ? Row(
                     children: [
-                      // InkWell(
-                      //   onTap: () async {
-                      //     Navigator.of(context)
-                      //         .pushNamed(kSearchResultScreenRoute);
-                      //   },
-                      //   child: CustomIcon(
-                      //       iconPath: 'assets/icons/bell-outline.png',
-                      //       iconSize: 24.w),
-                      // ),
-                      // SizedBox(
-                      //   width: 8.w,
-                      // ),
                       BlocListener<AppointmentsCubit, AppointmentsState>(
                         listener: (context, state) {
                           if (state is AppointmentsLoading) {

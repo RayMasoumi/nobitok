@@ -149,7 +149,7 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
                 appointmentDate: 'appointmentDate',
                 appointmentCustomerId: 0,
                 appointmentStatus: AppointmentStatus.appointment,
-                appointmentCustomerName: 'appointmentCustomerName'));
+                customerName: 'appointmentCustomerName'));
   }
 
   Future<AppointmentDetail> fetchAppointmentDetailFromRepositories(

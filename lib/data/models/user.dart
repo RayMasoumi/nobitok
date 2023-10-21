@@ -23,8 +23,8 @@ class User {
       username: json['username'] as String,
       userEmail: json['email'] as String,
       userPhoneNumber: json['phoneNumber'] as String,
-      appointments: [], //TODO
-      preAppointments: [], //TODO
+      appointments: [],
+      preAppointments: [],
     );
   }
 

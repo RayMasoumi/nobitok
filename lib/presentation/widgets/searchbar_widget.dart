@@ -72,81 +72,67 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
             const Spacer(),
 
             widget.isHomeScreen
-                ? Row(
-                    children: [
-                      InkWell(
-                        onTap: () async {},
-                        child: CustomIcon(
-                            iconPath: 'assets/icons/bell-outline.png',
-                            iconSize: 24.w),
+                ? BlocListener<AppointmentsCubit, AppointmentsState>(
+                    listener: (context, state) {
+                      if (state is AppointmentsLoading) {
+                        context.loaderOverlay.show();
+                      } else if (state is AppointmentsLoadingCompleted) {
+                        context.loaderOverlay.hide();
+                      } else if (state is AppointmentsLoadingFailed) {
+                        context.loaderOverlay.hide();
+                        // todo show alert
+                      }
+                    },
+                    child: DropdownButton2<String>(
+                      customButton: Icon(
+                        Icons.menu,
+                        size: 24.w,
                       ),
-                      SizedBox(
-                        width: 8.w,
+                      items: dropdownItems
+                          .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: kBold14TextStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                          .toList(),
+                      value: dropdownSelectedValue,
+                      onChanged: (value) async {
+                        setState(() {
+                          dropdownSelectedValue = value;
+                        });
+                        await context
+                            .read<AppointmentsCubit>()
+                            .fetchTodayCompletedAppointments();
+                        if (context.mounted) {
+                          Navigator.of(context)
+                              .pushNamed(kCompletedAppointmentsScreenRoute);
+                        }
+                      },
+                      buttonStyleData: ButtonStyleData(
+                        width: 5.w,
                       ),
-                      BlocListener<AppointmentsCubit, AppointmentsState>(
-                        listener: (context, state) {
-                          if (state is AppointmentsLoading) {
-                            context.loaderOverlay.show();
-                          } else if (state is AppointmentsLoadingCompleted) {
-                            context.loaderOverlay.hide();
-                            // todo show alert
-                          } else if (state is AppointmentsLoadingFailed) {
-                            context.loaderOverlay.hide();
-                            // todo show alert
-                          }
-                        },
-                        child: DropdownButton2<String>(
-                          customButton: Icon(
-                            Icons.menu,
-                            size: 24.w,
-                          ),
-                          items: dropdownItems
-                              .map((String item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: kBold14TextStyle,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ))
-                              .toList(),
-                          value: dropdownSelectedValue,
-                          onChanged: (value) async {
-                            setState(() {
-                              dropdownSelectedValue = value;
-                            });
-                            await context
-                                .read<AppointmentsCubit>()
-                                .fetchTodayCompletedAppointments();
-                            if (context.mounted) {
-                              Navigator.of(context)
-                                  .pushNamed(kCompletedAppointmentsScreenRoute);
-                            }
-                          },
-                          buttonStyleData: ButtonStyleData(
-                            width: 5.w,
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: 200,
-                            width: 160.w,
-                            elevation: 0,
-                            decoration: BoxDecoration(
-                              borderRadius: kBorderRadius17,
-                            ),
-                            offset: Offset(140.w, 15.h),
-                            scrollbarTheme: ScrollbarThemeData(
-                              radius: const Radius.circular(40),
-                              thickness: MaterialStateProperty.all(6),
-                              thumbVisibility: MaterialStateProperty.all(true),
-                            ),
-                          ),
-                          menuItemStyleData: const MenuItemStyleData(
-                            height: 40,
-                            padding: EdgeInsets.only(left: 14, right: 14),
-                          ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 200,
+                        width: 160.w,
+                        elevation: 0,
+                        decoration: BoxDecoration(
+                          borderRadius: kBorderRadius17,
+                        ),
+                        offset: Offset(140.w, 15.h),
+                        scrollbarTheme: ScrollbarThemeData(
+                          radius: const Radius.circular(40),
+                          thickness: MaterialStateProperty.all(6),
+                          thumbVisibility: MaterialStateProperty.all(true),
                         ),
                       ),
-                    ],
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                        padding: EdgeInsets.only(left: 14, right: 14),
+                      ),
+                    ),
                   )
                 : InkWell(
                     child: Icon(

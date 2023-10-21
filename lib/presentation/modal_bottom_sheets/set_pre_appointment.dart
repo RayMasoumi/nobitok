@@ -175,19 +175,19 @@ class _SetPreAppointmentBottomSheetState
               ],
             ),
 // * invoice button:
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                CustomButton(
-                    height: 32,
-                    width: 88,
-                    fontSize: 12,
-                    borderRadius: kBorderRadius8,
-                    color: kTextFieldBorderColor,
-                    text: 'فاکتور',
-                    onPressed: () {}),
-              ],
-            ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: [
+//                 CustomButton(
+//                     height: 32,
+//                     width: 88,
+//                     fontSize: 12,
+//                     borderRadius: kBorderRadius8,
+//                     color: kTextFieldBorderColor,
+//                     text: 'فاکتور',
+//                     onPressed: () {}),
+//               ],
+//             ),
             const Spacer(),
 // * bottom divider
             const PaddedDivider(topPadding: 0, bottomPadding: 32),

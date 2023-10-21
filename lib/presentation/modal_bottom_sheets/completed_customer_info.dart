@@ -8,10 +8,8 @@ import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
-import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
 import '../widgets/custom_bottom_sheet.dart';
-import '../widgets/custom_button.dart';
 import '../widgets/custom_topbar.dart';
 import '../widgets/padded_divider.dart';
 import '../widgets/seperated_list_view_widget.dart';
@@ -167,15 +165,15 @@ class CompletedCustomerInfoBottomSheet extends StatelessWidget {
 // * bottom divider:
             const PaddedDivider(topPadding: 0, bottomPadding: 16),
 // * submit button:
-            CustomButton(
-              height: 40,
-              width: 335,
-              fontSize: 15,
-              borderRadius: kBorderRadius12,
-              color: const Color(0xff7B88FF),
-              text: 'چاپ فاکتور',
-              onPressed: () {},
-            ),
+//             CustomButton(
+//               height: 40,
+//               width: 335,
+//               fontSize: 15,
+//               borderRadius: kBorderRadius12,
+//               color: const Color(0xff7B88FF),
+//               text: 'چاپ فاکتور',
+//               onPressed: () {},
+//             ),
           ],
         ),
       ),

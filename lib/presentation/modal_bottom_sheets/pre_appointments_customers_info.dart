@@ -6,6 +6,7 @@ import 'package:nobitok/business_logic/cubits/appointment_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/appointment_details_state.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/presentation/dialog_alerts/success_alert.dart';
+import 'package:nobitok/presentation/modal_bottom_sheets/set_time_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/call_customer_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_document_number_widget.dart';
 import 'package:nobitok/presentation/widgets/customer_name_widget.dart';
@@ -16,6 +17,8 @@ import '../../constants/colors.dart';
 import '../../constants/sizes.dart';
 import '../../constants/strings.dart';
 import '../../constants/styles.dart';
+import '../../methods/calculate_time_method.dart';
+import '../../methods/custom_jalali_date_picker.dart';
 import '../dialog_alerts/error_alert.dart';
 import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_bottom_sheet.dart';
@@ -26,8 +29,36 @@ import '../widgets/seperated_list_view_widget.dart';
 import '../widgets/set_date_widget.dart';
 import '../widgets/set_time_widget.dart';
 
-class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
+class PreAppointmentsCustomerInfoBottomSheet extends StatefulWidget {
   const PreAppointmentsCustomerInfoBottomSheet({super.key});
+
+  @override
+  State<PreAppointmentsCustomerInfoBottomSheet> createState() =>
+      _PreAppointmentsCustomerInfoBottomSheetState();
+}
+
+class _PreAppointmentsCustomerInfoBottomSheetState
+    extends State<PreAppointmentsCustomerInfoBottomSheet> {
+  String date = '';
+  String time = '';
+  @override
+  void initState() {
+    time = context
+        .read<AppointmentDetailCubit>()
+        .getAppointmentDetails()
+        .appointmentDetail
+        .appointmentTime
+        .toString()
+        .toPersianDigit();
+    date = context
+        .read<AppointmentDetailCubit>()
+        .getAppointmentDetails()
+        .appointmentDetail
+        .appointmentDate
+        .toPersianDate()
+        .toPersianDigit();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +136,7 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'تکمیل شده در تاریخ : ',
+                  'تاریخ پیش نوبت : ',
                   style: kBold14TextStyle,
                 ),
                 SizedBox(
@@ -116,26 +147,18 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SetDateWidget(
-                      disabled: true,
-                      text: appointmentDetails
-                          .getAppointmentDetails()
-                          .appointmentDetail
-                          .appointmentDate
-                          .toPersianDate()
-                          .toPersianDigit(),
-                      onPressed: () {},
+                      disabled: false,
+                      text: date,
+                      onPressed: () async {
+                        await updatedSelectedDate();
+                      },
                     ),
                     SetTimeWidget(
-                      disabled: true,
-                      text:
-                          // ' ${DateTime.now().minute.toString()} : ${DateTime.now().hour.toString()}',
-                          appointmentDetails
-                              .getAppointmentDetails()
-                              .appointmentDetail
-                              .appointmentTime
-                              .toString()
-                              .toPersianDigit(),
-                      onPressed: () {},
+                      disabled: false,
+                      text: time,
+                      onPressed: () async {
+                        await updatedSelectedTime();
+                      },
                     ),
                   ],
                 ),
@@ -193,53 +216,97 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
 // * bottom divider:
             const PaddedDivider(topPadding: 0, bottomPadding: 16),
 // * submit as appointment button:
-            BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
-              listener: (context, state) {
-                if (state is AppointmentDetailLoading) {
-                  context.loaderOverlay.show();
-                } else if (state is AppointmentDetailSent) {
-                  context.loaderOverlay.hide();
-                  Navigator.of(context).pop();
-                  successAlert(context, 'نوبت با موفقیت ثبت شد');
-                } else if (state is AppointmentDetailEdited) {
-                  context.loaderOverlay.hide();
-                  Navigator.of(context).pop();
-                  successAlert(context, 'نوبت با موفقیت ویرایش شد');
-                } else if (state is AppointmentDetailError) {
-                  context.loaderOverlay.hide();
-                  if (state.error.contains(kServerException)) {
-                    noInternetAlert(context);
-                    // print('server exception');
-                  } else if (state.error.contains('401')) {
-                    context.read<AuthCubit>().refreshToken();
-                  } else {
-                    errorAlert(context, 'خطا در بارگیری اطلاعات');
-                    // print('an exception');
-                  }
-                } else {
-                  context.loaderOverlay.hide();
-                  errorAlert(context, 'خطا');
-                }
-              },
-              child: CustomButton(
-                height: 40,
-                width: double.infinity,
-                fontSize: 14,
-                borderRadius: kBorderRadius8,
-                color: kGreenColor,
-                text: 'ثبت به عنوان نوبت',
-                onPressed: () async {
-                  await appointmentDetails
-                      .createAppointmentFromPreAppointment();
-                  if (context.mounted) {
-                    context.read<TabCubit>().changeTab(kPreAppointmentsKey);
-                  }
-                },
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BlocListener<AppointmentDetailCubit, AppointmentDetailsState>(
+                  listener: (context, state) {
+                    if (state is AppointmentDetailLoading) {
+                      context.loaderOverlay.show();
+                    } else if (state is AppointmentDetailSent) {
+                      context.loaderOverlay.hide();
+                      Navigator.of(context).pop();
+                      successAlert(context, 'نوبت با موفقیت ثبت شد');
+                    } else if (state is AppointmentDetailEdited) {
+                      context.loaderOverlay.hide();
+                      Navigator.of(context).pop();
+                      successAlert(context, 'نوبت با موفقیت ویرایش شد');
+                    } else if (state is AppointmentDetailError) {
+                      context.loaderOverlay.hide();
+                      if (state.error.contains(kServerException)) {
+                        noInternetAlert(context);
+                        // print('server exception');
+                      } else if (state.error.contains('401')) {
+                        context.read<AuthCubit>().refreshToken();
+                      } else {
+                        errorAlert(context, 'خطا در بارگیری اطلاعات');
+                        // print('an exception');
+                      }
+                    } else {
+                      context.loaderOverlay.hide();
+                      errorAlert(context, 'خطا');
+                    }
+                  },
+// * submit as appointment button
+                  child: CustomButton(
+                    height: 40,
+                    width: 159,
+                    fontSize: 14,
+                    borderRadius: kBorderRadius8,
+                    color: kGreenColor,
+                    text: 'ثبت به عنوان نوبت',
+                    onPressed: () async {
+                      await appointmentDetails
+                          .createAppointmentFromPreAppointment();
+                      if (context.mounted) {
+                        context.read<TabCubit>().changeTab(kPreAppointmentsKey);
+                      }
+                    },
+                  ),
+                ),
+// * edit pre-appointment button:
+                CustomButton(
+                  height: 40,
+                  width: 159,
+                  fontSize: 14,
+                  borderRadius: kBorderRadius8,
+                  color: kYellowColor,
+                  text: 'تبت تغییرات',
+                  onPressed: () async {
+                    //TODO
+                  },
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> updatedSelectedDate() async {
+    String newSelectedDate =
+        await customJalaliDatePicker(context, 'تاریخ مورد نظر را انتخاب کنید:');
+    setState(() {
+      date = newSelectedDate;
+    });
+  }
+
+  Future<void> updatedSelectedTime() async {
+    try {
+      String newSelectedTime = await showModalBottomSheet(
+        context: context,
+        builder: (context) => const SetTimeBottomSheet(),
+        isScrollControlled: true,
+      );
+      setState(() {
+        time = formatTimeString(newSelectedTime);
+      });
+    } catch (e) {
+      setState(() {
+        time = formatTimeString(
+            '${DateTime.now().hour.toString()} : ${DateTime.now().minute.toString()}');
+      });
+    }
   }
 }

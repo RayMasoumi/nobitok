@@ -48,15 +48,13 @@ class _PreAppointmentsCustomerInfoBottomSheetState
         .getAppointmentDetails()
         .appointmentDetail
         .appointmentTime
-        .toString()
-        .toPersianDigit();
+        .toString();
     date = context
         .read<AppointmentDetailCubit>()
         .getAppointmentDetails()
         .appointmentDetail
         .appointmentDate
-        .toPersianDate()
-        .toPersianDigit();
+        .toPersianDate();
     super.initState();
   }
 
@@ -148,14 +146,14 @@ class _PreAppointmentsCustomerInfoBottomSheetState
                   children: [
                     SetDateWidget(
                       disabled: false,
-                      text: date,
+                      text: date.toPersianDigit(),
                       onPressed: () async {
                         await updatedSelectedDate();
                       },
                     ),
                     SetTimeWidget(
                       disabled: false,
-                      text: time,
+                      text: time.toPersianDigit(),
                       onPressed: () async {
                         await updatedSelectedTime();
                       },
@@ -273,7 +271,10 @@ class _PreAppointmentsCustomerInfoBottomSheetState
                   color: kYellowColor,
                   text: 'تبت تغییرات',
                   onPressed: () async {
-                    //TODO
+                    await appointmentDetails.editPreAppointment(date, time);
+                    if (context.mounted) {
+                      context.read<TabCubit>().changeTab(kPreAppointmentsKey);
+                    }
                   },
                 ),
               ],

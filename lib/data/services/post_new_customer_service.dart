@@ -17,15 +17,24 @@ class PostNewCustomerService {
       'Content-Type': 'application/json',
     };
 
-    final body = {
-      "name": customer.customerName,
-      "phone": customer.customerPhoneNumber,
-      "nationalCode": customer.customerIdCode,
-      "dateOfBirth": customer.customerDateOfBirth.toEnglishDigit(),
-      "description": customer.customerDescription,
-    };
+    final Map<String, String?> body;
+    if (customer.customerIdCode!.isEmpty) {
+      body = {
+        "name": customer.customerName,
+        "phone": customer.customerPhoneNumber,
+        "dateOfBirth": customer.customerDateOfBirth.toEnglishDigit(),
+        "description": customer.customerDescription,
+      };
+    } else {
+      body = {
+        "name": customer.customerName,
+        "phone": customer.customerPhoneNumber,
+        "nationalCode": customer.customerIdCode,
+        "dateOfBirth": customer.customerDateOfBirth.toEnglishDigit(),
+        "description": customer.customerDescription,
+      };
+    }
 
-    print(body);
     try {
       final response = await http.post(
         url,

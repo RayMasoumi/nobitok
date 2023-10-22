@@ -219,7 +219,6 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                       text: 'ثبت پرونده',
                       onPressed: () async {
                         if (nameController.text.isEmpty ||
-                            nationalIdController.text.isEmpty ||
                             phoneNumberController.text.isEmpty ||
                             birthDateController.text.isEmpty) {
                           errorAlert(

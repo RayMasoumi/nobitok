@@ -33,6 +33,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    context.read<SearchCubit>().customerSearchResult.clear();
+    context.read<SearchCubit>().appointmentSearchResult.clear();
+    super.initState();
+  }
+
   // * works for all tabs except for documents:
   void onAppointmentSearchTextChanged(String query) {
     // * Listen for changes in the search bar text input

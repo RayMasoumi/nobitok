@@ -36,6 +36,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final appointmentDetails = context.read<AppointmentDetailCubit>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: CustomBottomSheet(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         child: Column(

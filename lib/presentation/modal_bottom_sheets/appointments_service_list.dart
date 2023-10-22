@@ -86,43 +86,45 @@ class AppointmentsServiceBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 // * submit button:
-                CustomButton(
-                  height: 40,
-                  width: 160,
-                  fontSize: 13,
-                  borderRadius: kBorderRadius12,
-                  color: kGreenColor,
-                  text: 'تایید',
-                  onPressed: () async {
+                Expanded(
+                  child: CustomButton(
+                    height: 45,
+                    width: 160,
+                    fontSize: 13,
+                    borderRadius: kBorderRadius12,
+                    color: kGreenColor,
+                    text: 'تایید',
+                    onPressed: () async {
 // * getting the invoice id:
-                    int? invoiceId = context
-                        .read<AppointmentDetailCubit>()
-                        .getAppointmentDetails()
-                        .invoiceDetail
-                        .invoiceId;
+                      int? invoiceId = context
+                          .read<AppointmentDetailCubit>()
+                          .getAppointmentDetails()
+                          .invoiceDetail
+                          .invoiceId;
 
 // * casting the selected services into invoice items:
-                    List<InvoiceItem> invoiceItems =
-                        castServicesToInvoiceItems(selectedServices);
+                      List<InvoiceItem> invoiceItems =
+                          castServicesToInvoiceItems(selectedServices);
 
 // * adding the new invoice items into invoice:
-                    await context
-                        .read<InvoiceCubit>()
-                        .addInvoiceItem(invoiceId, invoiceItems);
-// * update appointment details(invoice changes):
-                    if (context.mounted) {
                       await context
-                          .read<AppointmentDetailCubit>()
-                          .fetchAppointmentDetail(context
-                              .read<AppointmentDetailCubit>()
-                              .getAppointmentDetails()
-                              .appointmentDetail);
-                    }
+                          .read<InvoiceCubit>()
+                          .addInvoiceItem(invoiceId, invoiceItems);
+// * update appointment details(invoice changes):
+                      if (context.mounted) {
+                        await context
+                            .read<AppointmentDetailCubit>()
+                            .fetchAppointmentDetail(context
+                                .read<AppointmentDetailCubit>()
+                                .getAppointmentDetails()
+                                .appointmentDetail);
+                      }
 
-                    if (context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  },
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
                 ),
 // // * change service price button:
 //                 CustomButton(

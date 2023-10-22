@@ -264,7 +264,7 @@ class AppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
                   color: kBlue300Color,
-                  text: 'ثبت پبش نوبت',
+                  text: 'ثبت پیش نوبت',
                   onPressed: () {
                     Navigator.of(context).pop();
                     showModalBottomSheet(

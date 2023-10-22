@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/styles.dart';
+import 'package:nobitok/presentation/widgets/document_list_tile.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../business_logic/cubits/appointments_cubit.dart';
+import '../../business_logic/cubits/customer_cubit.dart';
+import '../../business_logic/cubits/document_details_cubit.dart';
 import '../../business_logic/cubits/search_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/strings.dart';
@@ -30,13 +33,26 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     super.dispose();
   }
 
-  void onSearchTextChanged(String query) {
+  // * works for all tabs except for documents:
+  void onAppointmentSearchTextChanged(String query) {
+    // * Listen for changes in the search bar text input
+    // * When text changes, navigate to the SearchResultsScreen
+
+    query = query.trim();
+    if (query.isNotEmpty) {
+      // * Update the search query in the SearchCubit.
+      context.read<SearchCubit>().onAppointmentSearchTextChanged(query);
+    }
+  }
+
+  // * works for documents tab:
+  void onDocumentSearchTextChanged(String query) {
     // * Listen for changes in the search bar text input
     // * When text changes, navigate to the SearchResultsScreen
     query = query.trim();
     if (query.isNotEmpty) {
       // * Update the search query in the SearchCubit.
-      context.read<SearchCubit>().onAppointmentSearchTextChanged(query);
+      context.read<SearchCubit>().onCustomerSearchTextChanged(query);
     }
   }
 
@@ -56,7 +72,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               builder: (context, state) {
                 return TextField(
                   onChanged: (query) {
-                    onSearchTextChanged(query);
+                    if (state is DocumentsTabState) {
+                      onDocumentSearchTextChanged(query);
+                    } else {
+                      onAppointmentSearchTextChanged(query);
+                    }
                   },
                   textDirection: TextDirection.rtl,
                   textAlign: TextAlign.start,
@@ -83,8 +103,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               height: kHeight - 200,
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
+//@shows appointment-typed search result:
                   if (state is AppointmentSearchResultsState) {
-                    print('in search result screen');
+                    print('in appointment search result screen');
                     final searchResults = state.appointmentResults;
                     print(searchResults.length);
                     return CustomListView(
@@ -110,6 +131,35 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     kPreAppointmentsKey)[index]);
                           },
                         );
+                      },
+                      itemCount: searchResults.length,
+                    );
+//@shows customer-typed search result:
+                  } else if (state is CustomerSearchResultsState) {
+                    print('in customer search result screen');
+                    final searchResults = state.customerResults;
+                    print(searchResults.length);
+                    return CustomListView(
+                      onRefresh: () async {},
+                      tileLeftPadding: 0,
+                      tileRightPadding: 0,
+                      tileTopPadding: 16,
+                      tileBottomPadding: 8,
+                      listTileBuilder: (index) {
+                        return DocumentListTile(
+                            index: index,
+                            onDetailsPressed: () async {
+                              // * creating instances
+                              final documentDetailCubit =
+                                  context.read<DocumentDetailsCubit>();
+                              final customer = context
+                                  .read<CustomerCubit>()
+                                  .getCustomers()[index];
+                              // * giving the customer its id as a parameter to fetch its data
+                              await documentDetailCubit
+                                  .fetchDocumentDetail(customer.customerId);
+                            },
+                            customers: searchResults);
                       },
                       itemCount: searchResults.length,
                     );

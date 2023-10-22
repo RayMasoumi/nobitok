@@ -8,7 +8,6 @@ import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
-import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../business_logic/cubits/invoice_cubit.dart';
@@ -43,9 +42,9 @@ class AppointmentsServiceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
 // * search bar:
-            const SearchbarWidget(),
+//             const SearchbarWidget(),
 // * divider:
-            const PaddedDivider(topPadding: 12, bottomPadding: 16),
+//             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:
             Expanded(
               child: BlocBuilder<ServiceCubit, ServiceState>(

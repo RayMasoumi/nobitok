@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/completed_customer_info.dart';
 import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
-import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../business_logic/cubits/appointment_details_state.dart';
@@ -17,7 +16,6 @@ import '../dialog_alerts/error_alert.dart';
 import '../dialog_alerts/no_internet_alert.dart';
 import '../widgets/custom_list_view.dart';
 import '../widgets/customer_list_tile.dart';
-import '../widgets/padded_divider.dart';
 import '../widgets/time_f_a_b.dart';
 
 class CompletedAppointmentsScreen extends StatelessWidget {
@@ -77,12 +75,12 @@ class CompletedAppointmentsScreen extends StatelessWidget {
               height: 8.h,
             ),
 // * searchbar:
-            const SearchbarWidget(),
-            // * first divider:
-            const PaddedDivider(
-              topPadding: 12,
-              bottomPadding: 12,
-            ), // * end of first divider
+//             const SearchbarWidget(),
+//             // * first divider:
+//             const PaddedDivider(
+//               topPadding: 12,
+//               bottomPadding: 12,
+//             ), // * end of first divider
             // * list view
             Flexible(
               child:

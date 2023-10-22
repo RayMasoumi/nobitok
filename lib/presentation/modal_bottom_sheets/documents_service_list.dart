@@ -7,7 +7,6 @@ import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
-import 'package:nobitok/presentation/widgets/searchbar_widget.dart';
 
 import '../../business_logic/cubits/service_state.dart';
 import '../../data/models/invoice_item.dart';
@@ -41,9 +40,9 @@ class DocumentsServiceBottomSheet extends StatelessWidget {
 // * divider:
             const PaddedDivider(topPadding: 8, bottomPadding: 24),
 // * search bar:
-            const SearchbarWidget(),
+//             const SearchbarWidget(),
 // * divider:
-            const PaddedDivider(topPadding: 12, bottomPadding: 16),
+//             const PaddedDivider(topPadding: 12, bottomPadding: 16),
 // * listView:
             Expanded(
               child: BlocBuilder<ServiceCubit, ServiceState>(

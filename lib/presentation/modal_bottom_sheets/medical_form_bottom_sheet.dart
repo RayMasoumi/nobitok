@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/styles.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/medical_form_items_widget.dart';
 import 'package:nobitok/presentation/widgets/custom_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_topbar.dart';
+import 'package:nobitok/presentation/widgets/medical_form_items_widget.dart';
 import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/new_document_cubit.dart';
@@ -226,7 +226,7 @@ class _MedicalFormBottomSheetState extends State<MedicalFormBottomSheet> {
               children: [
                 CustomButton(
                   height: 48.h,
-                  width: 195.w,
+                  width: 182.w,
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
                   color: kGreenColor,
@@ -241,7 +241,7 @@ class _MedicalFormBottomSheetState extends State<MedicalFormBottomSheet> {
                 ),
                 CustomButton(
                   height: 48.h,
-                  width: 115.w,
+                  width: 110.w,
                   fontSize: 14,
                   borderRadius: kBorderRadius8,
                   color: kRed600Color,

@@ -212,7 +212,7 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                     },
                     child: CustomButton(
                       height: 48.h,
-                      width: 195.w,
+                      width: 182.w,
                       fontSize: 14,
                       borderRadius: kBorderRadius8,
                       color: kGreenColor,
@@ -243,7 +243,7 @@ class _CreateNewDocumentScreenState extends State<CreateNewDocumentScreen> {
                   ),
                   CustomButton(
                     height: 48.h,
-                    width: 115.w,
+                    width: 110.w,
                     fontSize: 14,
                     borderRadius: kBorderRadius8,
                     color: kRed600Color,

@@ -248,13 +248,19 @@ class _SetPreAppointmentBottomSheetState
 
   Future<void> updateSelectedTime() async {
     setTimeInitialValue();
-    String newSelectedTime = await showModalBottomSheet(
-      context: context,
-      builder: (context) => const SetTimeBottomSheet(),
-      isScrollControlled: true,
-    );
-    setState(() {
-      selectedTime = formatTimeString(newSelectedTime);
-    });
+
+    try {
+      String newSelectedTime = await showModalBottomSheet(
+        context: context,
+        builder: (context) => const SetTimeBottomSheet(),
+        isScrollControlled: true,
+      );
+      setState(() {
+        selectedTime = formatTimeString(newSelectedTime);
+      });
+    } catch (e) {
+      selectedTime = formatTimeString(
+          '${DateTime.now().hour.toString()} : ${DateTime.now().minute.toString()}');
+    }
   }
 }

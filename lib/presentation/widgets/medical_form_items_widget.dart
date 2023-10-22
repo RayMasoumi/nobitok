@@ -19,7 +19,7 @@ class MedicalFormItemsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: (kWidth - 8.w) / 2,
+      width: (kWidth - 3.5.w) / 2,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

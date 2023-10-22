@@ -305,13 +305,18 @@ class _AddAppointmentScreenState extends State<AddAppointmentScreen> {
 
   Future<void> updateSelectedTime() async {
     setTimeInitialValue();
-    String newSelectedTime = await showModalBottomSheet(
-      context: context,
-      builder: (context) => const SetTimeBottomSheet(),
-      isScrollControlled: true,
-    );
-    setState(() {
-      time = formatTimeString(newSelectedTime);
-    });
+    try {
+      String newSelectedTime = await showModalBottomSheet(
+        context: context,
+        builder: (context) => const SetTimeBottomSheet(),
+        isScrollControlled: true,
+      );
+      setState(() {
+        time = formatTimeString(newSelectedTime);
+      });
+    } catch (e) {
+      time = formatTimeString(
+          '${DateTime.now().hour.toString()} : ${DateTime.now().minute.toString()}');
+    }
   }
 }

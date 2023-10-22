@@ -8,11 +8,13 @@ class CustomBottomSheet extends StatelessWidget {
     required this.child,
     required this.backgroundColor,
     this.halfScreen = false,
+    this.isCalendar = false,
   });
 
   final Widget child;
   final Color backgroundColor;
   final bool halfScreen;
+  final bool isCalendar;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,10 @@ class CustomBottomSheet extends StatelessWidget {
             ),
           ),
           child: HorizontalPadding(
-            child: BottomSheetVerticalPadding(child: child),
+            child: BottomSheetVerticalPadding(
+              isCalendar: isCalendar,
+              child: child,
+            ),
           ),
         ),
       ),

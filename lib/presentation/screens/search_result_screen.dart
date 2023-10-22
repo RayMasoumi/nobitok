@@ -83,9 +83,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               height: kHeight - 200,
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
-                  if (state is SearchResults) {
+                  if (state is AppointmentSearchResultsState) {
                     print('in search result screen');
-                    final searchResults = state.results;
+                    final searchResults = state.appointmentResults;
                     print(searchResults.length);
                     return CustomListView(
                       onRefresh: () async {},

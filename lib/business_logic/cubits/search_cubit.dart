@@ -4,6 +4,7 @@ import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
 import 'package:nobitok/constants/strings.dart';
 
 import '../../data/models/appointment.dart';
+import '../../data/models/customer.dart';
 
 part 'search_state.dart';
 
@@ -36,7 +37,7 @@ class SearchCubit extends Cubit<SearchState> {
       final customerName = item.customerName.toLowerCase();
       return customerName.contains(lowerCaseQuery);
     }).toList();
-    emit(SearchResults(results: searchResult));
+    emit(AppointmentSearchResultsState(results: searchResult));
     print('*************');
     print(searchResult.length);
     for (Appointment item in searchResult) {

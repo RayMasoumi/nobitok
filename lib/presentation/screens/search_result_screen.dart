@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/widgets/document_list_tile.dart';
 
@@ -101,13 +100,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ),
 // * first divider:
             const PaddedDivider(
-              topPadding: 12,
+              topPadding: 1,
               bottomPadding: 12,
             ), // * end of first divider
 
 // * Display search results
-            SizedBox(
-              height: kHeight - 200,
+            Expanded(
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
 //@shows appointment-typed search result:

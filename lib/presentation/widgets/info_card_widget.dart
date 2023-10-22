@@ -7,17 +7,19 @@ class InfoCardWidget extends StatelessWidget {
     required this.horizontalPadding,
     required this.color,
     required this.child,
+    this.width = 159,
   });
 
   final Color color;
   final Widget child;
   final double horizontalPadding;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding.w),
-      width: 159,
+      width: width,
       height: 40,
       decoration: ShapeDecoration(
         color: color,

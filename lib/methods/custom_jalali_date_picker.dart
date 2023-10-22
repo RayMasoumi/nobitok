@@ -38,11 +38,16 @@ import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 Future<String> customJalaliDatePicker(
     BuildContext context, String title) async {
-  Jalali selectedDate = await showModalBottomSheet(
-    context: context,
-    builder: (context) => DatePickerBottomSheet(
-      title: title,
-    ),
-  );
-  return formatDateJalali(selectedDate);
+  try {
+    Jalali selectedDate = await showModalBottomSheet(
+          context: context,
+          builder: (context) => DatePickerBottomSheet(
+            title: title,
+          ),
+        ) ??
+        Jalali.now();
+    return formatDateJalali(selectedDate);
+  } catch (e) {
+    return formatDateJalali(Jalali.now());
+  }
 }

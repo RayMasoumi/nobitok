@@ -36,7 +36,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     query = query.trim();
     if (query.isNotEmpty) {
       // * Update the search query in the SearchCubit.
-      context.read<SearchCubit>().onSearchTextChanged(query);
+      context.read<SearchCubit>().onAppointmentSearchTextChanged(query);
     }
   }
 

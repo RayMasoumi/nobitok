@@ -76,17 +76,10 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                 },
                 child: BlocBuilder<TabCubit, TabState>(
                   builder: (context, state) {
-                    return TextField(
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.start,
-                      decoration: InputDecoration(
-                        enabled: false,
-                        errorMaxLines: 1,
-                        border: InputBorder.none,
-                        hintText: context.read<TabCubit>().state.hintText!,
-                        hintStyle: kBold14TextStyle.copyWith(
-                          color: const Color(0xff5D5D5D),
-                        ),
+                    return Text(
+                      context.read<TabCubit>().state.hintText!,
+                      style: kBold14TextStyle.copyWith(
+                        color: const Color(0xff5D5D5D),
                       ),
                     );
                   },

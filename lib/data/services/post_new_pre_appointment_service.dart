@@ -37,4 +37,34 @@ class PostNewPreAppointmentService {
       throw Exception('$kServerException:$error');
     }
   }
+
+  Future<http.Response> editPreAppointment(
+      String time, String date, AppointmentDetail appointmentDetail) async {
+// * Implement API request to send information using the token here
+    final url = Uri.parse('$kBaseUrl$kEditAppointmentUrl');
+
+    final headers = {
+      'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',
+      'Content-Type': 'application/json',
+    };
+
+    final body = {
+      "id": appointmentDetail.appointmentDetail.appointmentId,
+      "customerId": appointmentDetail.customerDetail.customerId,
+      "appointmentStatusId": 0,
+      "date": date,
+      "time": time,
+      "description": '',
+    };
+    try {
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(body),
+      );
+      return response;
+    } catch (error) {
+      throw Exception('$kServerException:$error');
+    }
+  }
 }

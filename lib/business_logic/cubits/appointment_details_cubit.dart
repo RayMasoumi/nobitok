@@ -120,6 +120,23 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
     }
   }
 
+  Future<void> editPreAppointment(String date, String time) async {
+    AppointmentDetail appointmentDetail = getAppointmentDetails();
+    emit(AppointmentDetailLoading());
+
+    try {
+      final sent =
+          await _editAppointmentFromRepository(date, time, appointmentDetail);
+
+      sent
+          ? emit(AppointmentDetailEdited())
+          : emit(AppointmentDetailError(
+              error: 'could not edit the pre appointment'));
+    } catch (e) {
+      emit(AppointmentDetailError(error: 'Failed to edit pre appointment: $e'));
+    }
+  }
+
   // * set appointment detail
   void setAppointmentDetail(AppointmentDetail appointmentDetail) {
     emit(state);
@@ -236,6 +253,20 @@ class AppointmentDetailCubit extends Cubit<AppointmentDetailsState> {
       return status;
     } catch (e) {
       // ! 'complete_appointment_error'
+      throw Exception('$e:in AppointmentDetailsCubit');
+    }
+  }
+
+  Future<bool> _editAppointmentFromRepository(
+      String date, String time, AppointmentDetail appointmentDetail) async {
+    bool status;
+    try {
+      status = await postNewPreAppointmentRepository.editPreAppointment(
+          date, time, appointmentDetail);
+
+      return status;
+    } catch (e) {
+      // ! 'edit_pre_appointment_error'
       throw Exception('$e:in AppointmentDetailsCubit');
     }
   }

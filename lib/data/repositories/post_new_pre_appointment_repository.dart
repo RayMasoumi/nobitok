@@ -23,4 +23,18 @@ class PostNewPreAppointmentRepository {
       throw Exception('$kSendNewPreAppointmentException:${response.body}');
     }
   }
+
+  Future<bool> editPreAppointment(
+      String date, String time, AppointmentDetail appointmentDetail) async {
+    final response = await postNewPreAppointmentService.editPreAppointment(
+        time, date, appointmentDetail);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('edit PreAppointment Status Code: ${response.statusCode}');
+      print('edit PreAppointment Body: ${response.body}');
+      throw Exception('$kEditPreAppointmentException:${response.body}');
+    }
+  }
 }

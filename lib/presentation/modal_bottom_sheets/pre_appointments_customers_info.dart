@@ -201,6 +201,10 @@ class PreAppointmentsCustomerInfoBottomSheet extends StatelessWidget {
                   context.loaderOverlay.hide();
                   Navigator.of(context).pop();
                   successAlert(context, 'نوبت با موفقیت ثبت شد');
+                } else if (state is AppointmentDetailEdited) {
+                  context.loaderOverlay.hide();
+                  Navigator.of(context).pop();
+                  successAlert(context, 'نوبت با موفقیت ویرایش شد');
                 } else if (state is AppointmentDetailError) {
                   context.loaderOverlay.hide();
                   if (state.error.contains(kServerException)) {

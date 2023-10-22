@@ -58,3 +58,6 @@ const String kDeleteAppointmentUrl = '/Appointment/deleteAppointment';
 
 // * api refresh token
 const String kRefreshTokenUrl = '/Account/RefreshTokenForUser';
+
+// * api edit pre appointment
+const String kEditAppointmentUrl = '/Appointment/editAppointment';

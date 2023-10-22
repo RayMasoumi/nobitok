@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/modal_bottom_sheets/completed_customer_info.dart';
 import 'package:nobitok/presentation/widgets/horizontal_padding.dart';
+import 'package:nobitok/presentation/widgets/padded_divider.dart';
 
 import '../../business_logic/cubits/appointment_details_cubit.dart';
 import '../../business_logic/cubits/appointment_details_state.dart';
@@ -74,6 +77,28 @@ class CompletedAppointmentsScreen extends StatelessWidget {
             SizedBox(
               height: 8.h,
             ),
+            Padding(
+              padding: EdgeInsets.all(10.r),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'لیست تکمیل شده‌ها',
+                    style: kBold14TextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      MdiIcons.arrowLeft,
+                      size: 25.r,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            PaddedDivider(topPadding: 0.0, bottomPadding: 8.0.h),
 // * searchbar:
 //             const SearchbarWidget(),
 //             // * first divider:

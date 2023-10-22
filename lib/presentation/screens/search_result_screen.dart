@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/widgets/document_list_tile.dart';
 
@@ -74,30 +75,67 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               height: 8.h,
             ),
 // * searchbar:
-            BlocBuilder<TabCubit, TabState>(
-              builder: (context, state) {
-                return TextField(
-                  onChanged: (query) {
-                    if (state is DocumentsTabState) {
-                      onDocumentSearchTextChanged(query);
-                    } else {
-                      onAppointmentSearchTextChanged(query);
-                    }
-                  },
-                  textDirection: TextDirection.rtl,
-                  textAlign: TextAlign.start,
-                  decoration: InputDecoration(
-                    errorMaxLines: 1,
-                    border: InputBorder.none,
-                    hintText: context.read<TabCubit>().state.hintText!,
-                    hintStyle: kBold14TextStyle.copyWith(
-                      color: const Color(0xff5D5D5D),
+            Container(
+              width: 335,
+              height: 50,
+              clipBehavior: Clip.antiAlias,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFF6F6F6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 12.w),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 150.w,
+                      child: BlocBuilder<TabCubit, TabState>(
+                        builder: (context, state) {
+                          return TextField(
+                            onChanged: (query) {
+                              if (state is DocumentsTabState) {
+                                onDocumentSearchTextChanged(query);
+                              } else {
+                                onAppointmentSearchTextChanged(query);
+                              }
+                            },
+                            textDirection: TextDirection.rtl,
+                            textAlign: TextAlign.start,
+                            decoration: InputDecoration(
+                              errorMaxLines: 1,
+                              border: InputBorder.none,
+                              hintText:
+                                  context.read<TabCubit>().state.hintText!,
+                              hintStyle: kBold14TextStyle.copyWith(
+                                color: const Color(0xff5D5D5D),
+                              ),
+                            ),
+                            autofocus: true,
+                            controller: searchController,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  controller: searchController,
-                );
-              },
+                    const Spacer(),
+                    InkWell(
+                      child: Icon(
+                        MdiIcons.arrowLeft,
+                        size: 25.r,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
+
 // * first divider:
             const PaddedDivider(
               topPadding: 1,
@@ -169,13 +207,11 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                       itemCount: searchResults.length,
                     );
                   } else {
-                    return Expanded(
-                      child: Center(
-                        child: Text(
-                          "نتیجه ای یافت نشد!",
-                          style: kBold16TextStyle.copyWith(fontSize: 19),
-                        ), // Display a message if no results.
-                      ),
+                    return Center(
+                      child: Text(
+                        "نتیجه ای یافت نشد!",
+                        style: kBold16TextStyle.copyWith(fontSize: 19),
+                      ), // Display a message if no results.
                     );
                   }
                 },

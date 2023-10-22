@@ -46,6 +46,7 @@ class _RangePickerBottomSheetState extends State<RangePickerBottomSheet> {
     }
     return Scaffold(
       body: CustomBottomSheet(
+        isCalendar: true,
         backgroundColor: Colors.white,
         halfScreen: true,
         child: SingleChildScrollView(

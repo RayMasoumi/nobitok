@@ -79,8 +79,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ), // * end of first divider
 
 // * Display search results
-            Container(
-              color: Colors.red,
+            SizedBox(
               height: kHeight - 200,
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {

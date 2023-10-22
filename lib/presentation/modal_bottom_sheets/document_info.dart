@@ -16,7 +16,6 @@ import '../../constants/sizes.dart';
 import '../../constants/styles.dart';
 import '../../data/models/customer.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/print_document_widget.dart';
 
 class DocumentInfoBottomSheet extends StatelessWidget {
   const DocumentInfoBottomSheet({super.key});
@@ -86,7 +85,7 @@ class DocumentInfoBottomSheet extends StatelessWidget {
                   ),
                 ),
 // * print doc
-                const PrintDocumentWidget(),
+//                 const PrintDocumentWidget(),
               ],
             ),
             SizedBox(

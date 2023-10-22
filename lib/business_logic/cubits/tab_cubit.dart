@@ -36,7 +36,6 @@ class TabCubit extends Cubit<TabState> {
         List<Appointment> preAppointments;
         preAppointments = await preAppointmentRepository
             .fetchPreAppointmentsByRange(getTodayDate(), '1402/11/10');
-        //TODO get all pre appointments
         emit(TabLoadingCompleteState(state.hintText));
 
         emit(PreAppointmentTabState(preAppointments, 'جستجو پیش نوبت ها'));

@@ -10,7 +10,6 @@ import 'package:nobitok/data/models/user.dart';
 import 'package:nobitok/presentation/dialog_alerts/error_alert.dart';
 import 'package:nobitok/presentation/widgets/custom_button.dart';
 import 'package:nobitok/presentation/widgets/custom_labeled_text_field.dart';
-import 'package:nobitok/presentation/widgets/middle_texted_divider.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/styles.dart';
@@ -102,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 32.57.h,
                       ),
                       CustomLabeledTextField(
+                        isPassword: true,
                         keyboardType: TextInputType.visiblePassword,
                         controller: passwordController,
                         hintText: '********',
@@ -111,25 +111,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 25.h,
                       ),
 // * forgot password:
-                      const MiddleTextedDivider(
-                        text: "رمز خود را فراموش کرده اید؟",
-                      ),
-                      SizedBox(
-                        height: 18.h,
-                      ),
+//                       const MiddleTextedDivider(
+//                         text: "رمز خود را فراموش کرده اید؟",
+//                       ),
+//                       SizedBox(
+//                         height: 18.h,
+//                       ),
 // * change password:
-                      InkWell(
-                        onTap: () {
-                          //TODO
-                        },
-                        child: Text(
-                          'تغییر رمز عبور',
-                          textAlign: TextAlign.center,
-                          style: kMedium12TextStyle.copyWith(
-                            color: const Color(0xFF3A4DFF),
-                          ),
-                        ),
-                      ),
+//                       InkWell(
+//                         onTap: () {
+//                         },
+//                         child: Text(
+//                           'تغییر رمز عبور',
+//                           textAlign: TextAlign.center,
+//                           style: kMedium12TextStyle.copyWith(
+//                             color: const Color(0xFF3A4DFF),
+//                           ),
+//                         ),
+//                       ),
                       const Spacer(),
 // * login button:
                       BlocListener<AuthCubit, AuthState>(

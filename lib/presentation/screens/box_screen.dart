@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/sizes.dart';
+import 'package:nobitok/presentation/widgets/custom_list_view.dart';
+import 'package:nobitok/presentation/widgets/payment_list_tile.dart';
 
 import '../../methods/custom_jalali_range_picker.dart';
 import '../widgets/horizontal_padding.dart';
@@ -84,7 +86,22 @@ class BoxScreen extends StatelessWidget {
             const PaddedDivider(
               topPadding: 12,
               bottomPadding: 12,
-            ), // * after divider:
+            ),
+            // * after divider:
+            Expanded(
+              child: CustomListView(
+                onRefresh: () async {},
+                tileLeftPadding: 0,
+                tileRightPadding: 0,
+                tileTopPadding: 16,
+                tileBottomPadding: 8,
+                listTileBuilder: (index) {
+                  return PaymentListTile(
+                      payments: const [], index: index, isCash: true);
+                },
+                itemCount: [].length,
+              ),
+            )
           ],
         ),
       ),

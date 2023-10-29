@@ -61,3 +61,7 @@ const String kRefreshTokenUrl = '/Account/RefreshTokenForUser';
 
 // * api edit pre appointment
 const String kEditAppointmentUrl = '/Appointment/editAppointment';
+
+// * api getAllPayments:
+const String kGetAllPaymentsUrl =
+    'https://appointmentapi.etokco.ir/Payment/GetAllPayments';

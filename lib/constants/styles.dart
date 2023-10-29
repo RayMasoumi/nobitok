@@ -84,3 +84,8 @@ final TextStyle kBigNumberTextStyle = TextStyle(
     fontFamily: kIranyekanFont,
     fontSize: 45.w,
     fontWeight: FontWeight.w400);
+final TextStyle kCardTextStyle = TextStyle(
+    color: kCardTextColor,
+    fontFamily: kIranyekanFont,
+    fontSize: 15.w,
+    fontWeight: FontWeight.w500);

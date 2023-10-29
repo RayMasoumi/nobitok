@@ -10,6 +10,7 @@ BoxDecoration kLoginScreenBackgroundColor = const BoxDecoration(
 
 const Color kTextFieldBorderColor = Color(0xff888888);
 const Color kTextFieldHintColor = Color(0xFFCFCFCF);
+
 const Color kTextFieldLabelColor = Color(0xff363636);
 const Color kDividerColor = Color(0xFF9C9C9C);
 const Color kGreenColor = Color(0xFF68D88F);
@@ -21,3 +22,4 @@ const Color kBlue50Color = Color(0xffEBEDFF);
 const Color kBlue500Color = Color(0xff3A4EFF);
 const Color kRed600Color = Color(0xffE84F4F);
 const Color kLightGreyColor = Color(0xFFF4F4F4);
+const Color kCardTextColor = Color(0xFF5C5C5C);

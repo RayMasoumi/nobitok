@@ -28,11 +28,6 @@ class PreAppointmentRepository {
       debugPrint(
           'success in fetchPreAppointmentsByRange in get_pre_appointment_service.dart');
       return preAppointments;
-    } else if (response.statusCode == 401) {
-      print(response.statusCode);
-      print(response.body);
-      throw Exception(
-          'Unauthorized: Please check your authentication credentials.');
     } else {
       throw Exception(
           '$kFetchPreAppointmentsDataException:${response.statusCode}');

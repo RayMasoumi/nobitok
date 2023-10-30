@@ -6,8 +6,11 @@ import 'package:nobitok/business_logic/cubits/customer_cubit.dart';
 import 'package:nobitok/constants/strings.dart';
 
 import '../../business_logic/cubits/appointments_cubit.dart';
+import '../../business_logic/cubits/auth_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../../constants/styles.dart';
+import '../dialog_alerts/error_alert.dart';
+import '../dialog_alerts/no_internet_alert.dart';
 
 class CustomTabBar extends StatelessWidget {
   const CustomTabBar({
@@ -42,6 +45,17 @@ class CustomTabBar extends StatelessWidget {
                 .addAppointments(kAppointmentsKey, state.appointments);
           } else if (state is DocumentsTabState) {
             context.read<CustomerCubit>().addCustomers(state.customers);
+          } else if (state is TabErrorState) {
+            context.loaderOverlay.hide();
+            if (state.error.contains(kServerException)) {
+              noInternetAlert(context);
+              // print('server exception');
+            } else if (state.error.contains('401')) {
+              context.read<AuthCubit>().refreshToken();
+            } else {
+              errorAlert(context, 'خطا در بارگیری اطلاعات');
+              // print('an exception');
+            }
           }
         },
         child: TabBar(

@@ -21,7 +21,7 @@ class CustomerRepository {
     } else {
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
-      throw Exception('$kGetAllCustomersException:${response.body}');
+      throw Exception('$kGetAllCustomersException:${response.statusCode}');
     }
   }
 }

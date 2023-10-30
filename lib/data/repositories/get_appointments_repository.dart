@@ -25,7 +25,7 @@ class GetAppointmentsRepository {
       print('Response Body: ${response.body}');
       throw Exception(
 //! fetch_today_appointments_error
-          '$kFetchTodayAppointmentsDataException:${response.body}');
+          '$kFetchTodayAppointmentsDataException:${response.statusCode}');
     }
   }
 

@@ -53,5 +53,6 @@ const kAddAppointmentScreenRoute = '/add_appointment_screen';
 const kCreateNewDocumentScreenRoute = '/create_new_document_screen';
 const kCompletedAppointmentsScreenRoute = '/completed_appointments_screen';
 const kSearchResultScreenRoute = '/search_result_screen';
+const kBoxScreenRoute = '/box_screen';
 
 // * hero tags

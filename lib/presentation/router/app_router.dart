@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:nobitok/presentation/screens/add_appointment_screen.dart';
+import 'package:nobitok/presentation/screens/box_screen.dart';
 import 'package:nobitok/presentation/screens/completed_appointments_screen.dart';
 import 'package:nobitok/presentation/screens/create_new_document_screen.dart';
 import 'package:nobitok/presentation/screens/home_screen.dart';
@@ -18,7 +19,7 @@ class AppRouter {
       case kLoginScreenRoute:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case kHomeScreenRoute:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       case kAddAppointmentScreenRoute:
         return MaterialPageRoute(builder: (_) => const AddAppointmentScreen());
       case kCreateNewDocumentScreenRoute:
@@ -29,7 +30,8 @@ class AppRouter {
             builder: (_) => const CompletedAppointmentsScreen());
       case kSearchResultScreenRoute:
         return MaterialPageRoute(builder: (_) => const SearchResultScreen());
-
+      case kBoxScreenRoute:
+        return MaterialPageRoute(builder: (_) => const BoxScreen());
       default:
         return null;
     }

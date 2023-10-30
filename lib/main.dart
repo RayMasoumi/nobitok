@@ -14,6 +14,7 @@ import 'package:nobitok/business_logic/cubits/document_cubit.dart';
 import 'package:nobitok/business_logic/cubits/document_details_cubit.dart';
 import 'package:nobitok/business_logic/cubits/invoice_cubit.dart';
 import 'package:nobitok/business_logic/cubits/new_document_cubit.dart';
+import 'package:nobitok/business_logic/cubits/payment_cubit.dart';
 import 'package:nobitok/business_logic/cubits/search_cubit.dart';
 import 'package:nobitok/business_logic/cubits/service_cubit.dart';
 import 'package:nobitok/business_logic/cubits/tab_cubit.dart';
@@ -174,31 +175,23 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]).then((value) => runApp(
         MyApp(
-          // authService: authService,
           authRepository: authRepository,
           getAppointmentsRepository: getAppointmentsRepository,
-          // getAppointmentsService: getAppointmentsService,
-          // preAppointmentService: getPreAppointmentService,
           preAppointmentRepository: preAppointmentRepository,
           getInvoiceDetailsRepository: getInvoiceDetailsRepository,
           getCustomerDetailsRepository: getCustomerDetailsRepository,
-          // getAllDocumentsService: getAllDocumentsService,
           documentRepository: documentRepository,
-          // getAllCustomersService: getAllCustomersService,
           customerRepository: customerRepository,
-          // getAllServicesService: getAllServicesService,
           serviceRepository: serviceRepository,
           getDocumentDetailsRepository: getDocumentDetailsRepository,
           postNewDocumentRepository: postNewDocumentRepository,
           postNewCustomerRepository: postNewCustomerRepository,
-          // editInvoiceService: editInvoiceService,
           invoiceRepository: invoiceRepository,
           postNewPreAppointmentRepository: postNewPreAppointmentRepository,
           addAppointmentFromPreAppointmentRepository:
               addAppointmentFromPreAppointmentRepository,
           completeAppointmentRepository: completeAppointmentRepository,
           postNewAppointmentRepository: postNewAppointmentRepository,
-          // postNewAppointmentService: postNewAppointmentService,
           deleteAppointmentRepository: deleteAppointmentRepository,
           refreshTokenRepository: refreshTokenRepository,
           paymentRepository: paymentRepository,
@@ -207,19 +200,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // final AuthService authService;
   final AuthRepository authRepository;
   final GetAppointmentsRepository getAppointmentsRepository;
-  // final GetAppointmentsService getAppointmentsService;
-  // final GetPreAppointmentService preAppointmentService;
+
   final PreAppointmentRepository preAppointmentRepository;
   final GetInvoiceDetailsRepository getInvoiceDetailsRepository;
   final GetCustomerDetailsRepository getCustomerDetailsRepository;
-  // final GetAllDocumentsService getAllDocumentsService;
   final DocumentRepository documentRepository;
-  // final GetAllCustomersService getAllCustomersService;
   final CustomerRepository customerRepository;
-  // final GetAllServicesService getAllServicesService;
   final ServiceRepository serviceRepository;
   final GetDocumentDetailsRepository getDocumentDetailsRepository;
 
@@ -227,40 +215,30 @@ class MyApp extends StatelessWidget {
   final PostNewCustomerRepository postNewCustomerRepository;
   final PostNewPreAppointmentRepository postNewPreAppointmentRepository;
   final InvoiceRepository invoiceRepository;
-  // final EditInvoiceService editInvoiceService;
   final AddAppointmentFromPreAppointmentRepository
       addAppointmentFromPreAppointmentRepository;
   final CompleteAppointmentRepository completeAppointmentRepository;
-  // final PostNewAppointmentService postNewAppointmentService;
   final PostNewAppointmentRepository postNewAppointmentRepository;
   final DeleteAppointmentRepository deleteAppointmentRepository;
   final RefreshTokenRepository refreshTokenRepository;
   final PaymentRepository paymentRepository;
   const MyApp({
     super.key,
-    // required this.authService,
     required this.authRepository,
     required this.getAppointmentsRepository,
-    // required this.getAppointmentsService,
-    // required this.preAppointmentService,
     required this.preAppointmentRepository,
     required this.getInvoiceDetailsRepository,
     required this.getCustomerDetailsRepository,
-    // required this.getAllDocumentsService,
     required this.documentRepository,
-    // required this.getAllCustomersService,
     required this.customerRepository,
-    // required this.getAllServicesService,
     required this.serviceRepository,
     required this.getDocumentDetailsRepository,
     required this.postNewDocumentRepository,
     required this.postNewCustomerRepository,
     required this.postNewPreAppointmentRepository,
     required this.invoiceRepository,
-    // required this.editInvoiceService,
     required this.addAppointmentFromPreAppointmentRepository,
     required this.completeAppointmentRepository,
-    // required this.postNewAppointmentService,
     required this.postNewAppointmentRepository,
     required this.deleteAppointmentRepository,
     required this.refreshTokenRepository,
@@ -354,6 +332,9 @@ class MyApp extends StatelessWidget {
                     context.read<AppointmentsCubit>(),
                     context.read<CustomerCubit>(),
                   ),
+                ),
+                BlocProvider(
+                  create: (context) => PaymentCubit(paymentRepository),
                 ),
               ],
               child: MaterialApp(

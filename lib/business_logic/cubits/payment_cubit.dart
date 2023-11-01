@@ -4,12 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/strings.dart';
 import '../../data/models/payment.dart';
 import '../../data/repositories/payments_repository.dart';
+import '../../data/repositories/post_end_of_day_repository.dart';
 
 part 'payment_state.dart';
 
 class PaymentCubit extends Cubit<PaymentState> {
-  late final PaymentRepository paymentRepository;
-  PaymentCubit(this.paymentRepository) : super(PaymentInitialState());
+  PaymentRepository paymentRepository;
+  PostEndOfDayRepository postEndOfDayRepository;
+
+  PaymentCubit(
+      {required this.paymentRepository, required this.postEndOfDayRepository})
+      : super(PaymentInitialState());
 
   Future<void> fetchPaymentsFromRepository() async {
     emit(PaymentLoading());
@@ -19,8 +24,22 @@ class PaymentCubit extends Cubit<PaymentState> {
 
       emit(PaymentLoadingCompleted(allPayments: payments));
     } catch (error) {
-      emit(PaymentLoadingFailed());
-      throw Exception('$kGetAllPaymentsException: $error: in Payment Cubit');
+      emit(PaymentLoadingFailed(
+          error: '$kGetAllPaymentsException: $error: in Payment Cubit'));
+      // ! no need to throw exception because we can use thrown exceptions and emit the failure state
+      // throw Exception('$kGetAllPaymentsException: $error: in Payment Cubit');
+    }
+  }
+
+  Future<void> sendEndOfDay(String cash, String credit) async {
+    emit(PaymentSending());
+
+    try {
+      await _sendEndOfDayToRepository(cash, credit);
+
+      emit(PaymentSendingCompleted());
+    } catch (e) {
+      emit(PaymentSendingFailed(error: 'Failed to send end of day: $e'));
     }
   }
 
@@ -36,5 +55,16 @@ class PaymentCubit extends Cubit<PaymentState> {
   void clearPayments() {
     state.allPayments = [];
     emit(state);
+  }
+
+  Future<bool> _sendEndOfDayToRepository(String cash, String credit) async {
+    final bool status;
+    try {
+      status = await postEndOfDayRepository.sendEndOfDay(cash, credit);
+
+      return status;
+    } catch (e) {
+      throw Exception('$e:in PaymentCubit');
+    }
   }
 }

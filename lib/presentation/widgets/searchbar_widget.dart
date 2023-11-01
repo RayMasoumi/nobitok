@@ -9,7 +9,6 @@ import 'package:nobitok/business_logic/cubits/appointments_state.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/constants/strings.dart';
 import 'package:nobitok/constants/styles.dart';
-import 'package:nobitok/presentation/modal_bottom_sheets/set_box_credit_bottom_sheet.dart';
 import 'package:nobitok/presentation/widgets/custom_icon_widget.dart';
 
 import '../../business_logic/cubits/auth_cubit.dart';
@@ -56,23 +55,14 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => SetBoxCreditBottomSheet(),
-                  isScrollControlled: true,
-                );
-              },
-              child: CircleAvatar(
-                backgroundColor: const Color(0xffC2C8FF),
-                radius: 30,
-                child: Text(
-                  name[0].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.w,
-                  ),
+            CircleAvatar(
+              backgroundColor: const Color(0xffC2C8FF),
+              radius: 30,
+              child: Text(
+                name[0].toUpperCase(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.w,
                 ),
               ),
             ),

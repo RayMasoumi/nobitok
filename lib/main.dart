@@ -32,6 +32,7 @@ import 'package:nobitok/data/repositories/get_invoice_details_repository.dart';
 import 'package:nobitok/data/repositories/get_pre_appointments_repository.dart';
 import 'package:nobitok/data/repositories/invoice_repository.dart';
 import 'package:nobitok/data/repositories/payments_repository.dart';
+import 'package:nobitok/data/repositories/post_end_of_day_repository.dart';
 import 'package:nobitok/data/repositories/post_new_appointment_repository.dart';
 import 'package:nobitok/data/repositories/post_new_customer_repository.dart';
 import 'package:nobitok/data/repositories/post_new_document_repository.dart';
@@ -50,13 +51,14 @@ import 'package:nobitok/data/services/get_appointments_service.dart';
 import 'package:nobitok/data/services/get_customer_details_service.dart';
 import 'package:nobitok/data/services/get_document_details_service.dart';
 import 'package:nobitok/data/services/get_invoice_details_service.dart';
+import 'package:nobitok/data/services/post_end_of_day_service.dart';
 import 'package:nobitok/data/services/post_new_appointment_service.dart';
 import 'package:nobitok/data/services/post_new_customer_service.dart';
 import 'package:nobitok/data/services/post_new_document_service.dart';
 import 'package:nobitok/data/services/refresh_token_service.dart';
 import 'package:nobitok/methods/bouncing_scroll_behavior.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
-import 'package:nobitok/presentation/screens/box_screen.dart';
+import 'package:nobitok/presentation/screens/home_screen.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
@@ -170,6 +172,10 @@ void main() async {
   final GetAllPaymentsService getAllPaymentsService = GetAllPaymentsService();
   final PaymentRepository paymentRepository =
       PaymentRepository(getAllPaymentsService);
+// * end of day:
+  final PostEndOfDayService postEndOfDayService = PostEndOfDayService();
+  final PostEndOfDayRepository postEndOfDayRepository =
+      PostEndOfDayRepository(postEndOfDayService);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -195,6 +201,7 @@ void main() async {
           deleteAppointmentRepository: deleteAppointmentRepository,
           refreshTokenRepository: refreshTokenRepository,
           paymentRepository: paymentRepository,
+          postEndOfDayRepository: postEndOfDayRepository,
         ),
       ));
 }
@@ -222,6 +229,7 @@ class MyApp extends StatelessWidget {
   final DeleteAppointmentRepository deleteAppointmentRepository;
   final RefreshTokenRepository refreshTokenRepository;
   final PaymentRepository paymentRepository;
+  final PostEndOfDayRepository postEndOfDayRepository;
   const MyApp({
     super.key,
     required this.authRepository,
@@ -243,6 +251,7 @@ class MyApp extends StatelessWidget {
     required this.deleteAppointmentRepository,
     required this.refreshTokenRepository,
     required this.paymentRepository,
+    required this.postEndOfDayRepository,
   });
 
   @override
@@ -334,7 +343,10 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 BlocProvider(
-                  create: (context) => PaymentCubit(paymentRepository),
+                  create: (context) => PaymentCubit(
+                    paymentRepository: paymentRepository,
+                    postEndOfDayRepository: postEndOfDayRepository,
+                  ),
                 ),
               ],
               child: MaterialApp(
@@ -354,7 +366,7 @@ class MyApp extends StatelessWidget {
                   // child: AddAppointmentScreen(),
                   child: GetStorage().read(kTokenBox) == null
                       ? const LoginScreen()
-                      : const BoxScreen(),
+                      : const HomeScreen(),
                 ),
                 onGenerateRoute: AppRouter().onGenerateRoute,
                 localizationsDelegates: const [

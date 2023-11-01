@@ -65,3 +65,6 @@ const String kEditAppointmentUrl = '/Appointment/editAppointment';
 // * api getAllPayments:
 const String kGetAllPaymentsUrl =
     'https://appointmentapi.etokco.ir/Payment/GetAllPayments';
+
+// * const api post end of day
+const String kPostEndOfDayUrl = '/EndOfDays/AddEndOfDay';

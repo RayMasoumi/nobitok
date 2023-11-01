@@ -26,7 +26,29 @@ class PaymentLoadingCompleted extends PaymentState {
 }
 
 class PaymentLoadingFailed extends PaymentState {
-  PaymentLoadingFailed() {
-    debugPrint('Payment loading failed state');
+  String error;
+
+  PaymentLoadingFailed({required this.error}) {
+    debugPrint('Payment loading failed state : $error');
+  }
+}
+
+class PaymentSending extends PaymentState {
+  PaymentSending() {
+    debugPrint('Payment sending state');
+  }
+}
+
+class PaymentSendingCompleted extends PaymentState {
+  PaymentSendingCompleted() {
+    debugPrint('Payment sending completed state');
+  }
+}
+
+class PaymentSendingFailed extends PaymentState {
+  String error;
+
+  PaymentSendingFailed({required this.error}) {
+    debugPrint('Payment sending failed state : $error');
   }
 }

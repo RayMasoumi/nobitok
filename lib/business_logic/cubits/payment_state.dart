@@ -13,7 +13,8 @@ class PaymentInitialState extends PaymentState {
 }
 
 class PaymentLoading extends PaymentState {
-  PaymentLoading() {
+  PaymentLoading({List<Payment>? allPayments})
+      : super(allPayments: allPayments) {
     debugPrint('Payment loading state');
   }
 }
@@ -28,7 +29,8 @@ class PaymentLoadingCompleted extends PaymentState {
 class PaymentLoadingFailed extends PaymentState {
   String error;
 
-  PaymentLoadingFailed({required this.error}) {
+  PaymentLoadingFailed({required this.error, List<Payment>? allPayments})
+      : super(allPayments: allPayments) {
     debugPrint('Payment loading failed state : $error');
   }
 }

@@ -26,4 +26,22 @@ class PaymentRepository {
       throw Exception('$kGetAllPaymentsException:${response.body}');
     }
   }
+
+  Future<List<Payment>> fetchPaymentsByRange(
+      String startDate, String endDate) async {
+    final response =
+        await getAllPaymentsService.fetchPaymentsByRange(startDate, endDate);
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      List<dynamic> dataList = jsonResponse['dataList'];
+      List<Payment> payments = dataList.map((data) {
+        return Payment.fromJson(data);
+      }).toList();
+      return payments;
+    } else {
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      throw Exception('$kFetchPaymentsByDateDataException:${response.body}');
+    }
+  }
 }

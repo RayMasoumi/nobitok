@@ -43,6 +43,25 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
+  Future<void> fetchPaymentsByRange(String startDate, String endDate) async {
+    List<Payment> newPayments;
+
+    List<Payment>? allPayments = state.allPayments;
+    emit(PaymentLoading(allPayments: allPayments));
+
+    try {
+      newPayments =
+          await _fetchPaymentsByDateFromRepository(startDate, endDate);
+
+      addPayments(newPayments);
+
+      emit(PaymentLoadingCompleted(allPayments: state.allPayments));
+    } catch (e) {
+      emit(PaymentLoadingFailed(
+          error: '$e in payments cubit', allPayments: allPayments));
+    }
+  }
+
   void addPayments(List<Payment> payments) {
     state.allPayments = payments;
     emit(state);
@@ -65,6 +84,18 @@ class PaymentCubit extends Cubit<PaymentState> {
       return status;
     } catch (e) {
       throw Exception('$e:in PaymentCubit');
+    }
+  }
+
+  Future<List<Payment>> _fetchPaymentsByDateFromRepository(
+      String startDate, String endDate) async {
+    List<Payment> payments;
+    try {
+      payments =
+          await paymentRepository.fetchPaymentsByRange(startDate, endDate);
+      return payments;
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

@@ -45,6 +45,8 @@ const String kCompleteAppointmentUrl = '/Appointment/editAppointment';
 
 // * api get appointments by range
 const String kGetAppointmentsByRangeUrl = '/Appointment/getAppointmentsByDate';
+// * api get payments by range
+const String kGetPaymentsByRangeUrl = '/Payment/GetPaymentsByDate';
 // * api get appointments by range
 const String kGetCompletedAppointmentsByRangeUrl =
     '/Appointment/getCompletedAppointmentsByDate';

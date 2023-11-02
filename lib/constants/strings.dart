@@ -27,6 +27,7 @@ const kFetchTodayCompletedAppointmentsDataException =
     'fetch_today_completed_appointments_error';
 const kFetchAppointmentsByDateDataException =
     'fetch_appointments_by_date_error';
+const kFetchPaymentsByDateDataException = 'fetch_payments_by_date_error';
 const kFetchCompletedAppointmentsByDateDataException =
     'fetch_completed_appointments_by_date_error';
 const kGetInvoiceDetailException = 'get_invoice_detail_error';

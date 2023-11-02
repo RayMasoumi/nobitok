@@ -43,7 +43,9 @@ class BoxScreen extends StatelessWidget {
               endDate = dates[1];
               // * apply date search for box
               if (context.mounted) {
-                //TODO  await
+                await context
+                    .read<PaymentCubit>()
+                    .fetchPaymentsByRange(startDate, endDate);
               }
             }),
             SizedBox(

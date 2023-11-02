@@ -24,7 +24,6 @@ class SearchbarWidget extends StatefulWidget {
   });
 
   final bool isHomeScreen;
-  // final bool needsCustomizedText;
 
   @override
   State<SearchbarWidget> createState() => _SearchbarWidgetState();

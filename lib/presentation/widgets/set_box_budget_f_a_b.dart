@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/presentation/widgets/custom_image_widget.dart';
 
 import '../../constants/styles.dart';
+import '../modal_bottom_sheets/set_box_credit_bottom_sheet.dart';
 
 class SetBoxBudgetFAB extends StatelessWidget {
   const SetBoxBudgetFAB({
@@ -20,7 +21,14 @@ class SetBoxBudgetFAB extends StatelessWidget {
           borderRadius: BorderRadius.circular(19),
         ),
         onPressed: () {
-          //TODO  Navigator.of(context).pushNamed();
+          // ! put this in the on pressed of floating action button
+          // ! it's for the bottom sheet
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => SetBoxCreditBottomSheet(),
+            isScrollControlled: true,
+          );
+          // ! thanks <3
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -19,15 +19,6 @@ class BoxScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ! put this in the on pressed of floating action button
-    // ! it's for the bottom sheet
-    // showModalBottomSheet(
-    //   context: context,
-    //   builder: (context) => SetBoxCreditBottomSheet(),
-    //   isScrollControlled: true,
-    // );
-    // ! thanks <3
-
     return Scaffold(
       backgroundColor: Colors.white,
 // * floating action button:

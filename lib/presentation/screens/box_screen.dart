@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nobitok/business_logic/cubits/payment_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/payment_list_tile.dart';
 
+import '../../constants/styles.dart';
 import '../../methods/custom_jalali_range_picker.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/income_amount_widget.dart';
 import '../widgets/padded_divider.dart';
-import '../widgets/searchbar_widget.dart';
 import '../widgets/set_box_budget_f_a_b.dart';
 import '../widgets/time_f_a_b.dart';
 
@@ -62,13 +63,30 @@ class BoxScreen extends StatelessWidget {
             SizedBox(
               height: 8.h,
             ),
-// * searchbar:
-            const SearchbarWidget(
-              isHomeScreen: false,
+            Padding(
+              padding: EdgeInsets.all(10.r),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'پرداختی ها',
+                    style: kBold14TextStyle,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      MdiIcons.arrowLeft,
+                      size: 25.r,
+                    ),
+                  ),
+                ],
+              ),
             ),
 // * first divider:
             const PaddedDivider(
-              topPadding: 12,
+              topPadding: 0,
               bottomPadding: 12,
             ), // * end of first divider
 // * income card:
@@ -118,7 +136,10 @@ class BoxScreen extends StatelessWidget {
                     listTileBuilder: (index) {
                       return PaymentListTile(
                         payments: context.read<PaymentCubit>().getPayments(),
-                        index: index,
+                        index:
+                            context.read<PaymentCubit>().getPayments().length -
+                                1 -
+                                index,
                       );
                     },
                     itemCount:

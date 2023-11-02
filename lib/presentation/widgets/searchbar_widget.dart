@@ -54,23 +54,14 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: () async {
-                //TODO omit InkWell and move all this to صندوق onPressed
-                Navigator.of(context).pushNamed(kBoxScreenRoute);
-                await context
-                    .read<PaymentCubit>()
-                    .fetchPaymentsFromRepository();
-              },
-              child: CircleAvatar(
-                backgroundColor: const Color(0xffC2C8FF),
-                radius: 30,
-                child: Text(
-                  name[0].toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.w,
-                  ),
+            CircleAvatar(
+              backgroundColor: const Color(0xffC2C8FF),
+              radius: 30,
+              child: Text(
+                name[0].toUpperCase(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.w,
                 ),
               ),
             ),
@@ -98,25 +89,50 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
             widget.isHomeScreen
                 ? Row(
                     children: [
-                      BlocListener<AppointmentsCubit, AppointmentsState>(
-                        listener: (context, state) {
-                          if (state is AppointmentsLoading) {
-                            context.loaderOverlay.show();
-                          } else if (state is AppointmentsLoadingCompleted) {
-                            context.loaderOverlay.hide();
-                          } else if (state is AppointmentsLoadingFailed) {
-                            context.loaderOverlay.hide();
-                            if (state.error.contains(kServerException)) {
-                              noInternetAlert(context);
-                              // print('server exception');
-                            } else if (state.error.contains('401')) {
-                              context.read<AuthCubit>().refreshToken();
-                            } else {
-                              errorAlert(context, 'خطا در بارگیری اطلاعات');
-                              // print('an exception');
-                            }
-                          }
-                        },
+                      MultiBlocListener(
+                        listeners: [
+                          BlocListener<AppointmentsCubit, AppointmentsState>(
+                            listener: (context, state) {
+                              if (state is AppointmentsLoading) {
+                                context.loaderOverlay.show();
+                              } else if (state
+                                  is AppointmentsLoadingCompleted) {
+                                context.loaderOverlay.hide();
+                              } else if (state is AppointmentsLoadingFailed) {
+                                context.loaderOverlay.hide();
+                                if (state.error.contains(kServerException)) {
+                                  noInternetAlert(context);
+                                  // print('server exception');
+                                } else if (state.error.contains('401')) {
+                                  context.read<AuthCubit>().refreshToken();
+                                } else {
+                                  errorAlert(context, 'خطا در بارگیری اطلاعات');
+                                  // print('an exception');
+                                }
+                              }
+                            },
+                          ),
+                          BlocListener<PaymentCubit, PaymentState>(
+                            listener: (context, state) {
+                              if (state is PaymentLoading) {
+                                context.loaderOverlay.show();
+                              } else if (state is PaymentLoadingCompleted) {
+                                context.loaderOverlay.hide();
+                              } else if (state is PaymentLoadingFailed) {
+                                context.loaderOverlay.hide();
+                                if (state.error.contains(kServerException)) {
+                                  noInternetAlert(context);
+                                  // print('server exception');
+                                } else if (state.error.contains('401')) {
+                                  context.read<AuthCubit>().refreshToken();
+                                } else {
+                                  errorAlert(context, 'خطا در بارگیری اطلاعات');
+                                  // print('an exception');
+                                }
+                              }
+                            },
+                          ),
+                        ],
                         child: DropdownButton2<String>(
                           customButton: Icon(
                             Icons.menu,
@@ -137,12 +153,21 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                             setState(() {
                               dropdownSelectedValue = value;
                             });
-                            await context
-                                .read<AppointmentsCubit>()
-                                .fetchTodayCompletedAppointments();
-                            if (context.mounted) {
-                              Navigator.of(context)
-                                  .pushNamed(kCompletedAppointmentsScreenRoute);
+                            if (value == 'لیست تکمیل شده‌ها') {
+                              await context
+                                  .read<AppointmentsCubit>()
+                                  .fetchTodayCompletedAppointments();
+                              if (context.mounted) {
+                                Navigator.of(context).pushNamed(
+                                    kCompletedAppointmentsScreenRoute);
+                              }
+                            } else if (value == 'صندوق') {
+                              Navigator.of(context).pushNamed(kBoxScreenRoute);
+                              await context
+                                  .read<PaymentCubit>()
+                                  .fetchPaymentsFromRepository();
+                            } else {
+                              print('heyyy');
                             }
                           },
                           buttonStyleData: ButtonStyleData(

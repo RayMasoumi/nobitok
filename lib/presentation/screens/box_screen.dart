@@ -7,11 +7,11 @@ import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/payment_list_tile.dart';
 
 import '../../methods/custom_jalali_range_picker.dart';
-import '../widgets/add_document_f_a_b.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/income_amount_widget.dart';
 import '../widgets/padded_divider.dart';
 import '../widgets/searchbar_widget.dart';
+import '../widgets/set_box_budget_f_a_b.dart';
 import '../widgets/time_f_a_b.dart';
 
 class BoxScreen extends StatelessWidget {
@@ -31,8 +31,15 @@ class BoxScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 // * floating action button:
-      floatingActionButton: SizedBox(
-        width: double.infinity,
+      floatingActionButton: Container(
+        width: 335.w,
+        height: 60.h,
+        decoration: ShapeDecoration(
+          color: const Color(0xFFF4F4F4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(19),
+          ),
+        ),
         child: Row(
           children: [
             DateFAB(onPressed: () async {
@@ -48,7 +55,10 @@ class BoxScreen extends StatelessWidget {
                 //TODO  await
               }
             }),
-            const AddDocumentFAB(),
+            SizedBox(
+              width: 17.w,
+            ),
+            const SetBoxBudgetFAB(),
           ],
         ),
       ),

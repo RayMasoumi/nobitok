@@ -21,14 +21,11 @@ class SetBoxBudgetFAB extends StatelessWidget {
           borderRadius: BorderRadius.circular(19),
         ),
         onPressed: () {
-          // ! put this in the on pressed of floating action button
-          // ! it's for the bottom sheet
           showModalBottomSheet(
             context: context,
             builder: (context) => SetBoxCreditBottomSheet(),
             isScrollControlled: true,
           );
-          // ! thanks <3
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

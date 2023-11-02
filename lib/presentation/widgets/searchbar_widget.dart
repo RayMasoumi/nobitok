@@ -24,15 +24,14 @@ class SearchbarWidget extends StatefulWidget {
   });
 
   final bool isHomeScreen;
+  // final bool needsCustomizedText;
 
   @override
   State<SearchbarWidget> createState() => _SearchbarWidgetState();
 }
 
 class _SearchbarWidgetState extends State<SearchbarWidget> {
-  final List<String> dropdownItems = [
-    'لیست تکمیل شده‌ها',
-  ];
+  final List<String> dropdownItems = ['لیست تکمیل شده‌ها', 'صندوق'];
 
   String? dropdownSelectedValue;
 
@@ -40,8 +39,8 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
   Widget build(BuildContext context) {
     String name = GetStorage().read(kUsernameBox) ?? 'U';
     return Container(
-      width: 335,
-      height: 40,
+      width: 335.w,
+      height: 40.h,
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
         color: const Color(0xFFF6F6F6),
@@ -58,6 +57,7 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
           children: [
             InkWell(
               onTap: () async {
+                //TODO omit InkWell and move all this to صندوق onPressed
                 Navigator.of(context).pushNamed(kBoxScreenRoute);
                 await context
                     .read<PaymentCubit>()

@@ -41,10 +41,14 @@ class PaymentListTile extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Text(
-              payments[index].paymentDate.toPersianDate(),
-              //TODO
-              style: kMedium12TextStyle,
+            Row(
+              children: [
+                Text(
+                  payments[index].paymentDate.toPersianDate(),
+                  //TODO
+                  style: kBold12TextStyle,
+                ),
+              ],
             ),
           ],
         ),
@@ -53,12 +57,23 @@ class PaymentListTile extends StatelessWidget {
       trailing: SizedBox(
         // width: 150.w,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(' ${payments[index].paymentAmount}'), //TODO
-                const Text(kCurrency),
+                // const Spacer(),
+                Text(
+                  ' ${payments[index].paymentAmount} ',
+                  style: kBold14TextStyle,
+                ), //TODO
+                Text(
+                  kCurrency,
+                  style: kBold14TextStyle,
+                ),
+                SizedBox(
+                  width: 7.w,
+                ),
                 const CustomImage(
                   height: 18,
                   path: 'assets/icons/tag.png',
@@ -68,7 +83,7 @@ class PaymentListTile extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              // TODO?
+              // TODO? check if the value is right
               payments[index].paymentType == 0
                   ? 'میزان درآمد نقدی'
                   : 'میزان درآمد از طریق کارت',

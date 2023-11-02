@@ -58,7 +58,7 @@ import 'package:nobitok/data/services/post_new_document_service.dart';
 import 'package:nobitok/data/services/refresh_token_service.dart';
 import 'package:nobitok/methods/bouncing_scroll_behavior.dart';
 import 'package:nobitok/presentation/router/app_router.dart';
-import 'package:nobitok/presentation/screens/box_screen.dart';
+import 'package:nobitok/presentation/screens/home_screen.dart';
 import 'package:nobitok/presentation/screens/login_screen.dart';
 
 import 'constants/sizes.dart';
@@ -370,7 +370,7 @@ class MyApp extends StatelessWidget {
                   // child: AddAppointmentScreen(),
                   child: GetStorage().read(kTokenBox) == null
                       ? const LoginScreen()
-                      : const BoxScreen(),
+                      : const HomeScreen(),
                 ),
                 onGenerateRoute: AppRouter().onGenerateRoute,
                 localizationsDelegates: const [

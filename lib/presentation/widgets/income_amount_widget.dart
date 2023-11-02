@@ -8,7 +8,6 @@ class IncomeAmountWidget extends StatelessWidget {
     required this.amount,
     required this.isCash,
   });
-  //TODO textScroll
 
   final double amount;
   final bool isCash;
@@ -18,7 +17,7 @@ class IncomeAmountWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          isCash ? 'میزان درآمد نقدی' : 'میزان درآمد از طریق کارت',
+          isCash ? 'میزان درآمد نقدی' : 'درآمد از طریق کارت',
           style: kCardTextStyle,
         ),
         Text(

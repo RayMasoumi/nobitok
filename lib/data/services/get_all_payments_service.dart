@@ -33,7 +33,7 @@ class GetAllPaymentsService {
 
     // * Implement API request to fetch payments using the token here
     final url = Uri.parse(
-        '$kBaseUrl$kGetAppointmentsByRangeUrl?startDate=$startDateEncoded&endDate=$endDateEncoded');
+        '$kBaseUrl$kGetPaymentsByRangeUrl?startDate=$startDateEncoded&endDate=$endDateEncoded');
 
     final headers = {
       'Authorization': 'Bearer ${GetStorage().read(kTokenBox)}',

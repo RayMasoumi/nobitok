@@ -33,7 +33,7 @@ class PaymentRepository {
         await getAllPaymentsService.fetchPaymentsByRange(startDate, endDate);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      List<dynamic> dataList = jsonResponse['dataList'];
+      List<dynamic> dataList = jsonResponse['data']['pagedList'];
       List<Payment> payments = dataList.map((data) {
         return Payment.fromJson(data);
       }).toList();

@@ -45,7 +45,6 @@ class PaymentListTile extends StatelessWidget {
               children: [
                 Text(
                   payments[index].paymentDate.toPersianDate(),
-                  //TODO
                   style: kBold12TextStyle,
                 ),
               ],
@@ -62,11 +61,10 @@ class PaymentListTile extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // const Spacer(),
                 Text(
                   ' ${payments[index].paymentAmount} ',
                   style: kBold14TextStyle,
-                ), //TODO
+                ),
                 Text(
                   kCurrency,
                   style: kBold14TextStyle,
@@ -83,8 +81,7 @@ class PaymentListTile extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              // TODO? check if the value is right
-              payments[index].paymentType == 0
+              payments[index].paymentType == 1
                   ? 'میزان درآمد نقدی'
                   : 'میزان درآمد از طریق کارت',
               style: kBold14TextStyle,

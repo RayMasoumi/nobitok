@@ -343,11 +343,15 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 BlocProvider(
-                  create: (context) => PaymentCubit(
-                    paymentRepository: paymentRepository,
-                    postEndOfDayRepository: postEndOfDayRepository,
-                  ),
-                ),
+                    create: (context) => PaymentCubit(
+                          paymentRepository: paymentRepository,
+                          postEndOfDayRepository: postEndOfDayRepository,
+                        ),
+                    child: BlocProvider<PaymentCubit>(
+                      create: (context) => PaymentCubit(
+                          paymentRepository: paymentRepository,
+                          postEndOfDayRepository: postEndOfDayRepository),
+                    )),
               ],
               child: MaterialApp(
                 builder: (context, child) {

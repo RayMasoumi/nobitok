@@ -12,6 +12,7 @@ import 'package:nobitok/constants/styles.dart';
 import 'package:nobitok/presentation/widgets/custom_icon_widget.dart';
 
 import '../../business_logic/cubits/auth_cubit.dart';
+import '../../business_logic/cubits/payment_cubit.dart';
 import '../../business_logic/cubits/tab_cubit.dart';
 import '../dialog_alerts/error_alert.dart';
 import '../dialog_alerts/no_internet_alert.dart';
@@ -55,14 +56,22 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              backgroundColor: const Color(0xffC2C8FF),
-              radius: 30,
-              child: Text(
-                name[0].toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.w,
+            InkWell(
+              onTap: () async {
+                Navigator.of(context).pushNamed(kBoxScreenRoute);
+                await context
+                    .read<PaymentCubit>()
+                    .fetchPaymentsFromRepository();
+              },
+              child: CircleAvatar(
+                backgroundColor: const Color(0xffC2C8FF),
+                radius: 30,
+                child: Text(
+                  name[0].toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.w,
+                  ),
                 ),
               ),
             ),

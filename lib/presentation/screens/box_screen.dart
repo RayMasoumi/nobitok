@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nobitok/business_logic/cubits/payment_cubit.dart';
 import 'package:nobitok/constants/sizes.dart';
 import 'package:nobitok/presentation/widgets/custom_list_view.dart';
 import 'package:nobitok/presentation/widgets/payment_list_tile.dart';
 
 import '../../methods/custom_jalali_range_picker.dart';
+import '../widgets/add_document_f_a_b.dart';
 import '../widgets/horizontal_padding.dart';
 import '../widgets/income_amount_widget.dart';
 import '../widgets/padded_divider.dart';
@@ -28,23 +31,26 @@ class BoxScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 // * floating action button:
-      floatingActionButton: Row(
-        children: [
-          DateFAB(onPressed: () async {
-            String startDate;
-            String endDate;
-            List<String> dates;
-            dates = await customJalaliRangePicker(
-                context, 'بازه مورد نظر را انتخاب کنید :');
-            startDate = dates[0];
-            endDate = dates[1];
-            // * apply date search for box
-            if (context.mounted) {
-              //TODO  await
-            }
-          }),
-          // const AddDocumentFAB(),
-        ],
+      floatingActionButton: SizedBox(
+        width: double.infinity,
+        child: Row(
+          children: [
+            DateFAB(onPressed: () async {
+              String startDate;
+              String endDate;
+              List<String> dates;
+              dates = await customJalaliRangePicker(
+                  context, 'بازه مورد نظر را انتخاب کنید :');
+              startDate = dates[0];
+              endDate = dates[1];
+              // * apply date search for box
+              if (context.mounted) {
+                //TODO  await
+              }
+            }),
+            const AddDocumentFAB(),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       body: HorizontalPadding(
@@ -55,7 +61,7 @@ class BoxScreen extends StatelessWidget {
             ),
 // * searchbar:
             const SearchbarWidget(
-              isHomeScreen: true,
+              isHomeScreen: false,
             ),
 // * first divider:
             const PaddedDivider(
@@ -98,17 +104,24 @@ class BoxScreen extends StatelessWidget {
             ),
             // * after divider:
             Expanded(
-              child: CustomListView(
-                onRefresh: () async {},
-                tileLeftPadding: 0,
-                tileRightPadding: 0,
-                tileTopPadding: 16,
-                tileBottomPadding: 8,
-                listTileBuilder: (index) {
-                  return PaymentListTile(
-                      payments: const [], index: index, isCash: true);
+              child: BlocBuilder<PaymentCubit, PaymentState>(
+                builder: (context, state) {
+                  return CustomListView(
+                    onRefresh: () async {},
+                    tileLeftPadding: 0,
+                    tileRightPadding: 0,
+                    tileTopPadding: 16,
+                    tileBottomPadding: 8,
+                    listTileBuilder: (index) {
+                      return PaymentListTile(
+                        payments: context.read<PaymentCubit>().getPayments(),
+                        index: index,
+                      );
+                    },
+                    itemCount:
+                        context.read<PaymentCubit>().getPayments().length,
+                  );
                 },
-                itemCount: [].length,
               ),
             )
           ],

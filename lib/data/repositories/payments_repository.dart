@@ -12,6 +12,7 @@ class PaymentRepository {
   Future<List<Payment>> fetchAllPayments() async {
     final response = await getAllPaymentsService.fetchAllPaymentsService();
     if (response.statusCode == 200) {
+      print('im hereeee in payment repository line 15');
       final jsonResponse = json.decode(response.body);
       List<dynamic> dataList = jsonResponse['dataList'];
       List<Payment> payments = dataList.map((data) {

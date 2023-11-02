@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nobitok/constants/strings.dart';
-import 'package:nobitok/presentation/widgets/custom_icon_widget.dart';
+import 'package:nobitok/data/models/payment.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 import '../../constants/styles.dart';
+import 'custom_image_widget.dart';
 
 class PaymentListTile extends StatelessWidget {
   const PaymentListTile({
     super.key,
     required this.payments,
     required this.index,
-    required this.isCash,
   });
 
-  final List<dynamic> payments; //TODO ??
+  final List<Payment> payments;
   final int index;
-  final bool isCash;
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +35,14 @@ class PaymentListTile extends StatelessWidget {
                   width: 7.w,
                 ),
                 Text(
-                  payments[index].customerName, //TODO
+                  payments[index].paymentCustomerName,
                   style: kBold14TextStyle,
                 ),
               ],
             ),
             const Spacer(),
             Text(
-              payments[index].appointmentDate.toPersianDate(),
+              payments[index].paymentDate.toPersianDate(),
               //TODO
               style: kMedium12TextStyle,
             ),
@@ -50,24 +50,32 @@ class PaymentListTile extends StatelessWidget {
         ),
       ),
 // * list tile trailing:
-      trailing: Column(
-        children: [
-          const Row(
-            children: [
-              Text(' 700000'), //TODO
-              Text(kCurrency),
-              CustomIcon(
-                iconPath: 'assets/icons/tag.png',
-                iconSize: 18,
-              ),
-            ],
-          ),
-          const Spacer(),
-          Text(
-            isCash ? 'میزان درآمد نقدی' : 'میزان درآمد از طریق کارت',
-            style: kBold14TextStyle,
-          ),
-        ],
+      trailing: SizedBox(
+        // width: 150.w,
+        child: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(' ${payments[index].paymentAmount}'), //TODO
+                const Text(kCurrency),
+                const CustomImage(
+                  height: 18,
+                  path: 'assets/icons/tag.png',
+                  width: 18,
+                ),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              // TODO?
+              payments[index].paymentType == 0
+                  ? 'میزان درآمد نقدی'
+                  : 'میزان درآمد از طریق کارت',
+              style: kBold14TextStyle,
+            ),
+          ],
+        ),
       ),
     );
   }

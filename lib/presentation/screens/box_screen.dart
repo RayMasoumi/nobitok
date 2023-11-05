@@ -101,20 +101,24 @@ class BoxScreen extends StatelessWidget {
                   borderRadius: kBorderRadius12,
                 ),
               ),
-              child: Column(
-                children: [
-                  IncomeAmountWidget(
-                    amount: context.read<PaymentCubit>().state.cashPaid,
-                    isCash: true,
-                  ),
-                  SizedBox(
-                    height: 24.h,
-                  ),
-                  IncomeAmountWidget(
-                    amount: context.read<PaymentCubit>().state.creditPaid,
-                    isCash: false,
-                  ),
-                ],
+              child: BlocBuilder<PaymentCubit, PaymentState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      IncomeAmountWidget(
+                        amount: context.read<PaymentCubit>().state.cashPaid,
+                        isCash: true,
+                      ),
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                      IncomeAmountWidget(
+                        amount: context.read<PaymentCubit>().state.creditPaid,
+                        isCash: false,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
 

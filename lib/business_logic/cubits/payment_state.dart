@@ -19,8 +19,8 @@ class PaymentLoading extends PaymentState {
       {List<Payment>? allPayments, double? cashPaid, double? creditPaid})
       : super(
             allPayments: allPayments,
-            creditPaid: creditPaid ?? 77,
-            cashPaid: cashPaid ?? 77) {
+            creditPaid: creditPaid,
+            cashPaid: cashPaid) {
     debugPrint('Payment loading state');
   }
 }

@@ -39,10 +39,10 @@ class PaymentRepository {
         return Payment.fromJson(data);
       }).toList();
       // * cashPaid:
-      final double cashPaid = jsonResponse['cashPaid'];
+      final double? cashPaid = jsonResponse['data']['cashPaid'];
       print('this is what i fetched $cashPaid');
       // * creditPaid:
-      final double creditPaid = jsonResponse['creditPaid'];
+      final double? creditPaid = jsonResponse['data']['creditPaid'];
       print('this is what i fetched $creditPaid');
       // * a list of all data:
       List<dynamic> everything = [payments, cashPaid, creditPaid];

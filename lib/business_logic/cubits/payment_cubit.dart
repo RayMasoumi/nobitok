@@ -53,14 +53,14 @@ class PaymentCubit extends Cubit<PaymentState> {
     List<Payment>? allPayments = state.allPayments;
     emit(PaymentLoading(
       allPayments: allPayments,
-      cashPaid: state.cashPaid,
-      creditPaid: state.creditPaid,
+      // cashPaid: state.cashPaid,
+      // creditPaid: state.creditPaid,
     ));
 
     try {
       // *fetch everything the list contains
       everything =
-          await _fetchPaymentsAndMoreByDateFromRepository(startDate, endDate);
+          await fetchPaymentsAndMoreByDateFromRepository(startDate, endDate);
       // * now get the payments list only:
       newPayments = everything.first;
 
@@ -70,6 +70,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       cashPaid = everything[1];
       // * fetch creditPaid:
       creditPaid = everything[2];
+      print('************ ${everything.last}');
 
       addCashPaid(cashPaid!);
       addCreditPaid(creditPaid!);
@@ -132,7 +133,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
 // * returns a mix of everything: (payments, cashPaid, creditPaid)
-  Future<List<dynamic>> _fetchPaymentsAndMoreByDateFromRepository(
+  Future<List<dynamic>> fetchPaymentsAndMoreByDateFromRepository(
       String startDate, String endDate) async {
     List<dynamic> everything;
     try {

@@ -44,7 +44,6 @@ class GetAllPaymentsService {
         url,
         headers: headers,
       );
-      print(response.body);
       return response;
     } catch (error) {
       throw Exception('$kServerException:$error');

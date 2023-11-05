@@ -2,8 +2,10 @@ part of 'payment_cubit.dart';
 
 abstract class PaymentState {
   List<Payment>? allPayments;
+  double? cashPaid;
+  double? creditPaid;
 
-  PaymentState({this.allPayments});
+  PaymentState({this.allPayments, this.creditPaid, this.cashPaid});
 }
 
 class PaymentInitialState extends PaymentState {
@@ -13,15 +15,23 @@ class PaymentInitialState extends PaymentState {
 }
 
 class PaymentLoading extends PaymentState {
-  PaymentLoading({List<Payment>? allPayments})
-      : super(allPayments: allPayments) {
+  PaymentLoading(
+      {List<Payment>? allPayments, double? cashPaid, double? creditPaid})
+      : super(
+            allPayments: allPayments,
+            creditPaid: creditPaid ?? 77,
+            cashPaid: cashPaid ?? 77) {
     debugPrint('Payment loading state');
   }
 }
 
 class PaymentLoadingCompleted extends PaymentState {
-  PaymentLoadingCompleted({List<Payment>? allPayments})
-      : super(allPayments: allPayments) {
+  PaymentLoadingCompleted(
+      {List<Payment>? allPayments, double? cashPaid, double? creditPaid})
+      : super(
+            allPayments: allPayments,
+            creditPaid: creditPaid ?? 88,
+            cashPaid: cashPaid ?? 88) {
     debugPrint('Payment loading completed state');
   }
 }
@@ -29,8 +39,15 @@ class PaymentLoadingCompleted extends PaymentState {
 class PaymentLoadingFailed extends PaymentState {
   String error;
 
-  PaymentLoadingFailed({required this.error, List<Payment>? allPayments})
-      : super(allPayments: allPayments) {
+  PaymentLoadingFailed(
+      {required this.error,
+      List<Payment>? allPayments,
+      double? cashPaid,
+      double? creditPaid})
+      : super(
+            allPayments: allPayments,
+            creditPaid: creditPaid ?? 99,
+            cashPaid: cashPaid ?? 99) {
     debugPrint('Payment loading failed state : $error');
   }
 }

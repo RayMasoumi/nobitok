@@ -12,7 +12,6 @@ class PaymentRepository {
   Future<List<Payment>> fetchAllPayments() async {
     final response = await getAllPaymentsService.fetchAllPaymentsService();
     if (response.statusCode == 200) {
-      print('im hereeee in payment repository line 15');
       final jsonResponse = json.decode(response.body);
       List<dynamic> dataList = jsonResponse['dataList'];
       List<Payment> payments = dataList.map((data) {
@@ -22,25 +21,35 @@ class PaymentRepository {
       return payments;
     } else {
       print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      print('something went wrong! Response Body: ${response.body}');
       throw Exception('$kGetAllPaymentsException:${response.body}');
     }
   }
 
-  Future<List<Payment>> fetchPaymentsByRange(
+  // * returns a list of [[payments],cashPaid, creditPaid]: >> payments = everything[0]
+  Future<List<dynamic>> fetchPaymentsAndMoreByRange(
       String startDate, String endDate) async {
     final response =
         await getAllPaymentsService.fetchPaymentsByRange(startDate, endDate);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       List<dynamic> dataList = jsonResponse['data']['pagedList'];
+      // * list of payments:
       List<Payment> payments = dataList.map((data) {
         return Payment.fromJson(data);
       }).toList();
-      return payments;
+      // * cashPaid:
+      final double cashPaid = jsonResponse['cashPaid'];
+      print('this is what i fetched $cashPaid');
+      // * creditPaid:
+      final double creditPaid = jsonResponse['creditPaid'];
+      print('this is what i fetched $creditPaid');
+      // * a list of all data:
+      List<dynamic> everything = [payments, cashPaid, creditPaid];
+      return everything;
     } else {
       print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      print('something went wrong! Response Body: ${response.body}');
       throw Exception('$kFetchPaymentsByDateDataException:${response.body}');
     }
   }

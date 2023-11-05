@@ -18,7 +18,6 @@ class GetAllPaymentsService {
         url,
         headers: headers,
       );
-      print('im hereeee in get all payments service line 21, request sent');
 
       return response;
     } catch (error) {
@@ -45,6 +44,7 @@ class GetAllPaymentsService {
         url,
         headers: headers,
       );
+      print(response.body);
       return response;
     } catch (error) {
       throw Exception('$kServerException:$error');

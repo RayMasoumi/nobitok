@@ -16,7 +16,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       {required this.paymentRepository, required this.postEndOfDayRepository})
       : super(PaymentInitialState());
 
-  Future<void> fetchPaymentsFromRepository() async {
+  Future<void> fetchAllPaymentsFromRepository() async {
     emit(PaymentLoading());
     final List<Payment> payments;
     try {
@@ -43,22 +43,48 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
-  Future<void> fetchPaymentsByRange(String startDate, String endDate) async {
+  Future<void> fetchPaymentsAndMoreByRange(
+      String startDate, String endDate) async {
+    List<dynamic> everything;
     List<Payment> newPayments;
+    double? cashPaid;
+    double? creditPaid;
 
     List<Payment>? allPayments = state.allPayments;
-    emit(PaymentLoading(allPayments: allPayments));
+    emit(PaymentLoading(
+      allPayments: allPayments,
+      cashPaid: state.cashPaid,
+      creditPaid: state.creditPaid,
+    ));
 
     try {
-      newPayments =
-          await _fetchPaymentsByDateFromRepository(startDate, endDate);
+      // *fetch everything the list contains
+      everything =
+          await _fetchPaymentsAndMoreByDateFromRepository(startDate, endDate);
+      // * now get the payments list only:
+      newPayments = everything.first;
 
       addPayments(newPayments);
 
-      emit(PaymentLoadingCompleted(allPayments: state.allPayments));
+      // * fetch cashPaid:
+      cashPaid = everything[1];
+      // * fetch creditPaid:
+      creditPaid = everything[2];
+
+      addCashPaid(cashPaid!);
+      addCreditPaid(creditPaid!);
+
+      emit(PaymentLoadingCompleted(
+        allPayments: state.allPayments ?? [],
+        cashPaid: state.cashPaid ?? 111,
+        creditPaid: state.creditPaid ?? 555,
+      ));
     } catch (e) {
       emit(PaymentLoadingFailed(
-          error: '$e in payments cubit', allPayments: allPayments));
+          error: '$e in payments cubit',
+          allPayments: allPayments,
+          cashPaid: cashPaid ?? 666,
+          creditPaid: creditPaid ?? 666));
     }
   }
 
@@ -67,8 +93,26 @@ class PaymentCubit extends Cubit<PaymentState> {
     emit(state);
   }
 
+  void addCashPaid(double cashPaid) {
+    state.cashPaid = cashPaid;
+    emit(state);
+  }
+
+  void addCreditPaid(double creditPaid) {
+    state.creditPaid = creditPaid;
+    emit(state);
+  }
+
   List<Payment> getPayments() {
     return state.allPayments ?? [];
+  }
+
+  double getCashPaid() {
+    return state.cashPaid ?? 2222;
+  }
+
+  double getCreditPaid() {
+    return state.creditPaid ?? 2222;
   }
 
   void clearPayments() {
@@ -87,13 +131,14 @@ class PaymentCubit extends Cubit<PaymentState> {
     }
   }
 
-  Future<List<Payment>> _fetchPaymentsByDateFromRepository(
+// * returns a mix of everything: (payments, cashPaid, creditPaid)
+  Future<List<dynamic>> _fetchPaymentsAndMoreByDateFromRepository(
       String startDate, String endDate) async {
-    List<Payment> payments;
+    List<dynamic> everything;
     try {
-      payments =
-          await paymentRepository.fetchPaymentsByRange(startDate, endDate);
-      return payments;
+      everything = await paymentRepository.fetchPaymentsAndMoreByRange(
+          startDate, endDate);
+      return everything;
     } catch (e) {
       throw Exception(e);
     }

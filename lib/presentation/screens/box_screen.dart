@@ -46,7 +46,7 @@ class BoxScreen extends StatelessWidget {
               if (context.mounted) {
                 await context
                     .read<PaymentCubit>()
-                    .fetchPaymentsByRange(startDate, endDate);
+                    .fetchPaymentsAndMoreByRange(startDate, endDate);
               }
             }),
             SizedBox(
@@ -103,15 +103,15 @@ class BoxScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const IncomeAmountWidget(
-                    amount: 700000,
+                  IncomeAmountWidget(
+                    amount: context.read<PaymentCubit>().state.cashPaid,
                     isCash: true,
                   ),
                   SizedBox(
                     height: 24.h,
                   ),
-                  const IncomeAmountWidget(
-                    amount: 0,
+                  IncomeAmountWidget(
+                    amount: context.read<PaymentCubit>().state.creditPaid,
                     isCash: false,
                   ),
                 ],
@@ -131,7 +131,7 @@ class BoxScreen extends StatelessWidget {
                     onRefresh: () async {
                       await context
                           .read<PaymentCubit>()
-                          .fetchPaymentsFromRepository();
+                          .fetchAllPaymentsFromRepository();
                     },
                     tileLeftPadding: 0,
                     tileRightPadding: 0,

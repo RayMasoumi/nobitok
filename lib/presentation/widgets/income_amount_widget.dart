@@ -9,7 +9,7 @@ class IncomeAmountWidget extends StatelessWidget {
     required this.isCash,
   });
 
-  final double amount;
+  final double? amount;
   final bool isCash;
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class IncomeAmountWidget extends StatelessWidget {
           style: kCardTextStyle,
         ),
         Text(
-          '$amount $kCurrency',
+          '${amount ?? 0} $kCurrency',
           style: kCardTextStyle,
         )
       ],

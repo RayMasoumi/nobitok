@@ -165,7 +165,7 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                               Navigator.of(context).pushNamed(kBoxScreenRoute);
                               await context
                                   .read<PaymentCubit>()
-                                  .fetchPaymentsFromRepository();
+                                  .fetchAllPaymentsFromRepository();
                             } else {
                               print('heyyy');
                             }

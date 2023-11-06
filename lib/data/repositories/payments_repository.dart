@@ -39,11 +39,11 @@ class PaymentRepository {
         return Payment.fromJson(data);
       }).toList();
       // * cashPaid:
-      final double? cashPaid =
+      final double cashPaid =
           double.parse(jsonResponse['data']['cashPaid'].toString());
       print('this is what i fetched $cashPaid');
       // * creditPaid:
-      final double? creditPaid =
+      final double creditPaid =
           double.parse(jsonResponse['data']['creditPaid'].toString());
       print('this is what i fetched $creditPaid');
       // * a list of all data:

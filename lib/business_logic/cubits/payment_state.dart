@@ -30,8 +30,8 @@ class PaymentLoadingCompleted extends PaymentState {
       {List<Payment>? allPayments, double? cashPaid, double? creditPaid})
       : super(
             allPayments: allPayments,
-            creditPaid: creditPaid ?? 88,
-            cashPaid: cashPaid ?? 88) {
+            creditPaid: creditPaid,
+            cashPaid: cashPaid) {
     debugPrint('Payment loading completed state');
   }
 }
@@ -46,8 +46,8 @@ class PaymentLoadingFailed extends PaymentState {
       double? creditPaid})
       : super(
             allPayments: allPayments,
-            creditPaid: creditPaid ?? 99,
-            cashPaid: cashPaid ?? 99) {
+            creditPaid: creditPaid ?? 99.0,
+            cashPaid: cashPaid ?? 99.0) {
     debugPrint('Payment loading failed state : $error');
   }
 }

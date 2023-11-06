@@ -70,10 +70,10 @@ class PaymentCubit extends Cubit<PaymentState> {
       cashPaid = everything[1];
       // * fetch creditPaid:
       creditPaid = everything[2];
-      print('************ ${everything.last}');
+      print('************ ${everything[2]}');
 
-      addCashPaid(cashPaid!);
-      addCreditPaid(creditPaid!);
+      addCashPaid(cashPaid);
+      addCreditPaid(creditPaid);
 
       emit(PaymentLoadingCompleted(
         allPayments: state.allPayments ?? [],
@@ -94,12 +94,12 @@ class PaymentCubit extends Cubit<PaymentState> {
     emit(state);
   }
 
-  void addCashPaid(double cashPaid) {
+  void addCashPaid(double? cashPaid) {
     state.cashPaid = cashPaid;
     emit(state);
   }
 
-  void addCreditPaid(double creditPaid) {
+  void addCreditPaid(double? creditPaid) {
     state.creditPaid = creditPaid;
     emit(state);
   }

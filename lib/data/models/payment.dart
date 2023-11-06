@@ -8,8 +8,6 @@ class Payment {
     required this.paymentInvoiceId,
     required this.paymentCustomerId,
     required this.paymentCustomerName,
-    // this.cashPaid,
-    // this.creditPaid,
   });
   int paymentId;
   double paymentAmount;
@@ -19,8 +17,6 @@ class Payment {
   int paymentInvoiceId;
   int paymentCustomerId;
   String paymentCustomerName;
-  // double? creditPaid;
-  // double? cashPaid;
 
   factory Payment.fromJson(Map<String, dynamic> json) {
     return Payment(
@@ -32,8 +28,6 @@ class Payment {
       paymentInvoiceId: json['factorId'] ?? 0,
       paymentCustomerId: json['customerId'] ?? 0,
       paymentCustomerName: json['customerName'] ?? '',
-      // cashPaid: json['cashPaid'] ?? 1111,
-      // creditPaid: json['creditPaid'] ?? 1111,
     );
   }
 }

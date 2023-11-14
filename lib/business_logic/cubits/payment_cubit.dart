@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants/strings.dart';
 import '../../data/models/payment.dart';
 import '../../data/repositories/payments_repository.dart';
 import '../../data/repositories/post_end_of_day_repository.dart';
@@ -16,20 +15,20 @@ class PaymentCubit extends Cubit<PaymentState> {
       {required this.paymentRepository, required this.postEndOfDayRepository})
       : super(PaymentInitialState());
 
-  Future<void> fetchAllPaymentsFromRepository() async {
-    emit(PaymentLoading());
-    final List<Payment> payments;
-    try {
-      payments = await paymentRepository.fetchAllPayments();
-
-      emit(PaymentLoadingCompleted(allPayments: payments));
-    } catch (error) {
-      emit(PaymentLoadingFailed(
-          error: '$kGetAllPaymentsException: $error: in Payment Cubit'));
-      // ! no need to throw exception because we can use thrown exceptions and emit the failure state
-      // throw Exception('$kGetAllPaymentsException: $error: in Payment Cubit');
-    }
-  }
+  // Future<void> fetchAllPaymentsFromRepository() async {
+  //   emit(PaymentLoading());
+  //   final List<Payment> payments;
+  //   try {
+  //     payments = await paymentRepository.fetchAllPayments();
+  //
+  //     emit(PaymentLoadingCompleted(allPayments: payments));
+  //   } catch (error) {
+  //     emit(PaymentLoadingFailed(
+  //         error: '$kGetAllPaymentsException: $error: in Payment Cubit'));
+  //     // ! no need to throw exception because we can use thrown exceptions and emit the failure state
+  //     // throw Exception('$kGetAllPaymentsException: $error: in Payment Cubit');
+  //   }
+  // }
 
   Future<void> sendEndOfDay(String cash, String credit) async {
     emit(PaymentSending());

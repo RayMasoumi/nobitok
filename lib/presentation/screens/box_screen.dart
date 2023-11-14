@@ -133,9 +133,9 @@ class BoxScreen extends StatelessWidget {
                 builder: (context, state) {
                   return CustomListView(
                     onRefresh: () async {
-                      await context
-                          .read<PaymentCubit>()
-                          .fetchAllPaymentsFromRepository();
+                      // await context
+                      //     .read<PaymentCubit>()
+                      //     .fetchAllPaymentsFromRepository();
                     },
                     tileLeftPadding: 0,
                     tileRightPadding: 0,

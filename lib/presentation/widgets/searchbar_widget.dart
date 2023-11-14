@@ -163,9 +163,10 @@ class _SearchbarWidgetState extends State<SearchbarWidget> {
                               }
                             } else if (value == 'صندوق') {
                               Navigator.of(context).pushNamed(kBoxScreenRoute);
-                              await context
-                                  .read<PaymentCubit>()
-                                  .fetchAllPaymentsFromRepository();
+                              //! we don't need to fetch all payments apparently
+                              // await context
+                              //     .read<PaymentCubit>()
+                              //     .fetchAllPaymentsFromRepository();
                             } else {
                               print('heyyy');
                             }

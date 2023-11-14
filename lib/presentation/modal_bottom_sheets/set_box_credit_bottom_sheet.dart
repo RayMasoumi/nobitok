@@ -19,7 +19,9 @@ class SetBoxCreditBottomSheet extends StatelessWidget {
   TextEditingController creditController = TextEditingController.fromValue(
       const TextEditingValue(
           text: '', selection: TextSelection.collapsed(offset: 0)));
-  TextEditingController cashController = TextEditingController();
+  TextEditingController cashController = TextEditingController.fromValue(
+      const TextEditingValue(
+          text: '', selection: TextSelection.collapsed(offset: 0)));
   @override
   Widget build(BuildContext context) {
     return Padding(

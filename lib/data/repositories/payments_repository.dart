@@ -9,22 +9,22 @@ class PaymentRepository {
 
   PaymentRepository(this.getAllPaymentsService);
 
-  Future<List<Payment>> fetchAllPayments() async {
-    final response = await getAllPaymentsService.fetchAllPaymentsService();
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      List<dynamic> dataList = jsonResponse['dataList'];
-      List<Payment> payments = dataList.map((data) {
-        return Payment.fromJson(data);
-      }).toList();
-      print(payments.length);
-      return payments;
-    } else {
-      print('Response Status Code: ${response.statusCode}');
-      print('something went wrong! Response Body: ${response.body}');
-      throw Exception('$kGetAllPaymentsException:${response.body}');
-    }
-  }
+  // Future<List<Payment>> fetchAllPayments() async {
+  //   final response = await getAllPaymentsService.fetchAllPaymentsService();
+  //   if (response.statusCode == 200) {
+  //     final jsonResponse = json.decode(response.body);
+  //     List<dynamic> dataList = jsonResponse['dataList'];
+  //     List<Payment> payments = dataList.map((data) {
+  //       return Payment.fromJson(data);
+  //     }).toList();
+  //     print(payments.length);
+  //     return payments;
+  //   } else {
+  //     print('Response Status Code: ${response.statusCode}');
+  //     print('something went wrong! Response Body: ${response.body}');
+  //     throw Exception('$kGetAllPaymentsException:${response.body}');
+  //   }
+  // }
 
   // * returns a list of [[payments],cashPaid, creditPaid]: >> payments = everything[0]
   Future<List<dynamic>> fetchPaymentsAndMoreByRange(

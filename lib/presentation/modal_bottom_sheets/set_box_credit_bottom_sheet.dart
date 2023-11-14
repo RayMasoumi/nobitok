@@ -16,7 +16,9 @@ import 'package:nobitok/presentation/widgets/padded_divider.dart';
 class SetBoxCreditBottomSheet extends StatelessWidget {
   SetBoxCreditBottomSheet({super.key});
 
-  TextEditingController creditController = TextEditingController();
+  TextEditingController creditController = TextEditingController.fromValue(
+      const TextEditingValue(
+          text: '', selection: TextSelection.collapsed(offset: 0)));
   TextEditingController cashController = TextEditingController();
   @override
   Widget build(BuildContext context) {
